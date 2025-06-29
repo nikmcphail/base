@@ -45,6 +45,9 @@ CPMAddPackage(
 
 add_library(base SHARED
     main.cpp
+    client/client.cpp
+    client/core/console/console.cpp
+    client/core/interfaces/interfaces.cpp
 )
 
 target_include_directories(base PRIVATE /)
@@ -112,6 +115,7 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
 elseif (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(base PRIVATE
         NOMINMAX
+        DEBUG
     )
 
     target_compile_options(base PRIVATE
