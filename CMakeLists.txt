@@ -43,6 +43,9 @@ CPMAddPackage(
     OPTIONS "SAFETYHOOK_FETCH_ZYDIS ON"
 )
 
+CPMAddPackage("gh:ocornut/imgui@1.92.0")
+CPMAddPackage("gh:freetype/freetype#d41a855aab6d8ce131c465ce01f0f536e0fb2269")
+
 add_library(base SHARED
     main.cpp
     client/client.cpp
@@ -50,6 +53,27 @@ add_library(base SHARED
     client/core/interfaces/interfaces.cpp
     client/core/hooks/hooks.cpp
 )
+
+if (imgui_ADDED)
+    target_sources(base PRIVATE
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/misc/freetype/imgui_freetype.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_win32.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_dx9.cpp
+    )
+
+    target_include_directories(base PUBLIC
+        $<BUILD_INTERFACE:${imgui_SOURCE_DIR}>
+        $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/backends>)
+
+    target_compile_definitions(base PUBLIC
+        IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
+    )
+endif ()
+
 
 target_include_directories(base PRIVATE /)
 target_compile_features(base PUBLIC cxx_std_23)
@@ -138,7 +162,8 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif ()
 
 target_link_libraries(base PRIVATE 
-    glm 
-    safetyhook
+    glm::glm
+    freetype
     d3d9
+    safetyhook
 )
