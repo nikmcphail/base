@@ -9,10 +9,17 @@ bool client::initialize() {
   if (!g_interfaces.collect_interfaces())
     return false;
 
+  client::g_console.print("initializing hooks", console_color_white);
+  if (!g_hooks.initialize())
+    return false;
+
   attached = true;
   return true;
 }
 
 bool client::should_unload() { return (GetAsyncKeyState(VK_DELETE) & 1); }
 
-void client::unload() { g_console.close_console(); }
+void client::unload() {
+  g_console.close_console();
+  g_hooks.unload();
+}

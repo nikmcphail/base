@@ -48,6 +48,7 @@ add_library(base SHARED
     client/client.cpp
     client/core/console/console.cpp
     client/core/interfaces/interfaces.cpp
+    client/core/hooks/hooks.cpp
 )
 
 target_include_directories(base PRIVATE /)
@@ -139,4 +140,5 @@ endif ()
 target_link_libraries(base PRIVATE 
     glm 
     safetyhook
+    d3d9
 )
