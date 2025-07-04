@@ -5,6 +5,7 @@
 
 void console_t::open_console() {
   AllocConsole();
+  SetConsoleTitleA("x64 base");
 
   FILE* f{};
   freopen_s(&f, "CONIN$", "r", stdin);
