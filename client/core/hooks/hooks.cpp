@@ -23,11 +23,13 @@ public:
 
 bool hooks_t::initialize() {
   this->d3d9_device_hook = safetyhook::create_vmt(client::g_interfaces.d3d9_device);
+  client::g_console.printf("\td3d9_device:", console_color_white);
   this->d3d9_present_hook =
       safetyhook::create_vm(this->d3d9_device_hook, 17, &hooked_d3d9_device_t::hooked_present);
+  client::g_console.printf("\t\tpresent hooked", console_color_cyan);
   this->d3d9_reset_hook =
       safetyhook::create_vm(this->d3d9_device_hook, 16, &hooked_d3d9_device_t::hooked_reset);
-
+  client::g_console.printf("\t\treset hooked", console_color_cyan);
   client::g_console.print("hooks initialized", console_color_green);
   return true;
 }
