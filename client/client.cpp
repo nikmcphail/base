@@ -47,6 +47,28 @@ void client::get_window_handle() {
   g_window = creation_params.hFocusWindow;
 }
 
+bool client::check_insecure() {
+  int     argc;
+  LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+  if (!argv)
+    return false;
+
+  bool insecure = false;
+  for (int i = 0; i < argc; ++i) {
+    insecure = !wcscmp(argv[i], L"-insecure");
+
+    if (insecure)
+      break;
+  }
+
+  if (!insecure)
+    MessageBoxA(nullptr, "Please add -insecure to your launch options.",
+                "Incorrect Launch Options", MB_ICONERROR);
+
+  LocalFree(argv);
+  return insecure;
+}
+
 void client::on_present() {
   g_render.begin();
   menu::present();

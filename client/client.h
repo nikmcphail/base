@@ -21,6 +21,7 @@ namespace client {
   bool should_unload();
   void unload();
   void get_window_handle();
+  bool check_insecure();
 
   void on_present();
 } // namespace client

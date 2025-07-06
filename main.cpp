@@ -4,6 +4,11 @@
 #include "client/client.h"
 
 unsigned long WINAPI Init(void* arg) {
+  if (!client::check_insecure()) {
+    FreeLibraryAndExitThread(static_cast<HMODULE>(arg), EXIT_FAILURE);
+    return 0;
+  }
+
   if (client::initialize()) {
     while (!client::should_unload())
       std::this_thread::sleep_for(std::chrono::seconds(1));
