@@ -1,6 +1,9 @@
 #include "client.h"
 
+#include "client/core/menu/menu.h"
+
 #include <Windows.h>
+#include <d3d9.h>
 
 bool client::initialize() {
   g_console.open_console();
@@ -8,6 +11,15 @@ bool client::initialize() {
   client::g_console.print("initializing interfaces", console_color_white);
   if (!g_interfaces.collect_interfaces())
     return false;
+
+  get_window_handle();
+
+  client::g_console.print("initializing renderer", console_color_white);
+  if (!g_render.initialize())
+    return false;
+
+  client::g_console.print("initializing input", console_color_white);
+  g_render.setup_input();
 
   client::g_console.print("initializing hooks", console_color_white);
   if (!g_hooks.initialize())
@@ -20,6 +32,23 @@ bool client::initialize() {
 bool client::should_unload() { return (GetAsyncKeyState(VK_DELETE) & 1); }
 
 void client::unload() {
-  g_console.close_console();
+  g_render.detach_input();
   g_hooks.unload();
+  g_render.detach();
+  g_console.close_console();
+}
+
+void client::get_window_handle() {
+  D3DDEVICE_CREATION_PARAMETERS creation_params;
+
+  // get the window handler for renderer and input
+  g_interfaces.d3d9_device->GetCreationParameters(&creation_params);
+
+  g_window = creation_params.hFocusWindow;
+}
+
+void client::on_present() {
+  g_render.begin();
+  menu::present();
+  g_render.finish();
 }

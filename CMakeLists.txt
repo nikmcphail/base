@@ -52,6 +52,8 @@ add_library(base SHARED
     client/core/console/console.cpp
     client/core/interfaces/interfaces.cpp
     client/core/hooks/hooks.cpp
+    client/core/render/render.cpp
+    client/core/menu/menu.cpp
 )
 
 if (imgui_ADDED)

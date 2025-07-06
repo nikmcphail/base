@@ -7,6 +7,7 @@ class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
   HRESULT hooked_present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect,
                          HWND dest_window_override, RGNDATA* dirty_region) {
+    client::on_present();
     return client::g_hooks.d3d9_present_hook.thiscall<HRESULT>(
         this, device, source_rect, dest_rect, dest_window_override, dirty_region);
   }
@@ -14,8 +15,14 @@ public:
   HRESULT hooked_reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* present_parameters) {
     HRESULT result;
 
-    result =
-        client::g_hooks.d3d9_reset_hook.thiscall<HRESULT>(this, device, present_parameters);
+    {
+      std::scoped_lock _{client::g_render.imgui_mutex};
+      client::g_render.detach();
+      result =
+          client::g_hooks.d3d9_reset_hook.thiscall<HRESULT>(this, device, present_parameters);
+      client::get_window_handle();
+      client::g_render.initialize();
+    }
 
     return result;
   }
