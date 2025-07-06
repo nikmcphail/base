@@ -45,7 +45,7 @@ LRESULT WINAPI wndproc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) noexcept {
 void render_t::setup_input() {
   orig_wndproc = reinterpret_cast<WNDPROC>(
       SetWindowLongPtrW(client::g_window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(wndproc)));
-  client::g_console.printf("\tinput initialized", console_color_cyan);
+  client::g_console.printf("input initialized", console_color_green);
 }
 
 void render_t::detach_input() {
@@ -56,18 +56,18 @@ bool render_t::initialize() {
   ImGui::CreateContext();
 
   if (!ImGui_ImplWin32_Init(client::g_window)) {
-    client::g_console.printf("\t!!! imgui_implwin32 couldn't initialize properly !!!",
+    client::g_console.printf("!!! imgui_implwin32 couldn't initialize properly !!!",
                              console_color_red);
     return false;
   }
 
   if (!ImGui_ImplDX9_Init(client::g_interfaces.d3d9_device)) {
-    client::g_console.printf("\t!!! imgui_impldx9 couldn't initialize properly !!!",
+    client::g_console.printf("!!! imgui_impldx9 couldn't initialize properly !!!",
                              console_color_red);
     return false;
   }
 
-  client::g_console.printf("\trenderer initialized", console_color_cyan);
+  client::g_console.printf("renderer initialized", console_color_green);
   return true;
 }
 

@@ -6,16 +6,16 @@
 
 bool interfaces_t::collect_interfaces() {
 
-  client::g_console.printf("\tmodules:", console_color_white);
+  client::g_console.printf("\tmodules:", console_color_beige);
   pe::module_t shaderapidx9_dll;
   if (!pe::get_module("shaderapidx9.dll", shaderapidx9_dll)) {
     client::g_console.print("\t\tfailed to find shader api",
                             console_colors_e::console_color_red);
     return false;
   }
-  client::g_console.print("\t\tfound shader api", console_colors_e::console_color_beige);
+  client::g_console.print("\t\tfound shader api", console_color_cyan);
 
-  client::g_console.printf("\taddresses:", console_color_white);
+  client::g_console.printf("\taddresses:", console_color_beige);
   this->d3d9_device = *(shaderapidx9_dll.find_pattern_in_memory("48 89 1D ?? ?? ?? ?? 48 8B CF")
                             .rel32<IDirect3DDevice9**>(0x3));
   if (!this->d3d9_device) {
@@ -23,6 +23,8 @@ bool interfaces_t::collect_interfaces() {
     return false;
   }
   client::g_console.print("\t\tfound d3d9 device", console_color_cyan);
+
+  client::g_console.printf("\tinterfaces:", console_color_beige);
 
   return true;
 }

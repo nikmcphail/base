@@ -1,5 +1,7 @@
 #include "menu.h"
 
+#include "client/client.h"
+
 #include <Windows.h>
 
 #include "imgui.h"
@@ -11,6 +13,8 @@ void menu::present() {
   if (!open)
     return;
 
-  ImGui::Begin("Test");
+  ImGui::Begin("x64 base", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+  if (ImGui::Button("Test"))
+    client::g_console.print("success!");
   ImGui::End();
 }
