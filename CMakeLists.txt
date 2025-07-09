@@ -69,6 +69,7 @@ if (imgui_ADDED)
         ${imgui_SOURCE_DIR}/misc/freetype/imgui_freetype.cpp
         ${imgui_SOURCE_DIR}/backends/imgui_impl_win32.cpp
         ${imgui_SOURCE_DIR}/backends/imgui_impl_dx9.cpp
+        ${imgui_SOURCE_DIR}/imgui_demo.cpp
     )
 
     target_include_directories(base PUBLIC
