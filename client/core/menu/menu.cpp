@@ -13,8 +13,18 @@ void menu::present() {
   if (!open)
     return;
 
-  ImGui::Begin("x64 base", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-  if (ImGui::Button("Test"))
-    client::g_console.print("success!");
+  if (ImGui::Begin("x64 base", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+    if (ImGui::BeginTabBar("Test Tab##test_tab_bar")) {
+
+      if (ImGui::BeginTabItem("Tab01##tab_one")) {
+        if (ImGui::Button("Test Print##test_print_one")) {
+          client::g_console.print("Test!", console_color_cyan);
+        }
+        ImGui::EndTabItem();
+      }
+
+      ImGui::EndTabBar();
+    }
+  }
   ImGui::End();
 }
