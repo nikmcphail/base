@@ -18,7 +18,7 @@ void menu::present() {
 
       if (ImGui::BeginTabItem("Tab01##tab_one")) {
         if (ImGui::Button("Test Print##test_print_one")) {
-          client::g_console.print("Test!", console_color_cyan);
+          client::g_console.print("Test!", console_color_light_aqua);
         }
         ImGui::EndTabItem();
       }

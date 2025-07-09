@@ -45,7 +45,7 @@ LRESULT WINAPI wndproc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) noexcept {
 void render_t::setup_input() {
   orig_wndproc = reinterpret_cast<WNDPROC>(
       SetWindowLongPtrW(client::g_window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(wndproc)));
-  client::g_console.printf("input initialized", console_color_green);
+  client::g_console.printf("\tinput initialized", console_color_gray);
 }
 
 void render_t::detach_input() {
@@ -67,7 +67,7 @@ bool render_t::initialize() {
     return false;
   }
 
-  client::g_console.printf("renderer initialized", console_color_green);
+  client::g_console.printf("\trenderer initialized", console_color_gray);
   return true;
 }
 
