@@ -45,6 +45,7 @@ CPMAddPackage(
 
 CPMAddPackage("gh:ocornut/imgui@1.92.0")
 CPMAddPackage("gh:freetype/freetype#d41a855aab6d8ce131c465ce01f0f536e0fb2269")
+CPMAddPackage("gh:nemtrif/utfcpp@4.0.5")
 
 add_library(base SHARED
     main.cpp
@@ -54,6 +55,9 @@ add_library(base SHARED
     client/core/hooks/hooks.cpp
     client/core/render/render.cpp
     client/core/menu/menu.cpp
+    library/utils.cpp
+    client/core/netvars/netvars.cpp
+    client/core/offsets/offsets.cpp
 )
 
 if (imgui_ADDED)
@@ -76,6 +80,9 @@ if (imgui_ADDED)
     )
 endif ()
 
+if (utfcpp_ADDED)
+    target_include_directories(base PUBLIC ${utfcpp_SOURCE_DIR}/source)
+endif()
 
 target_include_directories(base PRIVATE /)
 target_compile_features(base PUBLIC cxx_std_23)

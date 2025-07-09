@@ -4,6 +4,7 @@
 #include "client/core/interfaces/interfaces.h"
 #include "client/core/hooks/hooks.h"
 #include "client/core/render/render.h"
+#include "client/core/offsets/offsets.h"
 
 #include <Windows.h>
 
@@ -14,6 +15,7 @@ namespace client {
   inline interfaces_t g_interfaces;
   inline hooks_t      g_hooks;
   inline render_t     g_render;
+  inline offsets_t    g_offsets;
 
   inline HWND g_window;
 
