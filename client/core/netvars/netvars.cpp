@@ -41,13 +41,21 @@ netvars_t::netvars_t() {
   file.close();
 }
 
-void netvars_t::iterate_props(var_map_t* map, recv_table_t* table, uint32_t offset) {
+void netvars_t::iterate_props(var_map_t* map, recv_table_t* table, uint32_t offset, int depth) {
   if (!table)
     return;
+
+  std::string indent(depth, '\t');
+
   for (size_t i = 0; i < table->prop_count; i++) {
     const auto& prop = table->props[i];
-    if (prop.data_table)
-      iterate_props(map, prop.data_table, offset + prop.offset);
+
+    if (prop.data_table) {
+      file << indent << "[" << prop.data_table->table_name << "]\n";
+      iterate_props(map, prop.data_table, offset + prop.offset, depth + 1);
+    }
+
+    file << indent << prop.var_name << " = 0x" << std::hex << (offset + prop.offset) << "\n";
 
     map->insert({hash::hash_crc(prop.var_name), offset + prop.offset});
   }
