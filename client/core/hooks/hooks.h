@@ -10,6 +10,7 @@ public:
 
   SafetyHookVmt client_mode_hook;
   SafetyHookVm  create_move_hook;
+  SafetyHookVm  override_view_hook;
 
   bool initialize();
   void unload();

@@ -3,6 +3,7 @@
 
 #include "client/client.h"
 #include "valve/cusercmd.h"
+#include "valve/view_setup.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
@@ -32,7 +33,11 @@ public:
 class hooked_client_mode {
 public:
   void hooked_create_move(float input_sample_time, usercmd_t* cmd) {
-    client::g_hooks.create_move_hook.thiscall<void>(this, input_sample_time, cmd);
+    client::g_hooks.create_move_hook.thiscall(this, input_sample_time, cmd);
+  }
+
+  void hooked_override_view(view_setup_t* setup) {
+    client::g_hooks.override_view_hook.thiscall(this, setup);
   }
 };
 
@@ -51,6 +56,9 @@ bool hooks_t::initialize() {
   this->create_move_hook = safetyhook::create_vm(this->client_mode_hook, 21,
                                                  &hooked_client_mode::hooked_create_move);
   client::g_console.printf("\t\tcreatemove hooked", console_color_light_aqua);
+  this->override_view_hook = safetyhook::create_vm(this->client_mode_hook, 16,
+                                                   &hooked_client_mode::hooked_override_view);
+  client::g_console.printf("\t\toverrideview hooked", console_color_light_aqua);
 
   client::g_console.print("\thooks initialized", console_color_gray);
   return true;
