@@ -2,6 +2,7 @@
 #include <d3d9.h>
 
 #include "client/client.h"
+#include "valve/cusercmd.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
@@ -28,6 +29,13 @@ public:
   }
 };
 
+class hooked_client_mode {
+public:
+  void hooked_create_move(float input_sample_time, usercmd_t* cmd) {
+    client::g_hooks.create_move_hook.thiscall<void>(this, input_sample_time, cmd);
+  }
+};
+
 bool hooks_t::initialize() {
   this->d3d9_device_hook = safetyhook::create_vmt(client::g_interfaces.d3d9_device);
   client::g_console.printf("\td3d9_device:", console_color_light_yellow);
@@ -37,8 +45,18 @@ bool hooks_t::initialize() {
   this->d3d9_reset_hook =
       safetyhook::create_vm(this->d3d9_device_hook, 16, &hooked_d3d9_device_t::hooked_reset);
   client::g_console.printf("\t\treset hooked", console_color_light_aqua);
+
+  this->client_mode_hook = safetyhook::create_vmt(client::g_interfaces.client_mode);
+  client::g_console.printf("\tclient_mode:", console_color_light_yellow);
+  this->create_move_hook = safetyhook::create_vm(this->client_mode_hook, 21,
+                                                 &hooked_client_mode::hooked_create_move);
+  client::g_console.printf("\t\tcreatemove hooked", console_color_light_aqua);
+
   client::g_console.print("\thooks initialized", console_color_gray);
   return true;
 }
 
-void hooks_t::unload() { d3d9_device_hook = {}; }
+void hooks_t::unload() {
+  d3d9_device_hook = {};
+  client_mode_hook = {};
+}

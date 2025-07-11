@@ -1,8 +1,10 @@
 #include "interfaces.h"
 
 #include "library/pe.h"
+#include "library/utils.h"
 
 #include "client/client.h"
+#include "valve/base_client_dll.h"
 
 bool interfaces_t::collect_interfaces() {
 
@@ -48,10 +50,21 @@ bool interfaces_t::collect_interfaces() {
 
   this->base_client = client_dll.get_interface<base_client_dll_t*>(HASH("VClient017"));
   if (!this->base_client) {
-    client::g_console.print("\t\tfailed to find base_client_dll", console_color_red);
+    client::g_console.print("\t\tfailed to find base_client", console_color_red);
     return false;
   }
-  client::g_console.print("\t\tfound base_client_dll", console_color_light_aqua);
+  client::g_console.print("\t\tfound base_client", console_color_light_aqua);
+
+  this->client_mode =
+      *(client_dll
+            .find_pattern_in_memory(
+                "48 8B 0D ? ? ? ? 48 8B 01 48 FF 60 ? CC CC 48 83 EC ? 48 8D 0D")
+            .rel32<void**>(0x3));
+  if (!this->client_mode) {
+    client::g_console.print("\t\tfailed to find client_mode", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound client_mode", console_color_light_aqua);
 
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
