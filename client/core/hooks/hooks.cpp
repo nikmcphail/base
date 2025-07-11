@@ -32,8 +32,11 @@ public:
 
 class hooked_client_mode {
 public:
-  void hooked_create_move(float input_sample_time, usercmd_t* cmd) {
-    client::g_hooks.create_move_hook.thiscall(this, input_sample_time, cmd);
+  bool hooked_create_move(float input_sample_time, usercmd_t* cmd) {
+    if (!cmd->command_number)
+      return false;
+
+    return false;
   }
 
   void hooked_override_view(view_setup_t* setup) {
