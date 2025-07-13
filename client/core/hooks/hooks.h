@@ -12,6 +12,9 @@ public:
   SafetyHookVm  create_move_hook;
   SafetyHookVm  override_view_hook;
 
+  SafetyHookVmt surface_hook;
+  SafetyHookVm  lock_cursor_hook;
+
   bool initialize();
   void unload();
 };

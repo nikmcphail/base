@@ -4,6 +4,8 @@
 #include "client/client.h"
 #include "valve/cusercmd.h"
 #include "valve/view_setup.h"
+#include "valve/surface.h"
+#include "client/core/menu/menu.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
@@ -44,6 +46,16 @@ public:
   }
 };
 
+class hooked_surface {
+public:
+  HCURSOR hooked_lock_cursor() {
+    if (menu::open)
+      return client::g_interfaces.surface->unlock_cursor();
+
+    return client::g_hooks.lock_cursor_hook.thiscall<HCURSOR>(this);
+  }
+};
+
 bool hooks_t::initialize() {
   this->d3d9_device_hook = safetyhook::create_vmt(client::g_interfaces.d3d9_device);
   client::g_console.printf("\td3d9_device:", console_color_light_yellow);
@@ -63,6 +75,12 @@ bool hooks_t::initialize() {
                                                    &hooked_client_mode::hooked_override_view);
   client::g_console.printf("\t\toverrideview hooked", console_color_light_aqua);
 
+  this->surface_hook = safetyhook::create_vmt(client::g_interfaces.surface);
+  client::g_console.printf("\tsurface:", console_color_light_yellow);
+  this->lock_cursor_hook =
+      safetyhook::create_vm(this->surface_hook, 62, &hooked_surface::hooked_lock_cursor);
+  client::g_console.printf("\t\tlockcursor hooked", console_color_light_aqua);
+
   client::g_console.print("\thooks initialized", console_color_gray);
   return true;
 }
@@ -70,4 +88,5 @@ bool hooks_t::initialize() {
 void hooks_t::unload() {
   d3d9_device_hook = {};
   client_mode_hook = {};
+  surface_hook     = {};
 }

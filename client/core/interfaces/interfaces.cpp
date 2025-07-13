@@ -30,6 +30,13 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound client", console_color_light_aqua);
 
+  pe::module_t vguimatsurface_dll;
+  if (!pe::get_module("vguimatsurface.dll", vguimatsurface_dll)) {
+    client::g_console.print("\t\tfailed to find vguimatsurface", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound vguimatsurface", console_color_light_aqua);
+
   client::g_console.printf("\taddresses:", console_color_light_yellow);
   this->d3d9_device = *(shaderapidx9_dll.find_pattern_in_memory("48 89 1D ?? ?? ?? ?? 48 8B CF")
                             .rel32<IDirect3DDevice9**>(0x3));
@@ -65,6 +72,13 @@ bool interfaces_t::collect_interfaces() {
     return false;
   }
   client::g_console.print("\t\tfound client_mode", console_color_light_aqua);
+
+  this->surface = vguimatsurface_dll.get_interface<surface_t*>(HASH("VGUI_Surface030"));
+  if (!this->surface) {
+    client::g_console.print("\t\tfailed to find surface", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound surface", console_color_light_aqua);
 
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
