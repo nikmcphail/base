@@ -8,6 +8,7 @@ public:
   std::recursive_mutex imgui_mutex{};
   WNDPROC              orig_wndproc{};
 
+  void setup_style();
   bool initialize();
   void setup_input();
   void detach_input();

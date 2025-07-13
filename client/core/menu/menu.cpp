@@ -7,8 +7,8 @@
 #include "imgui.h"
 
 void menu::present() {
-  ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-  ImGui::GetIO().MouseDrawCursor = open;
+  auto& io           = ImGui::GetIO();
+  io.MouseDrawCursor = open;
 
   if (GetAsyncKeyState(VK_INSERT) & 1)
     open = !open;

@@ -42,6 +42,13 @@ LRESULT WINAPI wndproc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) noexcept {
   return CallWindowProcW(client::g_render.orig_wndproc, hwnd, msg, wp, lp);
 }
 
+void render_t::setup_style() {
+  auto& io    = ImGui::GetIO();
+  auto& style = ImGui::GetStyle();
+
+  io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+}
+
 void render_t::setup_input() {
   orig_wndproc = reinterpret_cast<WNDPROC>(
       SetWindowLongPtrW(client::g_window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(wndproc)));
@@ -66,6 +73,8 @@ bool render_t::initialize() {
                              console_color_red);
     return false;
   }
+
+  setup_style();
 
   client::g_console.printf("\trenderer initialized", console_color_gray);
   return true;
