@@ -7,7 +7,6 @@
 #include "valve/surface.h"
 #include "client/core/menu/menu.h"
 #include "valve/move_helper.h"
-
 #include "valve/client_player.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {

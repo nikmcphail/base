@@ -60,6 +60,15 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound d3d9 device", console_color_light_aqua);
 
+  this->global_vars =
+      engine_dll.find_pattern_in_memory("48 8D 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 48 8B CA")
+          .rel32<global_vars_base_t*>(0x3);
+  if (!this->global_vars) {
+    client::g_console.print("\t\tfailed to find global vars", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound global vars", console_color_light_aqua);
+
   client::g_console.printf("\tinterfaces:", console_color_light_yellow);
 
   this->cvar = vstdlib_dll.get_interface<cvar_t*>(HASH("VEngineCvar004"));

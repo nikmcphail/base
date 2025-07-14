@@ -10,19 +10,21 @@ class engine_client_t;
 class move_helper_t;
 class prediction_t;
 class game_movement_t;
+class global_vars_base_t;
 
 class interfaces_t {
 public:
-  IDirect3DDevice9*  d3d9_device{nullptr};
-  cvar_t*            cvar{nullptr};
-  base_client_dll_t* base_client{nullptr};
-  void*              client_mode{nullptr};
-  surface_t*         surface{nullptr};
-  entity_list_t*     entity_list{nullptr};
-  engine_client_t*   engine_client{nullptr};
-  move_helper_t*     move_helper{nullptr};
-  prediction_t*      prediction{nullptr};
-  game_movement_t*   game_movement{nullptr};
+  IDirect3DDevice9*   d3d9_device{nullptr};
+  cvar_t*             cvar{nullptr};
+  base_client_dll_t*  base_client{nullptr};
+  void*               client_mode{nullptr};
+  surface_t*          surface{nullptr};
+  entity_list_t*      entity_list{nullptr};
+  engine_client_t*    engine_client{nullptr};
+  move_helper_t*      move_helper{nullptr};
+  prediction_t*       prediction{nullptr};
+  game_movement_t*    game_movement{nullptr};
+  global_vars_base_t* global_vars{nullptr};
 
   bool collect_interfaces();
 };
