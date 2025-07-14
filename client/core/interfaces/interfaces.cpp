@@ -37,6 +37,20 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound vguimatsurface", console_color_light_aqua);
 
+  pe::module_t engine_dll;
+  if (!pe::get_module("engine.dll", engine_dll)) {
+    client::g_console.print("\t\tfailed to find engine", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound engine", console_color_light_aqua);
+
+  this->engine_client = engine_dll.get_interface<engine_client_t*>(HASH("VEngineClient013"));
+  if (!this->engine_client) {
+    client::g_console.print("\t\tfailed to find engine client", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound engine client", console_color_light_aqua);
+
   client::g_console.printf("\taddresses:", console_color_light_yellow);
   this->d3d9_device = *(shaderapidx9_dll.find_pattern_in_memory("48 89 1D ?? ?? ?? ?? 48 8B CF")
                             .rel32<IDirect3DDevice9**>(0x3));

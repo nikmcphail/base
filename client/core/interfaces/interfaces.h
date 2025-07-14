@@ -6,6 +6,7 @@ class cvar_t;
 class base_client_dll_t;
 class surface_t;
 class entity_list_t;
+class engine_client_t;
 
 class interfaces_t {
 public:
@@ -15,6 +16,7 @@ public:
   void*              client_mode{nullptr};
   surface_t*         surface{nullptr};
   entity_list_t*     entity_list{nullptr};
+  engine_client_t*   engine_client{nullptr};
 
   bool collect_interfaces();
 };
