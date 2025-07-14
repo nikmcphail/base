@@ -9,6 +9,11 @@ bool global_addresses_t::collect_addresses() {
     return false;
 
   {
+    this->client.functions.run_command = client_dll.find_pattern_in_memory(
+        "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 4C 89 74 24 ? 41 57 48 83 EC ? 0F 29 74 24");
+  }
+
+  {
     this->client.structures.datamaps = client_dll.find_all_pattern_in_memory(
         "C7 05 ?? ?? ?? ?? ?? ?? ?? ?? 48 89 ?? ?? ?? ?? ?? C3");
   }

@@ -7,6 +7,9 @@ class base_client_dll_t;
 class surface_t;
 class entity_list_t;
 class engine_client_t;
+class move_helper_t;
+class prediction_t;
+class game_movement_t;
 
 class interfaces_t {
 public:
@@ -17,6 +20,9 @@ public:
   surface_t*         surface{nullptr};
   entity_list_t*     entity_list{nullptr};
   engine_client_t*   engine_client{nullptr};
+  move_helper_t*     move_helper{nullptr};
+  prediction_t*      prediction{nullptr};
+  game_movement_t*   game_movement{nullptr};
 
   bool collect_interfaces();
 };

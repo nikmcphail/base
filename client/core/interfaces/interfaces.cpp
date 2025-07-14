@@ -101,6 +101,20 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound entity list", console_color_light_aqua);
 
+  this->prediction = client_dll.get_interface<prediction_t*>(HASH("VClientPrediction001"));
+  if (!this->prediction) {
+    client::g_console.print("\t\tfailed to find prediction", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound prediction", console_color_light_aqua);
+
+  this->game_movement = client_dll.get_interface<game_movement_t*>(HASH("GameMovement001"));
+  if (!this->game_movement) {
+    client::g_console.print("\t\tfailed to find game movement", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound game movement", console_color_light_aqua);
+
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
 }

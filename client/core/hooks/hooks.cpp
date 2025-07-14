@@ -6,6 +6,7 @@
 #include "valve/view_setup.h"
 #include "valve/surface.h"
 #include "client/core/menu/menu.h"
+#include "valve/move_helper.h"
 
 #include "valve/client_player.h"
 
@@ -62,6 +63,14 @@ public:
   }
 };
 
+void hooked_run_command(void* _this, client_player_t* player, usercmd_t* cmd,
+                        move_helper_t* move_helper) {
+  if (move_helper)
+    client::g_interfaces.move_helper = move_helper;
+
+  client::g_hooks.run_command_hook.thiscall(_this, player, cmd, move_helper);
+}
+
 bool hooks_t::initialize() {
   this->d3d9_device_hook = safetyhook::create_vmt(client::g_interfaces.d3d9_device);
   client::g_console.printf("\td3d9_device:", console_color_light_yellow);
@@ -86,6 +95,13 @@ bool hooks_t::initialize() {
   this->lock_cursor_hook =
       safetyhook::create_vm(this->surface_hook, 62, &hooked_surface::hooked_lock_cursor);
   client::g_console.printf("\t\tlockcursor hooked", console_color_light_aqua);
+
+  client::g_console.printf("\tinline hooks:", console_color_light_yellow);
+  this->run_command_hook =
+      safetyhook::create_inline((void*)client::g_addresses.client.functions.run_command,
+                                reinterpret_cast<void*>(hooked_run_command));
+client:;
+  client::g_console.printf("\t\truncommand hooked", console_color_light_aqua);
 
   client::g_console.print("\thooks initialized", console_color_gray);
   return true;
