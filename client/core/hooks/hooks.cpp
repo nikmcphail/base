@@ -7,6 +7,8 @@
 #include "valve/surface.h"
 #include "client/core/menu/menu.h"
 
+#include "valve/client_player.h"
+
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
   HRESULT hooked_present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect,
@@ -37,6 +39,8 @@ public:
   bool hooked_create_move(float input_sample_time, usercmd_t* cmd) {
     if (!cmd->command_number)
       return false;
+
+    // client_player_t* local = client_player_t::get_local_player();
 
     return false;
   }

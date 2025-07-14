@@ -1,14 +1,18 @@
 #pragma once
 
+#include <cstdint>
+
 struct offsets_t {
   bool get_offsets();
 
   struct {
+    struct {
 
-  } base_entity;
+    } base_entity;
 
-  struct {
-
-  } base_player;
+    struct {
+      uint32_t health;
+    } base_player;
+  } client;
 
 } inline offsets;
