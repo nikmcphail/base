@@ -80,6 +80,13 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound surface", console_color_light_aqua);
 
+  this->entity_list = client_dll.get_interface<entity_list_t*>(HASH("VClientEntityList003"));
+  if (!this->entity_list) {
+    client::g_console.print("\t\tfailed to find entity list", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound entity list", console_color_light_aqua);
+
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
 }

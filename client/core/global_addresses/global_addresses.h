@@ -5,8 +5,7 @@
 struct global_addresses_t {
   struct {
     struct {
-      std::vector<uintptr_t> datamaps     = {};
-      uintptr_t              local_player = {};
+      std::vector<uintptr_t> datamaps = {};
     } structures;
   } client;
   bool collect_addresses();

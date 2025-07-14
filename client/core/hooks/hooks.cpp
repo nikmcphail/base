@@ -40,7 +40,11 @@ public:
     if (!cmd->command_number)
       return false;
 
-    // client_player_t* local = client_player_t::get_local_player();
+    client_player_t* local = client_player_t::get_local_player();
+
+    if (local) {
+      client::g_console.printf("Health: %d", local->health());
+    }
 
     return false;
   }
