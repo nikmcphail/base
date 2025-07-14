@@ -11,7 +11,7 @@ struct offsets_t {
     } base_entity;
 
     struct {
-      uint32_t health;
+      uint32_t health, tick_base;
     } base_player;
   } client;
 

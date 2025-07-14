@@ -15,4 +15,5 @@ public:
   }
 
   netvar_value_func(int, health, client::g_offsets.client.base_player.health);
+  netvar_value_func(int, tick_base, client::g_offsets.client.base_player.tick_base);
 };
