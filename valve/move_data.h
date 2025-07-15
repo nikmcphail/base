@@ -7,7 +7,7 @@ public:
   bool first_run_of_functions : 1;
   bool game_code_moved_player : 1;
 
-  unsigned long player_handle;
+  unsigned int player_handle;
 
   int       impulse;
   vector3_t view_angles;
@@ -26,14 +26,15 @@ public:
   vector3_t angles;
   vector3_t old_angles;
 
-  float out_step_height;
-  float out_wish_vel;
-  float out_jump_vel;
+  float     out_step_height;
+  vector3_t out_wish_vel;
+  vector3_t out_jump_vel;
 
   vector3_t constraight_center;
   float     constraint_radius;
   float     constraint_width;
   float     constraint_speed_factor;
 
+private:
   vector3_t abs_origin;
 };
