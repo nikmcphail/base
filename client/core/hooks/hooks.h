@@ -15,7 +15,8 @@ public:
   SafetyHookVmt surface_hook;
   SafetyHookVm  lock_cursor_hook;
 
-  SafetyHookInline run_command_hook;
+  SafetyHookVmt prediction_hook;
+  SafetyHookVm  run_command_hook;
 
   bool initialize();
   void unload();

@@ -8,6 +8,9 @@
 #include "client/core/menu/menu.h"
 #include "valve/move_helper.h"
 #include "valve/client_player.h"
+#include "valve/move_data.h"
+#include "valve/prediction.h"
+#include "valve/game_movement.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
@@ -40,6 +43,25 @@ public:
     if (!cmd->command_number)
       return false;
 
+    client_player_t* local = client_player_t::get_local_player();
+
+    static move_data_t move_data{};
+
+    memset(&move_data, 0, sizeof(move_data_t));
+
+    if (local) {
+      if (client::g_interfaces.move_helper) {
+        client::g_interfaces.move_helper->set_host(local);
+        client::g_interfaces.game_movement->start_track_prediction_errors(local);
+        client::g_interfaces.prediction->setup_move(
+            local, cmd, client::g_interfaces.move_helper, &move_data);
+        client::g_interfaces.game_movement->process_movement(local, &move_data);
+        client::g_interfaces.prediction->finish_move(local, cmd, &move_data);
+        client::g_interfaces.game_movement->finish_track_prediction_errors(local);
+        client::g_interfaces.move_helper->set_host(nullptr);
+      }
+    }
+
     return false;
   }
 
@@ -58,13 +80,15 @@ public:
   }
 };
 
-void hooked_run_command(void* _this, client_player_t* player, usercmd_t* cmd,
-                        move_helper_t* move_helper) {
-  if (move_helper)
-    client::g_interfaces.move_helper = move_helper;
+class hooked_prediction {
+public:
+  void hooked_run_command(client_player_t* player, usercmd_t* cmd, move_helper_t* move_helper) {
+    if (move_helper)
+      client::g_interfaces.move_helper = move_helper;
 
-  client::g_hooks.run_command_hook.thiscall(_this, player, cmd, move_helper);
-}
+    client::g_hooks.run_command_hook.thiscall(this, player, cmd, move_helper);
+  }
+};
 
 bool hooks_t::initialize() {
   this->d3d9_device_hook = safetyhook::create_vmt(client::g_interfaces.d3d9_device);
@@ -91,11 +115,10 @@ bool hooks_t::initialize() {
       safetyhook::create_vm(this->surface_hook, 62, &hooked_surface::hooked_lock_cursor);
   client::g_console.printf("\t\tlockcursor hooked", console_color_light_aqua);
 
-  client::g_console.printf("\tinline hooks:", console_color_light_yellow);
+  this->prediction_hook = safetyhook::create_vmt(client::g_interfaces.prediction);
+  client::g_console.printf("\tprediction:", console_color_light_yellow);
   this->run_command_hook =
-      safetyhook::create_inline((void*)client::g_addresses.client.functions.run_command,
-                                reinterpret_cast<void*>(hooked_run_command));
-client:;
+      safetyhook::create_vm(this->prediction_hook, 17, &hooked_prediction::hooked_run_command);
   client::g_console.printf("\t\truncommand hooked", console_color_light_aqua);
 
   client::g_console.print("\thooks initialized", console_color_gray);
@@ -106,4 +129,5 @@ void hooks_t::unload() {
   d3d9_device_hook = {};
   client_mode_hook = {};
   surface_hook     = {};
+  prediction_hook  = {};
 }
