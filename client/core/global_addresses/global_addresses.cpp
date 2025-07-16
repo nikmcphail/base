@@ -16,6 +16,7 @@ bool global_addresses_t::collect_addresses() {
   {
     this->client.structures.datamaps = client_dll.find_all_pattern_in_memory(
         "C7 05 ?? ?? ?? ?? ?? ?? ?? ?? 48 89 ?? ?? ?? ?? ?? C3");
+    this->client.structures.move_data = client_dll.find_pattern_in_memory("48 8B 05 ? ? ? ? 4D 8B CF").rel32<uintptr_t>(0x3);
   }
 
   client::g_console.print("\taddresses initialized", console_color_light_aqua);
