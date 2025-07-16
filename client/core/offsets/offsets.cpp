@@ -10,9 +10,10 @@ bool offsets_t::get_offsets() {
 
   { // client
     client.base_player.health =
-        netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_iHealth"));
+        netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_iHealth"));
     client.base_player.tick_base =
-        netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_nTickBase"));
+        netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_nTickBase"));
+    client.base_player.life_state = netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_lifeState"));
   }
 
   client::g_console.print("\toffsets initialized", console_color_gray);

@@ -21,4 +21,8 @@ class client_base_entity_t {
   type name() noexcept { return get_ptr_at_offset<type>(offset); }
 
 public:
+  bool is_player() {
+    return utils::get_virtual_function<bool(__thiscall*)(client_base_entity_t*)>(
+        this, 131)(this);
+  }
 };
