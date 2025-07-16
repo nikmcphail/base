@@ -40,7 +40,7 @@ public:
 class hooked_client_mode {
 public:
   bool hooked_create_move(float input_sample_time, usercmd_t* cmd) {
-    if (!cmd->command_number)
+    if (!cmd || !cmd->command_number)
       return false;
 
     client_player_t* local = client_player_t::get_local_player();
@@ -50,15 +50,16 @@ public:
     memset(&move_data, 0, sizeof(move_data_t));
 
     if (local) {
+
       if (client::g_interfaces.move_helper) {
-        client::g_interfaces.move_helper->set_host(local);
-        client::g_interfaces.game_movement->start_track_prediction_errors(local);
-        client::g_interfaces.prediction->setup_move(
-            local, cmd, client::g_interfaces.move_helper, &move_data);
-        client::g_interfaces.game_movement->process_movement(local, &move_data);
-        client::g_interfaces.prediction->finish_move(local, cmd, &move_data);
-        client::g_interfaces.game_movement->finish_track_prediction_errors(local);
-        client::g_interfaces.move_helper->set_host(nullptr);
+        // client::g_interfaces.move_helper->set_host(local);
+        // client::g_interfaces.game_movement->start_track_prediction_errors(local);
+        // client::g_interfaces.prediction->setup_move(
+        //     local, cmd, client::g_interfaces.move_helper, &move_data);
+        // client::g_interfaces.game_movement->process_movement(local, &move_data);
+        // client::g_interfaces.prediction->finish_move(local, cmd, &move_data);
+        // client::g_interfaces.game_movement->finish_track_prediction_errors(local);
+        // client::g_interfaces.move_helper->set_host(nullptr);
       }
     }
 
