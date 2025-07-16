@@ -20,7 +20,12 @@ public:
         client::g_interfaces.engine_client->get_local_player_index());
   }
 
+  bool is_alive() {
+    return this->life_state() == LIFE_ALIVE;
+  }
+
   netvar_value_func(int, health, client::g_offsets.client.base_player.health);
   netvar_value_func(int, tick_base, client::g_offsets.client.base_player.tick_base);
   netvar_value_func(char, life_state, client::g_offsets.client.base_player.life_state);
+  netvar_value_func(int, flags, client::g_offsets.client.base_player.flags);
 };

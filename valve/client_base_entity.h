@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "library/math.h"
+
 class client_player_t;
 
 class client_base_entity_t {
@@ -25,4 +27,9 @@ public:
     return utils::get_virtual_function<bool(__thiscall*)(client_base_entity_t*)>(
         this, 131)(this);
   }
+
+  netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);
+  netvar_value_func(int, team_number, client::g_offsets.client.base_entity.team_number);
+  netvar_value_func(vector3_t, vec_mins, client::g_offsets.client.base_entity.vec_mins);
+  netvar_value_func(vector3_t, vec_maxs, client::g_offsets.client.base_entity.vec_maxs);
 };

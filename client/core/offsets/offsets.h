@@ -7,11 +7,11 @@ struct offsets_t {
 
   struct {
     struct {
-
+      uintptr_t origin, team_number, m_collision, vec_mins, vec_maxs;
     } base_entity;
 
     struct {
-      uint32_t health, tick_base, life_state;
+      uint32_t health, tick_base, life_state, flags;
     } base_player;
   } client;
 
