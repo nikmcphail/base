@@ -33,9 +33,10 @@ public:
                                                                            move_data);
   }
 
-  void restore_entity_to_predicted_frame(int predicted_frame) {
+  void restore_entity_to_predicted_frame(unsigned int predicted_frame) {
     static auto func = (void(__thiscall*)(
-        void*, int))client::g_addresses.client.functions.restore_entity_to_predicted_frame;
+        void*,
+        unsigned int))client::g_addresses.client.functions.restore_entity_to_predicted_frame;
     func(this, predicted_frame);
   }
 
