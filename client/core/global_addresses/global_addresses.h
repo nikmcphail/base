@@ -5,12 +5,11 @@
 struct global_addresses_t {
   struct {
     struct {
-      uintptr_t run_command;
+      uintptr_t run_command, restore_entity_to_predicted_frame;
     } functions;
 
     struct {
       std::vector<uintptr_t> datamaps = {};
-      uintptr_t move_data;
     } structures;
   } client;
   bool collect_addresses();

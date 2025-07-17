@@ -4,6 +4,8 @@
 
 #include <Windows.h>
 #include <d3d9.h>
+#include "valve/cusercmd.h"
+#include "valve/client_player.h"
 
 bool client::initialize() {
   g_console.open_console();
@@ -81,4 +83,20 @@ void client::on_present() {
   g_render.begin();
   menu::present();
   g_render.finish();
+}
+
+bool client::on_create_move(usercmd_t* cmd) {
+  if (!cmd || !cmd->command_number)
+    return false;
+
+  client_player_t* local = client_player_t::get_local_player();
+  if (local) {
+    g_prediction.start_prediction(cmd);
+
+    // Do stuff here
+
+    g_prediction.finish_prediction();
+  }
+
+  return false;
 }

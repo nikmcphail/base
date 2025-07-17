@@ -27,4 +27,19 @@ public:
                                                   move_data_t*)>(this, 19)(this, player, cmd,
                                                                            move_data);
   }
+
+  void restore_entity_to_predicted_frame(int predicted_frame) {
+    static auto func = (void(__thiscall*)(
+        void*, int))client::g_addresses.client.functions.restore_entity_to_predicted_frame;
+    func(this, predicted_frame);
+  }
+
+public:
+  uintptr_t last_ground;
+  bool      in_prediction;
+  bool      first_time_predicted;
+  bool      old_cl_predict_value;
+  bool      engine_paused;
+  int       previous_start_frame;
+  int       commands_predicted;
 };

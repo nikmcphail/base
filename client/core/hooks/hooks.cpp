@@ -11,6 +11,7 @@
 #include "valve/move_data.h"
 #include "valve/prediction.h"
 #include "valve/game_movement.h"
+#include "client/core/engine_prediction/engine_prediction.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
@@ -40,30 +41,7 @@ public:
 class hooked_client_mode {
 public:
   bool hooked_create_move(float input_sample_time, usercmd_t* cmd) {
-    if (!cmd || !cmd->command_number)
-      return false;
-
-    client_player_t* local = client_player_t::get_local_player();
-
-    static move_data_t move_data{};
-
-    memset(&move_data, 0, sizeof(move_data_t));
-
-    if (local) {
-
-      if (client::g_interfaces.move_helper) {
-        // client::g_interfaces.move_helper->set_host(local);
-        // client::g_interfaces.game_movement->start_track_prediction_errors(local);
-        // client::g_interfaces.prediction->setup_move(
-        //     local, cmd, client::g_interfaces.move_helper, &move_data);
-        // client::g_interfaces.game_movement->process_movement(local, &move_data);
-        // client::g_interfaces.prediction->finish_move(local, cmd, &move_data);
-        // client::g_interfaces.game_movement->finish_track_prediction_errors(local);
-        // client::g_interfaces.move_helper->set_host(nullptr);
-      }
-    }
-
-    return false;
+    return client::on_create_move(cmd);
   }
 
   void hooked_override_view(view_setup_t* setup) {
