@@ -41,6 +41,8 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
   if (!local_player || !(local_player->life_state() == LIFE_ALIVE))
     return;
 
+  memset(&move_data, 0, sizeof(move_data_t));
+
   set_command(local_player) = cmd;
 
   old_curtime   = client::g_interfaces.global_vars->cur_time;
