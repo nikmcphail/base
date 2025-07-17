@@ -47,7 +47,7 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
   old_frametime = client::g_interfaces.global_vars->frame_time;
   old_tickcount = client::g_interfaces.global_vars->tick_count;
 
-  const int  old_flags               = local_player->flags();
+  old_flags                          = local_player->flags();
   const int  old_tick_base           = local_player->tick_base();
   const bool old_is_first_prediction = client::g_interfaces.prediction->first_time_predicted;
   const bool old_in_prediction       = client::g_interfaces.prediction->in_prediction;
@@ -75,7 +75,6 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
   client::g_interfaces.prediction->finish_move(local_player, cmd, &move_data);
 
   local_player->tick_base() = old_tick_base;
-  local_player->flags()     = old_flags;
 
   client::g_interfaces.prediction->in_prediction        = old_in_prediction;
   client::g_interfaces.prediction->first_time_predicted = old_is_first_prediction;
@@ -88,6 +87,8 @@ void engine_prediction_t::finish_prediction() {
   client_player_t* local_player = client_player_t::get_local_player();
   if (!local_player)
     return;
+
+  local_player->flags() = old_flags;
 
   client::g_interfaces.game_movement->finish_track_prediction_errors(local_player);
   client::g_interfaces.move_helper->set_host(nullptr);

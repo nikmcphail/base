@@ -10,6 +10,7 @@ public:
   float       old_curtime{};
   float       old_frametime{};
   int         old_tickcount{};
+  int         old_flags{};
 
   void start_prediction(usercmd_t* cmd);
   void finish_prediction();
