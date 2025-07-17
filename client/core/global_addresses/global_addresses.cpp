@@ -13,6 +13,8 @@ bool global_addresses_t::collect_addresses() {
         "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 4C 89 74 24 ? 41 57 48 83 EC ? 0F 29 74 24");
     this->client.functions.restore_entity_to_predicted_frame =
         client_dll.find_pattern_in_memory("40 55 48 83 EC ? 8B EA");
+    this->client.functions.set_prediction_random_seed = client_dll.find_pattern_in_memory(
+        "48 85 C9 75 0B C7 05 ? ? ? ? FF FF FF FF C3 8B 41 38 89 05 ? ? ? ? C3");
   }
 
   {

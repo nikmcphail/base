@@ -9,6 +9,7 @@ public:
   move_data_t move_data{};
   float       old_curtime{};
   float       old_frametime{};
+  int         old_tickcount{};
 
   void start_prediction(usercmd_t* cmd);
   void finish_prediction();

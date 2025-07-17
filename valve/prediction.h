@@ -9,6 +9,11 @@ class move_data_t;
 
 class prediction_t {
 public:
+  void set_local_view_angles(vector3_t& ang) {
+    utils::get_virtual_function<void(__thiscall*)(prediction_t*, vector3_t&)>(this, 16)(this,
+                                                                                        ang);
+  }
+
   void run_command(client_player_t* player, usercmd_t* cmd, move_helper_t* move_helper) {
     utils::get_virtual_function<void(__thiscall*)(prediction_t*, client_player_t*, usercmd_t*,
                                                   move_helper_t*)>(this, 17)(this, player, cmd,

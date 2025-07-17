@@ -9,37 +9,92 @@
 #include "valve/prediction.h"
 #include "valve/global_vars_base.h"
 
-void engine_prediction_t::start_prediction(usercmd_t* cmd) {
-  client_player_t*    local_player = client_player_t::get_local_player();
-  global_vars_base_t* globals      = client::g_interfaces.global_vars;
+float ticks_to_time(int ticks) {
+  return client::g_interfaces.global_vars->interval_per_tick * (float)ticks;
+}
 
-  memset(&move_data, 0, sizeof(move_data_t));
+int get_tickbase(client_player_t* local, usercmd_t* cmd) {
+  static int        tick     = 0;
+  static usercmd_t* last_cmd = nullptr;
 
-  old_curtime         = globals->cur_time;
-  old_frametime       = globals->frame_time;
-  globals->cur_time   = local_player->tick_base() * globals->interval_per_tick;
-  globals->frame_time = globals->interval_per_tick;
+  if (cmd) {
+    if (!last_cmd || last_cmd->predicted)
+      tick = local->tick_base();
+    else
+      tick++;
 
-  *(usercmd_t**)(local_player + 5560) = cmd;
-
-  if (client::g_interfaces.move_helper) {
-    client::g_interfaces.move_helper->set_host(local_player);
-    client::g_interfaces.game_movement->start_track_prediction_errors(local_player);
-    client::g_interfaces.prediction->setup_move(local_player, cmd,
-                                                client::g_interfaces.move_helper, &move_data);
-    client::g_interfaces.game_movement->process_movement(local_player, &move_data);
-    client::g_interfaces.prediction->finish_move(local_player, cmd, &move_data);
+    last_cmd = cmd;
   }
+
+  return tick;
+}
+
+inline usercmd_t*& set_command(client_player_t* player) {
+  return *reinterpret_cast<usercmd_t**>(reinterpret_cast<uintptr_t>(player) + 0x15B8);
+}
+
+void engine_prediction_t::start_prediction(usercmd_t* cmd) {
+  if (!client::g_interfaces.move_helper)
+    return;
+
+  client_player_t* local_player = client_player_t::get_local_player();
+  if (!local_player || !(local_player->life_state() == LIFE_ALIVE))
+    return;
+
+  set_command(local_player) = cmd;
+
+  old_curtime   = client::g_interfaces.global_vars->cur_time;
+  old_frametime = client::g_interfaces.global_vars->frame_time;
+  old_tickcount = client::g_interfaces.global_vars->tick_count;
+
+  const int  old_flags               = local_player->flags();
+  const int  old_tick_base           = local_player->tick_base();
+  const bool old_is_first_prediction = client::g_interfaces.prediction->first_time_predicted;
+  const bool old_in_prediction       = client::g_interfaces.prediction->in_prediction;
+
+  const int server_ticks                     = get_tickbase(local_player, cmd);
+  client::g_interfaces.global_vars->cur_time = ticks_to_time(server_ticks);
+  client::g_interfaces.global_vars->frame_time =
+      (client::g_interfaces.prediction->engine_paused
+           ? 0.0f
+           : client::g_interfaces.global_vars->interval_per_tick);
+  client::g_interfaces.global_vars->tick_count = server_ticks;
+
+  client::g_interfaces.prediction->first_time_predicted = false;
+  client::g_interfaces.prediction->in_prediction        = true;
+
+  client::g_interfaces.game_movement->start_track_prediction_errors(local_player);
+
+  client::g_interfaces.prediction->set_local_view_angles(cmd->view_angles);
+
+  client::g_interfaces.move_helper->set_host(local_player);
+
+  client::g_interfaces.prediction->setup_move(local_player, cmd,
+                                              client::g_interfaces.move_helper, &move_data);
+  client::g_interfaces.game_movement->process_movement(local_player, &move_data);
+  client::g_interfaces.prediction->finish_move(local_player, cmd, &move_data);
+
+  local_player->tick_base() = old_tick_base;
+  local_player->flags()     = old_flags;
+
+  client::g_interfaces.prediction->in_prediction        = old_in_prediction;
+  client::g_interfaces.prediction->first_time_predicted = old_is_first_prediction;
 }
 
 void engine_prediction_t::finish_prediction() {
-  client_player_t*    local_player = client_player_t::get_local_player();
-  global_vars_base_t* globals      = client::g_interfaces.global_vars;
+  if (!client::g_interfaces.move_helper)
+    return;
 
-  if (client::g_interfaces.move_helper) {
-    client::g_interfaces.game_movement->finish_track_prediction_errors(local_player);
-    client::g_interfaces.move_helper->set_host(nullptr);
-  }
-  globals->cur_time   = old_curtime;
-  globals->frame_time = old_frametime;
+  client_player_t* local_player = client_player_t::get_local_player();
+  if (!local_player)
+    return;
+
+  client::g_interfaces.game_movement->finish_track_prediction_errors(local_player);
+  client::g_interfaces.move_helper->set_host(nullptr);
+
+  client::g_interfaces.global_vars->cur_time   = old_curtime;
+  client::g_interfaces.global_vars->frame_time = old_frametime;
+  client::g_interfaces.global_vars->tick_count = old_tickcount;
+
+  set_command(local_player) = nullptr;
 }
