@@ -69,6 +69,17 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound global vars", console_color_light_aqua);
 
+  this->input =
+      *(client_dll
+            .find_pattern_in_memory(
+                "48 8B 0D ? ? ? ? 48 8B 01 FF 90 ? ? ? ? 85 C0 0F 84 ? ? ? ? F3 0F 10 05")
+            .rel32<input_t**>(0x3));
+  if (!this->input) {
+    client::g_console.print("\t\tfailed to find input", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound input", console_color_light_aqua);
+
   client::g_console.printf("\tinterfaces:", console_color_light_yellow);
 
   this->cvar = vstdlib_dll.get_interface<cvar_t*>(HASH("VEngineCvar004"));

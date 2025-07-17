@@ -21,8 +21,8 @@ void menu::present() {
 
       if (ImGui::BeginTabItem("Style##style_tab")) {
         ImGui::ShowStyleEditor();
+        ImGui::EndTabItem();
       }
-      ImGui::EndTabItem();
     }
 
     ImGui::EndTabBar();
