@@ -89,14 +89,11 @@ bool client::on_create_move(usercmd_t* cmd) {
   if (!cmd || !cmd->command_number)
     return false;
 
-  client_player_t* local = client_player_t::get_local_player();
-  if (local) {
-    g_prediction.start_prediction(cmd);
+  g_prediction.start_prediction(cmd);
 
-    // Do stuff here
+  // Do stuff here
 
-    g_prediction.finish_prediction();
-  }
+  g_prediction.finish_prediction();
 
   return false;
 }
