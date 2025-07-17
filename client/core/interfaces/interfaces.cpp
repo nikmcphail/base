@@ -44,12 +44,12 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound engine", console_color_light_aqua);
 
-  this->engine_client = engine_dll.get_interface<engine_client_t*>(HASH("VEngineClient013"));
-  if (!this->engine_client) {
-    client::g_console.print("\t\tfailed to find engine client", console_color_red);
+  pe::module_t inputsystem_dll;
+  if (!pe::get_module("inputsystem.dll", inputsystem_dll)) {
+    client::g_console.print("\t\tfailed to find inputsystem", console_color_red);
     return false;
   }
-  client::g_console.print("\t\tfound engine client", console_color_light_aqua);
+  client::g_console.print("\t\tfound inputsystem", console_color_light_aqua);
 
   client::g_console.printf("\taddresses:", console_color_light_yellow);
   this->d3d9_device = *(shaderapidx9_dll.find_pattern_in_memory("48 89 1D ?? ?? ?? ?? 48 8B CF")
@@ -134,6 +134,21 @@ bool interfaces_t::collect_interfaces() {
     return false;
   }
   client::g_console.print("\t\tfound game movement", console_color_light_aqua);
+
+  this->engine_client = engine_dll.get_interface<engine_client_t*>(HASH("VEngineClient013"));
+  if (!this->engine_client) {
+    client::g_console.print("\t\tfailed to find engine client", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound engine client", console_color_light_aqua);
+
+  this->input_system =
+      inputsystem_dll.get_interface<input_system_t*>(HASH("InputSystemVersion001"));
+  if (!this->input_system) {
+    client::g_console.print("\t\tfailed to find input system", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound input system", console_color_light_aqua);
 
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;

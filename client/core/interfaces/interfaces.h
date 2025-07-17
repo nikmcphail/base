@@ -12,6 +12,7 @@ class prediction_t;
 class game_movement_t;
 class global_vars_base_t;
 class input_t;
+class input_system_t;
 
 class interfaces_t {
 public:
@@ -27,6 +28,7 @@ public:
   game_movement_t*    game_movement{nullptr};
   global_vars_base_t* global_vars{nullptr};
   input_t*            input{nullptr};
+  input_system_t*     input_system{nullptr};
 
   bool collect_interfaces();
 };
