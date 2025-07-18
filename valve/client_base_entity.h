@@ -6,7 +6,11 @@
 #include "library/utils.h"
 #include "client/client.h"
 
+#include "valve/engine_client.h"
+#include "valve/entity_list.h"
+
 class client_player_t;
+class client_local_player_t;
 
 class client_base_entity_t {
   friend client_player_t;
@@ -28,6 +32,11 @@ public:
   bool is_player() {
     return utils::get_virtual_function<bool(__thiscall*)(client_base_entity_t*)>(this,
                                                                                  132)(this);
+  }
+
+  static client_local_player_t* get_local_player() {
+    return (client_local_player_t*)client::g_interfaces.entity_list->get_client_entity(
+        client::g_interfaces.engine_client->get_local_player_index());
   }
 
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);

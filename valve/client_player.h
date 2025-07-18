@@ -2,10 +2,7 @@
 
 #include "client_base_entity.h"
 
-#include "client/client.h"
 #include "library/utils.h"
-#include "valve/entity_list.h"
-#include "valve/engine_client.h"
 
 #define LIFE_ALIVE       0
 #define LIFE_DYING       1
@@ -17,11 +14,6 @@ class base_weapon_t;
 
 class client_player_t : public client_base_entity_t {
 public:
-  static client_player_t* get_local_player() {
-    return (client_player_t*)client::g_interfaces.entity_list->get_client_entity(
-        client::g_interfaces.engine_client->get_local_player_index());
-  }
-
   bool is_alive() {
     return utils::get_virtual_function<bool(__thiscall*)(client_player_t*)>(this, 131)(this);
   }

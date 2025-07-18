@@ -2,7 +2,7 @@
 
 #include "valve/cusercmd.h"
 #include "valve/move_data.h"
-#include "valve/client_player.h"
+#include "valve/client_local_player.h"
 #include "client/client.h"
 #include "valve/move_helper.h"
 #include "valve/game_movement.h"
@@ -37,7 +37,7 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
   if (!client::g_interfaces.move_helper)
     return;
 
-  client_player_t* local_player = client_player_t::get_local_player();
+  client_local_player_t* local_player = client_base_entity_t::get_local_player();
   if (!local_player || !(local_player->life_state() == LIFE_ALIVE))
     return;
 
@@ -86,7 +86,7 @@ void engine_prediction_t::finish_prediction() {
   if (!client::g_interfaces.move_helper)
     return;
 
-  client_player_t* local_player = client_player_t::get_local_player();
+  client_local_player_t* local_player = client_player_t::get_local_player();
   if (!local_player)
     return;
 
