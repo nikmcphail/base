@@ -13,8 +13,6 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BaseEntity"), HASH("m_vecOrigin"));
     client.base_entity.team_number =
         netvars.get_netvar_offset(HASH("DT_BaseEntity"), HASH("m_iTeamNum"));
-    client.base_entity.m_collision =
-        netvars.get_netvar_offset(HASH("DT_BaseEntity"), HASH("m_Collision"));
     client.base_entity.vec_mins =
         netvars.get_netvar_offset(HASH("DT_BaseEntity"), HASH("m_vecMins"));
     client.base_entity.vec_maxs =
