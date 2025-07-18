@@ -160,6 +160,13 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound input system", console_color_light_aqua);
 
+  this->model_info = engine_dll.get_interface<model_info_t*>(HASH("VModelInfoClient006"));
+  if (!this->model_info) {
+    client::g_console.print("\t\tfailed to find model info", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound model info", console_color_light_aqua);
+
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
 }

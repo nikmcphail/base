@@ -12,6 +12,7 @@
 
 class client_player_t;
 class client_local_player_t;
+class model_t;
 
 class client_base_entity_t {
   friend client_player_t;
@@ -51,6 +52,11 @@ public:
     return utils::get_virtual_function<bool(__thiscall*)(client_base_entity_t*, matrix_3x4_t*,
                                                          int, int, float)>(this, 16)(
         this, bone_to_world_out, max_bones, bone_mask, current_time);
+  }
+
+  model_t* get_model() {
+    return utils::get_virtual_function<model_t*(__thiscall*)(client_base_entity_t*)>(this,
+                                                                                     196)(this);
   }
 
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);
