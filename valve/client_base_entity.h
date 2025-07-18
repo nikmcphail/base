@@ -46,6 +46,13 @@ public:
     func(cmd);
   }
 
+  bool setup_bones(matrix_3x4_t* bone_to_world_out, int max_bones, int bone_mask,
+                   float current_time) {
+    return utils::get_virtual_function<bool(__thiscall*)(client_base_entity_t*, matrix_3x4_t*,
+                                                         int, int, float)>(this, 16)(
+        this, bone_to_world_out, max_bones, bone_mask, current_time);
+  }
+
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);
   netvar_value_func(int, team_number, client::g_offsets.client.base_entity.team_number);
   netvar_value_func(vector3_t, vec_mins, client::g_offsets.client.base_entity.vec_mins);
