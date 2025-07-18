@@ -27,7 +27,7 @@ class client_base_entity_t {
 public:
   bool is_player() {
     return utils::get_virtual_function<bool(__thiscall*)(client_base_entity_t*)>(this,
-                                                                                 131)(this);
+                                                                                 132)(this);
   }
 
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);

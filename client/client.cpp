@@ -5,7 +5,6 @@
 #include <Windows.h>
 #include <d3d9.h>
 #include "valve/cusercmd.h"
-#include "valve/client_player.h"
 
 bool client::initialize() {
   g_console.open_console();

@@ -22,7 +22,9 @@ public:
         client::g_interfaces.engine_client->get_local_player_index());
   }
 
-  bool is_alive() { return this->life_state() == LIFE_ALIVE; }
+  bool is_alive() {
+    return utils::get_virtual_function<bool(__thiscall*)(client_player_t*)>(this, 131)(this);
+  }
 
   base_weapon_t* get_active_weapon() {
     return utils::get_virtual_function<base_weapon_t*(__thiscall*)(client_player_t*)>(
