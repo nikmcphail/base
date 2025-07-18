@@ -6,12 +6,7 @@
 #include "valve/view_setup.h"
 #include "valve/surface.h"
 #include "client/core/menu/menu.h"
-#include "valve/move_helper.h"
-#include "valve/client_player.h"
-#include "valve/move_data.h"
 #include "valve/prediction.h"
-#include "valve/game_movement.h"
-#include "client/core/engine_prediction/engine_prediction.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
