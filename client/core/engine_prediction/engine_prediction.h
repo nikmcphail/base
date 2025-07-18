@@ -4,6 +4,8 @@
 
 class usercmd_t;
 
+typedef void(__fastcall* set_prediction_random_seed)(usercmd_t*);
+
 class engine_prediction_t {
 public:
   move_data_t move_data{};

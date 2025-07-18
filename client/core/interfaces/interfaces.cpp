@@ -5,6 +5,7 @@
 
 #include "client/client.h"
 #include "valve/base_client_dll.h"
+#include "valve/client_player.h"
 
 bool interfaces_t::collect_interfaces() {
 
@@ -79,6 +80,15 @@ bool interfaces_t::collect_interfaces() {
     return false;
   }
   client::g_console.print("\t\tfound input", console_color_light_aqua);
+
+  this->prediction_player = client_dll.find_pattern_in_memory("48 89 3D ? ? ? ? 66 0F 6E 87")
+                                .rel32<client_player_t**>(0x3);
+
+  if (!this->prediction_player) {
+    client::g_console.print("\t\tfailed to find prediction player", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound prediction player", console_color_light_aqua);
 
   client::g_console.printf("\tinterfaces:", console_color_light_yellow);
 

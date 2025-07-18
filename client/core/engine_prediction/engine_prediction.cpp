@@ -8,6 +8,7 @@
 #include "valve/game_movement.h"
 #include "valve/prediction.h"
 #include "valve/global_vars_base.h"
+#include "library/md5.h"
 
 float ticks_to_time(int ticks) {
   return client::g_interfaces.global_vars->interval_per_tick * (float)ticks;
@@ -38,12 +39,18 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
     return;
 
   client_local_player_t* local_player = client_base_entity_t::get_local_player();
-  if (!local_player || !(local_player->life_state() == LIFE_ALIVE))
+  if (!local_player || !(local_player->is_alive()))
     return;
 
   memset(&move_data, 0, sizeof(move_data_t));
 
   set_command(local_player) = cmd;
+
+#undef max
+  cmd->random_seed =
+      (md5::pseudo_random(cmd->command_number) & std::numeric_limits<int>::max());
+  local_player->set_prediction_random_seed(cmd);
+  *client::g_interfaces.prediction_player = local_player;
 
   old_curtime   = client::g_interfaces.global_vars->cur_time;
   old_frametime = client::g_interfaces.global_vars->frame_time;
@@ -87,7 +94,7 @@ void engine_prediction_t::finish_prediction() {
     return;
 
   client_local_player_t* local_player = client_player_t::get_local_player();
-  if (!local_player)
+  if (!local_player || !local_player->is_alive())
     return;
 
   local_player->flags() = old_flags;
@@ -100,4 +107,6 @@ void engine_prediction_t::finish_prediction() {
   client::g_interfaces.global_vars->tick_count = old_tickcount;
 
   set_command(local_player) = nullptr;
+  local_player->set_prediction_random_seed(nullptr);
+  *client::g_interfaces.prediction_player = local_player;
 }

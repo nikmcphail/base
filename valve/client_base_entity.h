@@ -8,6 +8,7 @@
 
 #include "valve/engine_client.h"
 #include "valve/entity_list.h"
+#include "client/core/global_addresses/global_addresses.h"
 
 class client_player_t;
 class client_local_player_t;
@@ -37,6 +38,12 @@ public:
   static client_local_player_t* get_local_player() {
     return (client_local_player_t*)client::g_interfaces.entity_list->get_client_entity(
         client::g_interfaces.engine_client->get_local_player_index());
+  }
+
+  void set_prediction_random_seed(const usercmd_t* cmd) {
+    static auto func = (__int64(__fastcall*)(
+        const usercmd_t*))client::g_addresses.client.functions.set_prediction_random_seed;
+    func(cmd);
   }
 
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);
