@@ -7,8 +7,8 @@ class model_t;
 
 class model_info_t {
 public:
-  studio_header_t* get_studio_model(const model_t* model) {
-    return utils::get_virtual_function<studio_header_t*(
-        __thiscall*)(model_info_t*, const model_t*)>(this, 28)(this, model);
+  studio_header_t* get_studio_model(const model_t* mod) {
+    typedef studio_header_t* (*get_studio_model_t)(void*, const model_t*);
+    return utils::get_virtual_function<get_studio_model_t>(this, 28)(this, mod);
   }
 };

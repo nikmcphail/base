@@ -25,4 +25,10 @@ namespace math {
   constexpr double PI_2 = 1.57079632679489661923;
   constexpr float  radian_to_degrees(const double x) { return x * (180.f / PI); }
   constexpr float  degrees_to_radian(const float x) { return x * (PI / 180.f); }
+
+  inline vector3_t vector_transform(matrix_3x4_t& matrix, vector3_t offset) {
+    return vector3_t{glm::dot(offset, vector3_t(matrix[0])) + matrix[0][3],
+                     glm::dot(offset, vector3_t(matrix[1])) + matrix[1][3],
+                     glm::dot(offset, vector3_t(matrix[2])) + matrix[2][3]};
+  }
 } // namespace math

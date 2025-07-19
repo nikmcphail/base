@@ -28,6 +28,8 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_lifeState"));
     client.base_player.flags =
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_fFlags"));
+    client.base_player.hitbox_set =
+        netvars.get_netvar_offset(HASH("DT_BaseAnimating"), HASH("m_nHitboxSet"));
   }
 
   client::g_console.print("\toffsets initialized", console_color_gray);

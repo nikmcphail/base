@@ -6,6 +6,9 @@
 #include <d3d9.h>
 #include "valve/cusercmd.h"
 #include "valve/client_local_player.h"
+#include "valve/model_info.h"
+#include "valve/studio_header.h"
+#include "valve/global_vars_base.h"
 
 bool client::initialize() {
   g_console.open_console();
@@ -85,9 +88,40 @@ void client::on_present() {
   g_render.finish();
 }
 
+void test() {
+  client_local_player_t* local_player = client_base_entity_t::get_local_player();
+  if (!local_player || !local_player->is_alive())
+    return;
+
+  const model_t* model = local_player->get_model();
+  if (!model)
+    return;
+  client::g_console.print("got model!");
+
+  studio_header_t* header = client::g_interfaces.model_info->get_studio_model(model);
+  if (!header)
+    return;
+  client::g_console.printf("header pointer: %p", header);
+
+  int hitbox_set_index = local_player->hitbox_set();
+  client::g_console.printf("hitbox set index: %d", hitbox_set_index);
+
+  studio_hitbox_set_t* hitbox_set_ptr = header->get_hitbox_set(hitbox_set_index);
+  if (!hitbox_set_ptr)
+    return;
+  client::g_console.printf("hitbox set ptr: %p", hitbox_set_ptr);
+
+  studio_bbox_t* hitbox = header->get_hitbox(12, hitbox_set_index);
+  if (!hitbox)
+    return;
+  client::g_console.printf("hitbox pointer: %p", hitbox);
+}
+
 bool client::on_create_move(usercmd_t* cmd) {
   if (!cmd || !cmd->command_number)
     return false;
+
+  test();
 
   g_prediction.start_prediction(cmd);
 

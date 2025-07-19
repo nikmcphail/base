@@ -18,6 +18,9 @@ struct studio_bbox_t {
   }
 
   studio_bbox_t() = default;
+
+private:
+  studio_bbox_t(const studio_bbox_t& vOther);
 };
 
 struct studio_hitbox_set_t {
@@ -38,7 +41,7 @@ public:
   char      name[64];
   int       length;
   vector3_t eye_position;
-  vector3_t illumination_position;
+  vector3_t illum_position;
   vector3_t hull_min;
   vector3_t hull_max;
   vector3_t view_bbmin;
