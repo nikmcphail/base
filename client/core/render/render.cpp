@@ -98,6 +98,8 @@ void render_t::begin() {
     std::scoped_lock _{client::g_render.imgui_mutex};
     ImGui::NewFrame();
   }
+
+  draw_list = ImGui::GetBackgroundDrawList();
 }
 
 void render_t::finish() {
