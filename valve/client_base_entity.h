@@ -86,25 +86,29 @@ public:
     func(cmd);
   }
 
-  bool setup_bones(matrix_3x4_t* bone_to_world_out, int max_bones, int bone_mask,
-                   float current_time) {
-    return utils::get_virtual_function<bool(__thiscall*)(client_base_entity_t*, matrix_3x4_t*,
-                                                         int, int, float)>(this, 16)(
-        this, bone_to_world_out, max_bones, bone_mask, current_time);
-  }
-
   void* get_client_renderable() {
     return utils::get_virtual_function<void*(__thiscall*)(client_base_entity_t*)>(this,
                                                                                   5)(this);
   }
 
-  const model_t* get_model() {
+  model_t* get_model() {
     void* client_renderable = this->get_client_renderable();
     if (!client_renderable)
       return nullptr;
 
-    return utils::get_virtual_function<const model_t*(__thiscall*)(void*)>(
-        client_renderable, 9)(client_renderable);
+    return utils::get_virtual_function<model_t*(__thiscall*)(void*)>(client_renderable,
+                                                                     9)(client_renderable);
+  }
+
+  bool setup_bones(matrix_3x4_t* bone_to_world_out, int max_bones, int bone_mask,
+                   float current_time) {
+    void* client_renderable = this->get_client_renderable();
+    if (!client_renderable)
+      return false;
+
+    return utils::get_virtual_function<bool(__thiscall*)(void*, matrix_3x4_t*, int, int,
+                                                         float)>(client_renderable, 16)(
+        client_renderable, bone_to_world_out, max_bones, bone_mask, current_time);
   }
 
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);
