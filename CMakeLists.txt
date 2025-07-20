@@ -61,6 +61,7 @@ add_library(base SHARED
     client/core/global_addresses/global_addresses.cpp
     client/core/engine_prediction/engine_prediction.cpp
     library/md5.cpp
+    library/math.cpp
 )
 
 if (imgui_ADDED)

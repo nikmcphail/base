@@ -20,6 +20,8 @@ using matrix_3x4_a_t = glm::aligned_mat3x4;
 using matrix_3x4_t   = glm::mat3x4;
 using view_matrix_t  = glm::mat<4, 4, float, glm::defaultp>;
 
+class usercmd_t;
+
 namespace math {
   constexpr double PI   = 3.14159265358979323846;
   constexpr double PI_2 = 1.57079632679489661923;
@@ -31,4 +33,9 @@ namespace math {
                      glm::dot(offset, vector3_t(matrix[1])) + matrix[1][3],
                      glm::dot(offset, vector3_t(matrix[2])) + matrix[2][3]};
   }
+
+  void correct_movement(vector3_t old_angles, usercmd_t* cmd, float old_forward,
+                        float old_sidemove);
+  void normalize_angles(vector3_t& angle);
+  void clamp_angles(vector3_t& angle);
 } // namespace math
