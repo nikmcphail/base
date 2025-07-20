@@ -96,3 +96,5 @@ bool client::on_create_move(usercmd_t* cmd) {
 
   return false;
 }
+
+bool client::on_cl_move() { return true; }

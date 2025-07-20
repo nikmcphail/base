@@ -33,4 +33,5 @@ namespace client {
 
   void on_present();
   bool on_create_move(usercmd_t* cmd);
+  bool on_cl_move();
 } // namespace client

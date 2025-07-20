@@ -8,6 +8,10 @@ bool global_addresses_t::collect_addresses() {
   if (!pe::get_module("client.dll", client_dll))
     return false;
 
+  pe::module_t engine_dll;
+  if (!pe::get_module("engine.dll", engine_dll))
+    return false;
+
   {
     this->client.functions.run_command = client_dll.find_pattern_in_memory(
         "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 4C 89 74 24 ? 41 57 48 83 EC ? 0F 29 74 24");
@@ -20,6 +24,11 @@ bool global_addresses_t::collect_addresses() {
   {
     this->client.structures.datamaps = client_dll.find_all_pattern_in_memory(
         "C7 05 ?? ?? ?? ?? ?? ?? ?? ?? 48 89 ?? ?? ?? ?? ?? C3");
+  }
+
+  {
+    this->engine.functions.cl_move = engine_dll.find_pattern_in_memory(
+        "40 55 53 48 8D AC 24 ? ? ? ? B8 ? ? ? ? E8 ? ? ? ? 48 2B E0 83 3D");
   }
 
   client::g_console.print("\taddresses initialized", console_color_light_aqua);

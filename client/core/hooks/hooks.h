@@ -18,6 +18,8 @@ public:
   SafetyHookVmt prediction_hook;
   SafetyHookVm  run_command_hook;
 
+  SafetyHookInline cl_move_hook;
+
   bool initialize();
   void unload();
 };
