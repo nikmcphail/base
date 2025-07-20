@@ -18,6 +18,9 @@ public:
   SafetyHookVmt prediction_hook;
   SafetyHookVm  run_command_hook;
 
+  SafetyHookVmt base_client_hook;
+  SafetyHookVm  level_shutdown_hook;
+
   SafetyHookInline cl_move_hook;
 
   bool initialize();

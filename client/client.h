@@ -31,9 +31,11 @@ namespace client {
   bool should_unload();
   void unload();
   void get_window_handle();
+  bool get_local_player_global();
   bool check_insecure();
 
   void on_present();
   bool on_create_move(usercmd_t* cmd);
   bool on_cl_move();
+  void on_level_shutdown();
 } // namespace client

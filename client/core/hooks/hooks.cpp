@@ -64,6 +64,14 @@ public:
   }
 };
 
+class hooked_base_client {
+public:
+  void hooked_level_shutdown() {
+    client::g_hooks.level_shutdown_hook.thiscall(this);
+    client::on_level_shutdown();
+  }
+};
+
 void hooked_cl_move(void* _this, float accumulated_extra_samples, bool final_tick) {
   client::on_cl_move();
   client::g_hooks.cl_move_hook.thiscall(_this, accumulated_extra_samples, final_tick);
@@ -100,6 +108,12 @@ bool hooks_t::initialize() {
       safetyhook::create_vm(this->prediction_hook, 17, &hooked_prediction::hooked_run_command);
   client::g_console.printf("\t\truncommand hooked", console_color_light_aqua);
 
+  this->base_client_hook = safetyhook::create_vmt(client::g_interfaces.base_client);
+  client::g_console.printf("\tbase client:", console_color_light_yellow);
+  this->level_shutdown_hook = safetyhook::create_vm(this->base_client_hook, 7,
+                                                    &hooked_base_client::hooked_level_shutdown);
+  client::g_console.printf("\t\tlevel shutdown hooked", console_color_light_aqua);
+
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
   this->cl_move_hook =
       safetyhook::create_inline((void*)client::g_addresses.engine.functions.cl_move,
@@ -115,4 +129,5 @@ void hooks_t::unload() {
   client_mode_hook = {};
   surface_hook     = {};
   prediction_hook  = {};
+  base_client_hook = {};
 }

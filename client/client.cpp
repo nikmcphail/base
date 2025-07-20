@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <d3d9.h>
 #include "valve/cusercmd.h"
-#include "valve/client_base_entity.h"
+#include "valve/client_local_player.h"
 
 bool client::initialize() {
   g_console.open_console();
@@ -85,14 +85,26 @@ void client::on_present() {
   g_render.finish();
 }
 
+bool client::get_local_player_global() {
+  auto temp      = g_local_player;
+  g_local_player = client_base_entity_t::get_local_player();
+
+  if (!g_local_player)
+    return false;
+
+  if (temp != g_local_player)
+    g_console.printf("[update] new local player pointer: %p", console_color_light_green,
+                     g_local_player);
+
+  return true;
+}
+
 bool client::on_create_move(usercmd_t* cmd) {
   if (!cmd || !cmd->command_number)
     return false;
 
-  if (!g_local_player) {
-    g_local_player = client_base_entity_t::get_local_player();
+  if (!get_local_player_global())
     return false;
-  }
 
   g_prediction.update_before_prediction();
   g_prediction.start_prediction(cmd);
@@ -105,3 +117,5 @@ bool client::on_create_move(usercmd_t* cmd) {
 }
 
 bool client::on_cl_move() { return true; }
+
+void client::on_level_shutdown() { g_local_player = nullptr; }
