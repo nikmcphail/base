@@ -175,4 +175,5 @@ public:
   netvar_value_func(vector3_t, vec_mins, client::g_offsets.client.base_entity.vec_mins);
   netvar_value_func(vector3_t, vec_maxs, client::g_offsets.client.base_entity.vec_maxs);
   netvar_value_func(int, hitbox_set, client::g_offsets.client.base_player.hitbox_set);
+  netvar_value_func(unsigned char, move_type, client::g_offsets.client.base_entity.move_type);
 };
