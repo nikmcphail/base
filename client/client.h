@@ -11,6 +11,7 @@
 #include <Windows.h>
 
 class usercmd_t;
+class client_local_player_t;
 
 namespace client {
   inline bool attached{};
@@ -23,7 +24,8 @@ namespace client {
   inline global_addresses_t  g_addresses;
   inline engine_prediction_t g_prediction;
 
-  inline HWND g_window;
+  inline HWND                   g_window;
+  inline client_local_player_t* g_local_player;
 
   bool initialize();
   bool should_unload();

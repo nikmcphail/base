@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <d3d9.h>
 #include "valve/cusercmd.h"
+#include "valve/client_base_entity.h"
 
 bool client::initialize() {
   g_console.open_console();
@@ -87,6 +88,11 @@ void client::on_present() {
 bool client::on_create_move(usercmd_t* cmd) {
   if (!cmd || !cmd->command_number)
     return false;
+
+  if (!g_local_player) {
+    g_local_player = client_base_entity_t::get_local_player();
+    return false;
+  }
 
   g_prediction.update_before_prediction();
   g_prediction.start_prediction(cmd);
