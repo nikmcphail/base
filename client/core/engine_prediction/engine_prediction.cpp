@@ -61,9 +61,6 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
 
   client::g_interfaces.prediction->in_prediction        = old_in_prediction;
   client::g_interfaces.prediction->first_time_predicted = old_first_time_predicted;
-
-  client::g_interfaces.global_vars->cur_time   = old_curtime;
-  client::g_interfaces.global_vars->frame_time = old_frametime;
   local_player->set_prediction_random_seed(nullptr);
   *client::g_interfaces.prediction_player = nullptr;
 }
@@ -71,6 +68,9 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
 void engine_prediction_t::finish_prediction() {
   if (!client::g_interfaces.move_helper)
     return;
+
+  client::g_interfaces.global_vars->cur_time   = old_curtime;
+  client::g_interfaces.global_vars->frame_time = old_frametime;
 
   client::g_interfaces.move_helper->set_host(nullptr);
 }
