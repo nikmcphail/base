@@ -28,6 +28,11 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
   memset(&move_data, 0, sizeof(move_data_t));
 
   set_command(local_player) = cmd;
+#undef max
+  cmd->random_seed =
+      (md5::pseudo_random(cmd->command_number) & std::numeric_limits<int>::max());
+  local_player->set_prediction_random_seed(cmd);
+  *client::g_interfaces.prediction_player = local_player;
 
   old_frametime = client::g_interfaces.global_vars->frame_time;
   old_curtime   = client::g_interfaces.global_vars->cur_time;
@@ -59,6 +64,8 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
 
   client::g_interfaces.global_vars->cur_time   = old_curtime;
   client::g_interfaces.global_vars->frame_time = old_frametime;
+  local_player->set_prediction_random_seed(nullptr);
+  *client::g_interfaces.prediction_player = nullptr;
 }
 
 void engine_prediction_t::finish_prediction() {
