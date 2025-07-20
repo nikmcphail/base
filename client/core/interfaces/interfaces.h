@@ -16,6 +16,7 @@ class input_system_t;
 class client_player_t;
 class model_info_t;
 class engine_trace_t;
+struct client_state_t;
 
 class interfaces_t {
 public:
@@ -35,6 +36,7 @@ public:
   client_player_t**   prediction_player{nullptr};
   model_info_t*       model_info{nullptr};
   engine_trace_t*     engine_trace{nullptr};
+  client_state_t*     client_state{nullptr};
 
   bool collect_interfaces();
 };

@@ -90,6 +90,17 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound prediction player", console_color_light_aqua);
 
+  this->client_state =
+      engine_dll
+          .find_pattern_in_memory("48 8D 0D ? ? ? ? 48 8B 5C 24 ? 48 83 C4 ? 5F E9 ? ? ? ? CC "
+                                  "CC CC CC CC CC CC CC CC CC CC 48 89 6C 24")
+          .rel32<client_state_t*>(0x3);
+  if (!this->client_state) {
+    client::g_console.print("\t\tfailed to find client state", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound client state", console_color_light_aqua);
+
   client::g_console.printf("\tinterfaces:", console_color_light_yellow);
 
   this->cvar = vstdlib_dll.get_interface<cvar_t*>(HASH("VEngineCvar004"));

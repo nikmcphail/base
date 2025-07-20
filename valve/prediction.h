@@ -40,6 +40,12 @@ public:
     func(this, predicted_frame);
   }
 
+  void update(int startframe, bool validframe, int incoming_acknowledged,
+              int outgoing_command) {
+    utils::get_virtual_function<void(__thiscall*)(prediction_t*, int, bool, int, int)>(this, 3)(
+        this, startframe, validframe, incoming_acknowledged, outgoing_command);
+  }
+
 public:
   uintptr_t last_ground;
   bool      in_prediction;
