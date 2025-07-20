@@ -62,6 +62,7 @@ add_library(base SHARED
     client/core/engine_prediction/engine_prediction.cpp
     library/md5.cpp
     library/math.cpp
+    client/core/menu/custom_widgets/imgui_custom_widgets.cpp
 )
 
 if (imgui_ADDED)

@@ -5,6 +5,7 @@
 #include <Windows.h>
 
 #include "imgui.h"
+#include "custom_widgets/imgui_custom_widgets.h"
 
 void menu::present() {
   auto& io           = ImGui::GetIO();
@@ -17,10 +18,10 @@ void menu::present() {
     return;
 
   if (ImGui::Begin("x64 base", nullptr)) {
-    if (ImGui::BeginTabBar("##test_tab_bar")) {
+    if (ImGui::BeginTabBar("##default_tab_bar")) {
 
-      if (ImGui::BeginTabItem("Style##style_tab")) {
-        ImGui::ShowStyleEditor();
+      if (ImGui::BeginTabItem("Default##default_tab")) {
+
         ImGui::EndTabItem();
       }
     }
