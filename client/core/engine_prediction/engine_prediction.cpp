@@ -10,6 +10,7 @@
 #include "library/md5.h"
 #include "valve/game_movement.h"
 #include "valve/prediction.h"
+#include "valve/client_state.h"
 
 inline usercmd_t*& set_command(client_player_t* player) {
   return *reinterpret_cast<usercmd_t**>(reinterpret_cast<uintptr_t>(player) + 0x15B8);
@@ -87,5 +88,15 @@ void engine_prediction_t::finish_prediction() {
 
   set_command(local_player) = nullptr;
   local_player->set_prediction_random_seed(nullptr);
-  *client::g_interfaces.prediction_player = local_player;
+  *client::g_interfaces.prediction_player = nullptr;
+}
+
+void engine_prediction_t::update_before_prediction() {
+  const auto start = client::g_interfaces.client_state->last_command_ack;
+  const auto stop  = client::g_interfaces.client_state->last_outgoing_command +
+                    client::g_interfaces.client_state->choked_commands;
+
+  client::g_interfaces.prediction->update(client::g_interfaces.client_state->delta_tick,
+                                          client::g_interfaces.client_state->delta_tick > 0,
+                                          start, stop);
 }
