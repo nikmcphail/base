@@ -86,15 +86,10 @@ void client::on_present() {
 }
 
 bool client::get_local_player_global() {
-  auto temp      = g_local_player;
   g_local_player = client_base_entity_t::get_local_player();
 
   if (!g_local_player)
     return false;
-
-  if (temp != g_local_player)
-    g_console.printf("[update] new local player pointer: %p", console_color_light_green,
-                     g_local_player);
 
   return true;
 }
