@@ -6,9 +6,6 @@
 #include <d3d9.h>
 #include "valve/cusercmd.h"
 
-#include "valve/client_local_player.h"
-#include "valve/prediction.h"
-
 bool client::initialize() {
   g_console.open_console();
 
