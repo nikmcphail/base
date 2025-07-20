@@ -77,7 +77,7 @@ void engine_prediction_t::finish_prediction() {
   client::g_interfaces.move_helper->set_host(nullptr);
 }
 
-void engine_prediction_t::update_before_prediction() {
+void engine_prediction_t::update() {
   const auto start = client::g_interfaces.client_state->last_command_ack;
   const auto stop  = client::g_interfaces.client_state->last_outgoing_command +
                     client::g_interfaces.client_state->choked_commands;

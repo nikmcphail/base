@@ -14,5 +14,5 @@ public:
 
   void start_prediction(usercmd_t* cmd);
   void finish_prediction();
-  void update_before_prediction();
+  void update();
 };

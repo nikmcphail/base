@@ -101,7 +101,7 @@ bool client::on_create_move(usercmd_t* cmd) {
   if (!get_local_player_global())
     return false;
 
-  g_prediction.update_before_prediction();
+  g_prediction.update();
   g_prediction.start_prediction(cmd);
 
   // Do stuff here
