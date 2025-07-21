@@ -22,6 +22,9 @@ public:
   SafetyHookVm  level_shutdown_hook;
   SafetyHookVm  frame_stage_notify_hook;
 
+  SafetyHookVmt model_render_hook;
+  SafetyHookVm  draw_model_execute_hook;
+
   SafetyHookInline cl_move_hook;
 
   bool initialize();
