@@ -7,6 +7,7 @@
 #include "valve/surface.h"
 #include "client/core/menu/menu.h"
 #include "valve/prediction.h"
+#include "valve/client_frame_stage.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
@@ -70,6 +71,10 @@ public:
     client::g_hooks.level_shutdown_hook.thiscall(this);
     client::on_level_shutdown();
   }
+
+  void hooked_frame_stage_notify(client_frame_stage_e current_stage) {
+    client::g_hooks.frame_stage_notify_hook.thiscall(this, current_stage);
+  }
 };
 
 void hooked_cl_move(void* _this, float accumulated_extra_samples, bool final_tick) {
@@ -113,6 +118,9 @@ bool hooks_t::initialize() {
   this->level_shutdown_hook = safetyhook::create_vm(this->base_client_hook, 7,
                                                     &hooked_base_client::hooked_level_shutdown);
   client::g_console.printf("\t\tlevel shutdown hooked", console_color_light_aqua);
+  this->frame_stage_notify_hook = safetyhook::create_vm(
+      this->base_client_hook, 35, &hooked_base_client::hooked_frame_stage_notify);
+  client::g_console.printf("\t\tframe stage notify hooked", console_color_light_aqua);
 
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
   this->cl_move_hook =
