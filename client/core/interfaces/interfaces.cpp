@@ -222,6 +222,20 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound model render", console_color_light_aqua);
 
+  this->render_view = engine_dll.get_interface<render_view_t*>(HASH("VEngineRenderView014"));
+  if (!this->render_view) {
+    client::g_console.print("\t\tfailed to find render view", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound render view", console_color_light_aqua);
+
+  this->engine_vgui = engine_dll.get_interface<void*>(HASH("VEngineVGui001"));
+  if (!this->engine_vgui) {
+    client::g_console.print("\t\tfailed to find engine vgui", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound engine vgui", console_color_light_aqua);
+
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
 }

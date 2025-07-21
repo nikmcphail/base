@@ -25,6 +25,9 @@ public:
   SafetyHookVmt model_render_hook;
   SafetyHookVm  draw_model_execute_hook;
 
+  SafetyHookVmt engine_vgui_hook;
+  SafetyHookVm  paint_hook;
+
   SafetyHookInline cl_move_hook;
 
   bool initialize();

@@ -81,6 +81,7 @@ bool client::check_insecure() {
 
 void client::on_present() {
   g_render.begin();
+  g_render.draw();
   menu::present();
   g_render.finish();
 }

@@ -38,4 +38,6 @@ namespace math {
                         float old_sidemove);
   void normalize_angles(vector3_t& angle);
   void clamp_angles(vector3_t& angle);
+  bool world_to_screen(const vector3_t& origin, vector2_t& screen_position,
+                       view_matrix_t& matrix);
 } // namespace math

@@ -87,6 +87,14 @@ public:
   }
 };
 
+class hooked_engine_vgui {
+public:
+  void hooked_paint(int32_t mode) {
+    client::g_render.get_view_matrix();
+    client::g_hooks.paint_hook.thiscall(this, mode);
+  }
+};
+
 void hooked_cl_move(void* _this, float accumulated_extra_samples, bool final_tick) {
   client::on_cl_move();
   client::g_hooks.cl_move_hook.thiscall(_this, accumulated_extra_samples, final_tick);
@@ -137,6 +145,12 @@ bool hooks_t::initialize() {
   this->draw_model_execute_hook = safetyhook::create_vm(
       this->model_render_hook, 19, &hooked_model_render::hooked_draw_model_execute);
   client::g_console.printf("\t\tdraw model execute hooked", console_color_light_aqua);
+
+  this->engine_vgui_hook = safetyhook::create_vmt(client::g_interfaces.engine_vgui);
+  client::g_console.printf("\tengine vgui:", console_color_light_yellow);
+  this->paint_hook =
+      safetyhook::create_vm(this->engine_vgui_hook, 14, &hooked_engine_vgui::hooked_paint);
+  client::g_console.printf("\t\tpaint hooked", console_color_light_aqua);
 
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
   this->cl_move_hook =

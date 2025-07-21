@@ -2,10 +2,12 @@
 
 #include "client/client.h"
 #include "client/core/menu/menu.h"
+#include "valve/view_setup.h"
+#include "valve/render_view.h"
+#include "valve/base_client_dll.h"
 
 #include <d3d9.h>
 
-#include "imgui.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
 
@@ -42,6 +44,20 @@ LRESULT WINAPI wndproc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) noexcept {
   return CallWindowProcW(client::g_render.orig_wndproc, hwnd, msg, wp, lp);
 }
 
+void render_t::draw_text(const ImVec2& position, const ImU32 color, const char* text) {
+  draw_list->AddText(position, color, text);
+}
+
+void render_t::draw_text_outlined(const ImVec2& position, const ImU32 color,
+                                  const ImU32 outline_color, const char* text) {
+  draw_text(ImVec2{position.x, position.y - 1}, outline_color, text);
+  draw_text(ImVec2{position.x, position.y + 1}, outline_color, text);
+  draw_text(ImVec2{position.x - 1, position.y}, outline_color, text);
+  draw_text(ImVec2{position.x + 1, position.y}, outline_color, text);
+
+  draw_text(position, color, text);
+}
+
 void render_t::setup_style() {
   auto& io    = ImGui::GetIO();
   auto& style = ImGui::GetStyle();
@@ -61,6 +77,7 @@ void render_t::detach_input() {
 
 bool render_t::initialize() {
   ImGui::CreateContext();
+  auto& io = ImGui::GetIO();
 
   if (!ImGui_ImplWin32_Init(client::g_window)) {
     client::g_console.printf("!!! imgui_implwin32 couldn't initialize properly !!!",
@@ -73,6 +90,8 @@ bool render_t::initialize() {
                              console_color_red);
     return false;
   }
+
+  io.Fonts->AddFontDefault();
 
   setup_style();
 
@@ -94,6 +113,10 @@ void render_t::begin() {
 
   ImGui_ImplDX9_NewFrame();
   ImGui_ImplWin32_NewFrame();
+
+  auto& display_size = ImGui::GetIO().DisplaySize;
+  screen_size        = {display_size.x, display_size.y};
+
   {
     std::scoped_lock _{client::g_render.imgui_mutex};
     ImGui::NewFrame();
@@ -101,6 +124,22 @@ void render_t::begin() {
 
   draw_list = ImGui::GetBackgroundDrawList();
 }
+
+void render_t::get_view_matrix() {
+  view_setup_t setup;
+  if (!client::g_interfaces.base_client->get_player_view(setup))
+    return;
+
+  static view_matrix_t v_matrix;
+  view_matrix_t        matrix1, matrix2, matrix3;
+
+  client::g_interfaces.render_view->get_matrices_for_view(setup, &matrix1, &matrix2, &v_matrix,
+                                                          &matrix3);
+
+  this->view_matrix = v_matrix;
+}
+
+void render_t::draw() {}
 
 void render_t::finish() {
   ImGui::Render();

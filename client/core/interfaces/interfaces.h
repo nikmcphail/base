@@ -20,6 +20,7 @@ struct client_state_t;
 class material_system_t;
 class studio_render_t;
 class model_render_t;
+class render_view_t;
 
 class interfaces_t {
 public:
@@ -43,6 +44,8 @@ public:
   material_system_t*  material_system{nullptr};
   studio_render_t*    studio_render{nullptr};
   model_render_t*     model_render{nullptr};
+  render_view_t*      render_view{nullptr};
+  void*               engine_vgui{nullptr};
 
   bool collect_interfaces();
 };
