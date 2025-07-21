@@ -11,10 +11,12 @@ struct clock_drift_mng_t {
   int   client_tick;
 };
 
+class net_channel_t;
+
 struct __declspec(align(8)) client_state_t {
   char              gap0[24];
   int               socket;
-  void*             net_channel;
+  net_channel_t*    net_channel;
   unsigned int      challenge_nr;
   double            connect_time;
   int               retry_number;
