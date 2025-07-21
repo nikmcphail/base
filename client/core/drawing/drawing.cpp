@@ -26,9 +26,22 @@ void drawing_t::draw_circle_filled(const ImVec2& center, float radius, const ImU
   client::g_render.draw_list->AddCircleFilled(center, radius, color, segments);
 }
 
-void drawing_t::draw_line(const ImVec2& pos_one, const ImVec2& pos_two, const ImU32 color,
-                          float thickness) {
+void drawing_t::draw_2d_line(const ImVec2& pos_one, const ImVec2& pos_two, const ImU32 color,
+                             float thickness) {
   client::g_render.draw_list->AddLine(pos_one, pos_two, color, thickness);
+}
+
+void drawing_t::draw_3d_line_clipped(const vector3_t& pos_one, const vector3_t& pos_two,
+                                     const ImU32 color, view_matrix_t& view_matrix,
+                                     float thickness) {
+  vector2_t screen_start, screen_end;
+  if (!math::world_to_screen(pos_one, screen_start, client::g_render.view_matrix))
+    return;
+  if (!math::world_to_screen(pos_two, screen_end, client::g_render.view_matrix))
+    return;
+
+  client::g_render.draw_list->AddLine(ImVec2{screen_start.x, screen_start.y},
+                                      ImVec2{screen_end.x, screen_end.y}, color, thickness);
 }
 
 void drawing_t::draw_rect(const ImVec2& p_min, const ImVec2& p_max, const ImU32 color,

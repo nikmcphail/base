@@ -40,4 +40,13 @@ namespace math {
   void clamp_angles(vector3_t& angle);
   bool world_to_screen(const vector3_t& origin, vector2_t& screen_position,
                        view_matrix_t& matrix);
+
+  inline float normalize_in_place(vector3_t& vec) {
+    const float hyp = glm::length(vec);
+    if (hyp > 0.f)
+      vec *= (1.f / hyp);
+    else
+      vec = vector3_t(0, 0, 0);
+    return hyp;
+  }
 } // namespace math
