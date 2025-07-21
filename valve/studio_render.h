@@ -15,6 +15,15 @@ struct draw_model_info_t {
   client_renderable_t* renderable;
 };
 
+enum override_type_e {
+  OVERRIDE_NORMAL = 0,
+  OVERRIDE_BUILD_SHADOWS,
+  OVERRIDE_DEPTH_WRITE,
+  OVERRIDE_SSAO_DEPTH_WRITE,
+};
+
+class material_t;
+
 class studio_render_t {
 public:
   void set_color_modulation(const float* blend) {
@@ -25,5 +34,12 @@ public:
   void set_alpha_modulation(float alpha) {
     utils::get_virtual_function<void(__thiscall*)(studio_render_t*, float)>(this, 28)(this,
                                                                                       alpha);
+  }
+
+  void forced_material_override(material_t*     new_material,
+                                override_type_e override_type = OVERRIDE_NORMAL) {
+    utils::get_virtual_function<void(__thiscall*)(
+        studio_render_t*, material_t*, override_type_e)>(this, 33)(this, new_material,
+                                                                   override_type);
   }
 };

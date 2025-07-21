@@ -25,4 +25,11 @@ public:
     return utils::get_virtual_function<material_t*(
         __thiscall*)(material_system_t*, unsigned short)>(this, 68)(this, handle);
   }
+
+  material_t* find_material(const char* name, const char* group_name, bool complain = true,
+                            const char* complain_prefix = NULL) {
+    return utils::get_virtual_function<material_t*(
+        __thiscall*)(material_system_t*, const char*, const char*, bool, const char*)>(
+        this, 63)(this, name, group_name, complain, complain_prefix);
+  }
 };
