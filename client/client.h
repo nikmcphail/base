@@ -7,6 +7,7 @@
 #include "client/core/offsets/offsets.h"
 #include "client/core/global_addresses/global_addresses.h"
 #include "client/core/engine_prediction/engine_prediction.h"
+#include "client/core/drawing/drawing.h"
 
 #include <Windows.h>
 
@@ -23,6 +24,7 @@ namespace client {
   inline offsets_t           g_offsets;
   inline global_addresses_t  g_addresses;
   inline engine_prediction_t g_prediction;
+  inline drawing_t           g_drawing;
 
   inline HWND                   g_window;
   inline client_local_player_t* g_local_player;

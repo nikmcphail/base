@@ -63,6 +63,7 @@ add_library(base SHARED
     library/md5.cpp
     library/math.cpp
     client/core/menu/custom_widgets/imgui_custom_widgets.cpp
+    client/core/drawing/drawing.cpp
 )
 
 if (imgui_ADDED)

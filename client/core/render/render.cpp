@@ -44,20 +44,6 @@ LRESULT WINAPI wndproc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) noexcept {
   return CallWindowProcW(client::g_render.orig_wndproc, hwnd, msg, wp, lp);
 }
 
-void render_t::draw_text(const ImVec2& position, const ImU32 color, const char* text) {
-  draw_list->AddText(position, color, text);
-}
-
-void render_t::draw_text_outlined(const ImVec2& position, const ImU32 color,
-                                  const ImU32 outline_color, const char* text) {
-  draw_text(ImVec2{position.x, position.y - 1}, outline_color, text);
-  draw_text(ImVec2{position.x, position.y + 1}, outline_color, text);
-  draw_text(ImVec2{position.x - 1, position.y}, outline_color, text);
-  draw_text(ImVec2{position.x + 1, position.y}, outline_color, text);
-
-  draw_text(position, color, text);
-}
-
 void render_t::setup_style() {
   auto& io    = ImGui::GetIO();
   auto& style = ImGui::GetStyle();
@@ -138,8 +124,6 @@ void render_t::get_view_matrix() {
 
   this->view_matrix = v_matrix;
 }
-
-void render_t::draw() {}
 
 void render_t::finish() {
   ImGui::Render();
