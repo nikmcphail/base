@@ -8,6 +8,7 @@
 #include "client/core/menu/menu.h"
 #include "valve/prediction.h"
 #include "valve/client_frame_stage.h"
+#include "valve/model_render_info.h"
 
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
@@ -77,6 +78,15 @@ public:
   }
 };
 
+class hooked_model_render {
+public:
+  void hooked_draw_model_execute(const draw_model_state_t&  state,
+                                 const model_render_info_t& info,
+                                 matrix_3x4_t*              custom_bone_to_world) {
+    client::g_hooks.draw_model_execute_hook.thiscall(this, state, info, custom_bone_to_world);
+  }
+};
+
 void hooked_cl_move(void* _this, float accumulated_extra_samples, bool final_tick) {
   client::on_cl_move();
   client::g_hooks.cl_move_hook.thiscall(_this, accumulated_extra_samples, final_tick);
@@ -122,6 +132,12 @@ bool hooks_t::initialize() {
       this->base_client_hook, 35, &hooked_base_client::hooked_frame_stage_notify);
   client::g_console.printf("\t\tframe stage notify hooked", console_color_light_aqua);
 
+  this->model_render_hook = safetyhook::create_vmt(client::g_interfaces.model_render);
+  client::g_console.printf("\tmodel render:", console_color_light_yellow);
+  this->draw_model_execute_hook = safetyhook::create_vm(
+      this->model_render_hook, 19, &hooked_model_render::hooked_draw_model_execute);
+  client::g_console.printf("\t\tdraw model execute hooked", console_color_light_aqua);
+
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
   this->cl_move_hook =
       safetyhook::create_inline((void*)client::g_addresses.engine.functions.cl_move,
@@ -133,9 +149,10 @@ bool hooks_t::initialize() {
 }
 
 void hooks_t::unload() {
-  d3d9_device_hook = {};
-  client_mode_hook = {};
-  surface_hook     = {};
-  prediction_hook  = {};
-  base_client_hook = {};
+  d3d9_device_hook  = {};
+  client_mode_hook  = {};
+  surface_hook      = {};
+  prediction_hook   = {};
+  base_client_hook  = {};
+  model_render_hook = {};
 }

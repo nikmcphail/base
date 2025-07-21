@@ -12,10 +12,10 @@ bool interfaces_t::collect_interfaces() {
   client::g_console.printf("\tmodules:", console_color_light_yellow);
   pe::module_t shaderapidx9_dll;
   if (!pe::get_module("shaderapidx9.dll", shaderapidx9_dll)) {
-    client::g_console.print("\t\tfailed to find shader api", console_color_red);
+    client::g_console.print("\t\tfailed to find shaderapidx9", console_color_red);
     return false;
   }
-  client::g_console.print("\t\tfound shader api", console_color_light_aqua);
+  client::g_console.print("\t\tfound shaderapidx9", console_color_light_aqua);
 
   pe::module_t vstdlib_dll;
   if (!pe::get_module("vstdlib.dll", vstdlib_dll)) {
@@ -51,6 +51,20 @@ bool interfaces_t::collect_interfaces() {
     return false;
   }
   client::g_console.print("\t\tfound inputsystem", console_color_light_aqua);
+
+  pe::module_t materialsystem_dll;
+  if (!pe::get_module("materialsystem.dll", materialsystem_dll)) {
+    client::g_console.print("\t\tfailed to get materialsystem", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound materialsystem", console_color_light_aqua);
+
+  pe::module_t studiorender_dll;
+  if (!pe::get_module("studiorender.dll", studiorender_dll)) {
+    client::g_console.print("\t\tfailed to get studiorender", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound studiorender", console_color_light_aqua);
 
   client::g_console.printf("\taddresses:", console_color_light_yellow);
   this->d3d9_device = *(shaderapidx9_dll.find_pattern_in_memory("48 89 1D ?? ?? ?? ?? 48 8B CF")
@@ -184,6 +198,29 @@ bool interfaces_t::collect_interfaces() {
     return false;
   }
   client::g_console.print("\t\tfound engine trace", console_color_light_aqua);
+
+  this->material_system =
+      materialsystem_dll.get_interface<material_system_t*>(HASH("VMaterialSystem082"));
+  if (!this->material_system) {
+    client::g_console.print("\t\tfailed to find material system", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound material system", console_color_light_aqua);
+
+  this->studio_render =
+      studiorender_dll.get_interface<studio_render_t*>(HASH("VStudioRender025"));
+  if (!this->studio_render) {
+    client::g_console.print("\t\tfailed to find studio render", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound studio render", console_color_light_aqua);
+
+  this->model_render = engine_dll.get_interface<model_render_t*>(HASH("VEngineModel016"));
+  if (!this->model_render) {
+    client::g_console.print("\t\tfailed to find model render", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound model render", console_color_light_aqua);
 
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
