@@ -1,6 +1,7 @@
 #include "drawing.h"
 
 #include "client/client.h"
+#include <fmt/core.h>
 
 void drawing_t::draw_text(const ImVec2& position, const ImU32 color, const char* text) {
   client::g_render.draw_list->AddText(position, color, text);
@@ -14,6 +15,16 @@ void drawing_t::draw_text_outlined(const ImVec2& position, const ImU32 color,
   draw_text(ImVec2{position.x + 1, position.y}, outline_color, text);
 
   draw_text(position, color, text);
+}
+
+void drawing_t::draw_text_stack(const ImVec2& position, const im_gui_text_stack_t stack) {
+  ImVec2 line_pos   = position;
+  float  font_scale = ImGui::GetFont()->LegacySize;
+
+  for (const auto& line : stack.text) {
+    draw_text_outlined(line_pos, line.color, line.outline_color, line.text);
+    line_pos.y += font_scale;
+  }
 }
 
 void drawing_t::draw_circle(const ImVec2& center, float radius, const ImU32 color, int segments,

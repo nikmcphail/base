@@ -37,6 +37,12 @@ CPMAddPackage(
 )
 
 CPMAddPackage(
+    NAME fmt
+    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+    GIT_TAG e69e5f977d458f2650bb346dadf2ad30c5320281 # 10.2.1
+)
+
+CPMAddPackage(
     NAME safetyhook
     GIT_REPOSITORY https://github.com/cursey/safetyhook.git
     GIT_TAG main
@@ -182,4 +188,5 @@ target_link_libraries(base PRIVATE
     freetype
     d3d9
     safetyhook
+    fmt::fmt
 )

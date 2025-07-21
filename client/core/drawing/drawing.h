@@ -4,11 +4,22 @@
 
 #include "library/math.h"
 
+struct im_gui_text_t {
+  const char* text;
+  ImU32       color;
+  ImU32       outline_color;
+};
+
+struct im_gui_text_stack_t {
+  std::vector<im_gui_text_t> text;
+};
+
 class drawing_t {
 public:
   void draw_text(const ImVec2& position, const ImU32 color, const char* text);
   void draw_text_outlined(const ImVec2& position, const ImU32 color, const ImU32 outline_color,
                           const char* text);
+  void draw_text_stack(const ImVec2& position, const im_gui_text_stack_t stack);
 
   void draw_circle(const ImVec2& center, float radius, const ImU32 color, int segments = 0,
                    float thickness = 1.0f);

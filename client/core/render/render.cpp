@@ -77,6 +77,9 @@ bool render_t::initialize() {
     return false;
   }
 
+  io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", 20.0f);
+  io.FontDefault = io.Fonts->Fonts.back();
+
   io.Fonts->AddFontDefault();
 
   setup_style();
