@@ -6,6 +6,7 @@
 #include <d3d9.h>
 #include "valve/cusercmd.h"
 #include "valve/client_local_player.h"
+#include "intrin.h"
 
 bool client::initialize() {
   g_console.open_console();
@@ -101,6 +102,8 @@ bool client::on_create_move(usercmd_t* cmd) {
 
   if (!get_local_player_global())
     return false;
+
+  bool* send_packet = reinterpret_cast<bool*>(_AddressOfReturnAddress()) + 0x138; // bSendPacket
 
   g_prediction.update();
   g_prediction.start_prediction(cmd);
