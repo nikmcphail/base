@@ -15,7 +15,6 @@ struct global_addresses_t {
 
   struct {
     struct {
-      uintptr_t cl_move;
     } functions;
   } engine;
 

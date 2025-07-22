@@ -26,10 +26,7 @@ bool global_addresses_t::collect_addresses() {
         "C7 05 ?? ?? ?? ?? ?? ?? ?? ?? 48 89 ?? ?? ?? ?? ?? C3");
   }
 
-  {
-    this->engine.functions.cl_move = engine_dll.find_pattern_in_memory(
-        "40 55 53 48 8D AC 24 ? ? ? ? B8 ? ? ? ? E8 ? ? ? ? 48 2B E0 83 3D");
-  }
+  {}
 
   client::g_console.print("\taddresses initialized", console_color_light_aqua);
   return true;
