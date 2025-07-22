@@ -32,6 +32,8 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_fFlags"));
     client.base_player.hitbox_set =
         netvars.get_netvar_offset(HASH("DT_BaseAnimating"), HASH("m_nHitboxSet"));
+    client.base_player.flash_max_alpha =
+        netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_flFlashMaxAlpha"));
   }
 
   client::g_console.print("\toffsets initialized", console_color_gray);
