@@ -18,7 +18,6 @@ class model_info_t;
 class engine_trace_t;
 struct client_state_t;
 class material_system_t;
-class studio_render_t;
 class model_render_t;
 class render_view_t;
 class panel_t;
@@ -43,7 +42,6 @@ public:
   engine_trace_t*     engine_trace{nullptr};
   client_state_t*     client_state{nullptr};
   material_system_t*  material_system{nullptr};
-  studio_render_t*    studio_render{nullptr};
   model_render_t*     model_render{nullptr};
   render_view_t*      render_view{nullptr};
   void*               engine_vgui{nullptr};
