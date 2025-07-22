@@ -34,4 +34,9 @@ public:
   bool is_in_game() {
     return utils::get_virtual_function<bool(__thiscall*)(engine_client_t*)>(this, 26)(this);
   }
+
+  void client_cmd_unrestricted(const char* cmd_string) {
+    utils::get_virtual_function<void(__thiscall*)(engine_client_t*, const char*)>(this, 106)(
+        this, cmd_string);
+  }
 };
