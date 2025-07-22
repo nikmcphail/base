@@ -9,4 +9,17 @@ public:
     return utils::get_virtual_function<client_base_entity_t*(__thiscall*)(entity_list_t*, int)>(
         this, 3)(this, index);
   }
+
+  int number_of_entities(bool include_non_networkable) {
+    return utils::get_virtual_function<int(__thiscall*)(entity_list_t*, bool)>(this, 5)(
+        this, include_non_networkable);
+  }
+
+  int get_highest_entity_index() {
+    return utils::get_virtual_function<int(__thiscall*)(entity_list_t*)>(this, 6)(this);
+  }
+
+  int get_max_entities() {
+    return utils::get_virtual_function<int(__thiscall*)(entity_list_t*)>(this, 8)(this);
+  }
 };
