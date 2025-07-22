@@ -37,7 +37,14 @@ public:
 class hooked_client_mode {
 public:
   bool hooked_create_move(float input_sample_time, usercmd_t* cmd) {
-    return client::on_create_move(cmd);
+    if (!cmd || !cmd->command_number)
+      return false;
+
+    bool* send_packet = reinterpret_cast<bool*>(_AddressOfReturnAddress()) + 0x138;
+
+    client::on_create_move(cmd, send_packet);
+
+    return false;
   }
 
   void hooked_override_view(view_setup_t* setup) {

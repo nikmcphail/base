@@ -96,14 +96,9 @@ bool client::get_local_player_global() {
   return true;
 }
 
-bool client::on_create_move(usercmd_t* cmd) {
-  if (!cmd || !cmd->command_number)
-    return false;
-
+void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
   if (!get_local_player_global())
-    return false;
-
-  bool* send_packet = reinterpret_cast<bool*>(_AddressOfReturnAddress()) + 0x138; // bSendPacket
+    return;
 
   g_prediction.update();
   g_prediction.start_prediction(cmd);
@@ -111,8 +106,6 @@ bool client::on_create_move(usercmd_t* cmd) {
   // Do stuff here
 
   g_prediction.finish_prediction();
-
-  return false;
 }
 
 bool client::on_cl_move() { return true; }
