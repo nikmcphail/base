@@ -114,6 +114,7 @@ class model_t;
 
 class client_base_entity_t {
   friend client_player_t;
+  friend client_local_player_t;
 
   template <typename T> inline T get_ptr_at_offset(uint32_t offset) noexcept {
     return reinterpret_cast<T>(reinterpret_cast<uintptr_t>(this) + offset);
