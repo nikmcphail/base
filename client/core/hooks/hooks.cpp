@@ -109,11 +109,6 @@ public:
   }
 };
 
-void hooked_cl_move(void* _this, float accumulated_extra_samples, bool final_tick) {
-  client::on_cl_move();
-  client::g_hooks.cl_move_hook.thiscall(_this, accumulated_extra_samples, final_tick);
-}
-
 bool hooks_t::initialize() {
   this->d3d9_device_hook = safetyhook::create_vmt(client::g_interfaces.d3d9_device);
   client::g_console.printf("\td3d9_device:", console_color_light_yellow);
@@ -173,10 +168,6 @@ bool hooks_t::initialize() {
   client::g_console.printf("\t\tpaint traverse hooked", console_color_light_aqua);
 
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
-  this->cl_move_hook =
-      safetyhook::create_inline((void*)client::g_addresses.engine.functions.cl_move,
-                                reinterpret_cast<void*>(hooked_cl_move));
-  client::g_console.printf("\t\tcl_move hooked", console_color_light_aqua);
 
   client::g_console.print("\thooks initialized", console_color_gray);
   return true;

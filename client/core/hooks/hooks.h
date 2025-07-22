@@ -31,8 +31,6 @@ public:
   SafetyHookVmt panel_hook;
   SafetyHookVm  paint_traverse_hook;
 
-  SafetyHookInline cl_move_hook;
-
   bool initialize();
   void unload();
 };
