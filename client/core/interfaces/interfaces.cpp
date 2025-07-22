@@ -170,10 +170,6 @@ bool interfaces_t::collect_interfaces() {
                       "material system"))
     return false;
 
-  if (!find_interface(studiorender_dll, this->studio_render, "VStudioRender025",
-                      "studio render"))
-    return false;
-
   if (!find_interface(engine_dll, this->model_render, "VEngineModel016", "model render"))
     return false;
 
