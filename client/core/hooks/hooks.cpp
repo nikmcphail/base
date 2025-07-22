@@ -9,7 +9,6 @@
 #include "valve/prediction.h"
 #include "valve/client_frame_stage.h"
 #include "valve/model_render_info.h"
-
 class hooked_d3d9_device_t : IDirect3DDevice9 {
 public:
   HRESULT hooked_present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect,
@@ -95,6 +94,14 @@ public:
   }
 };
 
+class hooked_panel {
+public:
+  void hooked_paint_traverse(unsigned long long vgui_panel, bool force_repaint,
+                             bool allow_force) {
+    client::g_hooks.paint_traverse_hook.thiscall(this, vgui_panel, force_repaint, allow_force);
+  }
+};
+
 void hooked_cl_move(void* _this, float accumulated_extra_samples, bool final_tick) {
   client::on_cl_move();
   client::g_hooks.cl_move_hook.thiscall(_this, accumulated_extra_samples, final_tick);
@@ -152,6 +159,12 @@ bool hooks_t::initialize() {
       safetyhook::create_vm(this->engine_vgui_hook, 14, &hooked_engine_vgui::hooked_paint);
   client::g_console.printf("\t\tpaint hooked", console_color_light_aqua);
 
+  this->panel_hook = safetyhook::create_vmt(client::g_interfaces.panel);
+  client::g_console.printf("\tpanel:", console_color_light_yellow);
+  this->paint_traverse_hook =
+      safetyhook::create_vm(this->panel_hook, 41, &hooked_panel::hooked_paint_traverse);
+  client::g_console.printf("\t\tpaint traverse hooked", console_color_light_aqua);
+
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
   this->cl_move_hook =
       safetyhook::create_inline((void*)client::g_addresses.engine.functions.cl_move,
@@ -169,4 +182,6 @@ void hooks_t::unload() {
   prediction_hook   = {};
   base_client_hook  = {};
   model_render_hook = {};
+  engine_vgui_hook  = {};
+  panel_hook        = {};
 }

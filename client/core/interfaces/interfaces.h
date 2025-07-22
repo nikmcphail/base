@@ -21,6 +21,7 @@ class material_system_t;
 class studio_render_t;
 class model_render_t;
 class render_view_t;
+class panel_t;
 
 class interfaces_t {
 public:
@@ -46,6 +47,7 @@ public:
   model_render_t*     model_render{nullptr};
   render_view_t*      render_view{nullptr};
   void*               engine_vgui{nullptr};
+  panel_t*            panel{nullptr};
 
   bool collect_interfaces();
 };

@@ -66,6 +66,13 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound studiorender", console_color_light_aqua);
 
+  pe::module_t vgui2_dll;
+  if (!pe::get_module("vgui2.dll", vgui2_dll)) {
+    client::g_console.print("\t\tfailed to get vgui2", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound vgui2", console_color_light_aqua);
+
   client::g_console.printf("\taddresses:", console_color_light_yellow);
   this->d3d9_device = *(shaderapidx9_dll.find_pattern_in_memory("48 89 1D ?? ?? ?? ?? 48 8B CF")
                             .rel32<IDirect3DDevice9**>(0x3));
@@ -235,6 +242,13 @@ bool interfaces_t::collect_interfaces() {
     return false;
   }
   client::g_console.print("\t\tfound engine vgui", console_color_light_aqua);
+
+  this->panel = vgui2_dll.get_interface<panel_t*>(HASH("VGUI_Panel009"));
+  if (!this->panel) {
+    client::g_console.print("\t\tfailed to find panel", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound panel", console_color_light_aqua);
 
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
