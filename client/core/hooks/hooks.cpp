@@ -1,6 +1,6 @@
 #include "hooks.h"
-#include <d3d9.h>
 
+#include <d3d9.h>
 #include "client/client.h"
 #include "valve/cusercmd.h"
 #include "valve/view_setup.h"
@@ -9,7 +9,38 @@
 #include "valve/prediction.h"
 #include "valve/client_frame_stage.h"
 #include "valve/model_render_info.h"
-class hooked_d3d9_device_t : IDirect3DDevice9 {
+
+#include <fmt/core.h>
+
+// =====================================================================================================
+//                                          hooking functions
+
+void hooks_t::hook_vmt(SafetyHookVmt& vmt, void* original, const std::string& name) {
+  vmt                   = safetyhook::create_vmt(original);
+  std::string formatted = fmt::format("\t{}:", name);
+  client::g_console.print(formatted.c_str(), console_color_light_yellow);
+}
+
+template <typename T>
+void hooks_t::hook_vm(SafetyHookVmt& vmt, SafetyHookVm& vm, T detour, int index,
+                      const std::string& name) {
+  vm = safetyhook::create_vm(vmt, index, detour);
+
+  std::string formatted = fmt::format("\t\thooked {}", name);
+  client::g_console.print(formatted.c_str(), console_color_light_aqua);
+}
+
+template <typename T>
+void hooks_t::hook_inline(SafetyHookInline& inline_hook, T detour, void* original,
+                          const std::string& name) {
+  inline_hook           = safetyhook::create_inline(original, detour);
+  std::string formatted = fmt::format("\t\thooked {}", name);
+  client::g_console.print(formatted.c_str(), console_color_light_aqua);
+}
+
+// =====================================================================================================
+//                                          detour functions (vmt)
+class hooked_d3d9_device {
 public:
   HRESULT hooked_present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect,
                          HWND dest_window_override, RGNDATA* dirty_region) {
@@ -109,63 +140,64 @@ public:
   }
 };
 
+// =====================================================================================================
+//                                          detour functions (sig)
+
+// =====================================================================================================
+//                                          initialization / unloading
 bool hooks_t::initialize() {
-  this->d3d9_device_hook = safetyhook::create_vmt(client::g_interfaces.d3d9_device);
-  client::g_console.printf("\td3d9_device:", console_color_light_yellow);
-  this->d3d9_present_hook =
-      safetyhook::create_vm(this->d3d9_device_hook, 17, &hooked_d3d9_device_t::hooked_present);
-  client::g_console.printf("\t\tpresent hooked", console_color_light_aqua);
-  this->d3d9_reset_hook =
-      safetyhook::create_vm(this->d3d9_device_hook, 16, &hooked_d3d9_device_t::hooked_reset);
-  client::g_console.printf("\t\treset hooked", console_color_light_aqua);
+  { // d3d9_device hooks
+    hook_vmt(this->d3d9_device_hook, client::g_interfaces.d3d9_device, "d3d9_device");
+    hook_vm(this->d3d9_device_hook, this->d3d9_present_hook,
+            &hooked_d3d9_device::hooked_present, 17, "present");
+    hook_vm(this->d3d9_device_hook, this->d3d9_reset_hook, &hooked_d3d9_device::hooked_reset,
+            16, "reset");
+  }
 
-  this->client_mode_hook = safetyhook::create_vmt(client::g_interfaces.client_mode);
-  client::g_console.printf("\tclient_mode:", console_color_light_yellow);
-  this->create_move_hook = safetyhook::create_vm(this->client_mode_hook, 21,
-                                                 &hooked_client_mode::hooked_create_move);
-  client::g_console.printf("\t\tcreatemove hooked", console_color_light_aqua);
-  this->override_view_hook = safetyhook::create_vm(this->client_mode_hook, 16,
-                                                   &hooked_client_mode::hooked_override_view);
-  client::g_console.printf("\t\toverrideview hooked", console_color_light_aqua);
+  { // client_mode_shared hooks
+    hook_vmt(this->client_mode_hook, client::g_interfaces.client_mode, "client_mode");
+    hook_vm(this->client_mode_hook, this->create_move_hook,
+            &hooked_client_mode::hooked_create_move, 21, "createmove");
+    hook_vm(this->client_mode_hook, this->override_view_hook,
+            &hooked_client_mode::hooked_override_view, 16, "overrideview");
+  }
 
-  this->surface_hook = safetyhook::create_vmt(client::g_interfaces.surface);
-  client::g_console.printf("\tsurface:", console_color_light_yellow);
-  this->lock_cursor_hook =
-      safetyhook::create_vm(this->surface_hook, 62, &hooked_surface::hooked_lock_cursor);
-  client::g_console.printf("\t\tlockcursor hooked", console_color_light_aqua);
+  { // surface hooks
+    hook_vmt(this->surface_hook, client::g_interfaces.surface, "surface");
+    hook_vm(this->surface_hook, this->lock_cursor_hook, &hooked_surface::hooked_lock_cursor, 62,
+            "lockcursor");
+  }
 
-  this->prediction_hook = safetyhook::create_vmt(client::g_interfaces.prediction);
-  client::g_console.printf("\tprediction:", console_color_light_yellow);
-  this->run_command_hook =
-      safetyhook::create_vm(this->prediction_hook, 17, &hooked_prediction::hooked_run_command);
-  client::g_console.printf("\t\truncommand hooked", console_color_light_aqua);
+  { // prediction hooks
+    hook_vmt(this->prediction_hook, client::g_interfaces.prediction, "prediction");
+    hook_vm(this->prediction_hook, this->run_command_hook,
+            &hooked_prediction::hooked_run_command, 17, "runcommand");
+  }
 
-  this->base_client_hook = safetyhook::create_vmt(client::g_interfaces.base_client);
-  client::g_console.printf("\tbase client:", console_color_light_yellow);
-  this->level_shutdown_hook = safetyhook::create_vm(this->base_client_hook, 7,
-                                                    &hooked_base_client::hooked_level_shutdown);
-  client::g_console.printf("\t\tlevel shutdown hooked", console_color_light_aqua);
-  this->frame_stage_notify_hook = safetyhook::create_vm(
-      this->base_client_hook, 35, &hooked_base_client::hooked_frame_stage_notify);
-  client::g_console.printf("\t\tframe stage notify hooked", console_color_light_aqua);
+  { // base_client hooks
+    hook_vmt(this->base_client_hook, client::g_interfaces.base_client, "base client");
+    hook_vm(this->base_client_hook, this->level_shutdown_hook,
+            &hooked_base_client::hooked_level_shutdown, 7, "levelshutdown");
+    hook_vm(this->base_client_hook, this->frame_stage_notify_hook,
+            &hooked_base_client::hooked_frame_stage_notify, 35, "frame stage notify");
+  }
+  { // model_render hooks
+    hook_vmt(this->model_render_hook, client::g_interfaces.model_render, "model render");
+    hook_vm(this->model_render_hook, this->draw_model_execute_hook,
+            &hooked_model_render::hooked_draw_model_execute, 19, "draw model execute");
+  }
 
-  this->model_render_hook = safetyhook::create_vmt(client::g_interfaces.model_render);
-  client::g_console.printf("\tmodel render:", console_color_light_yellow);
-  this->draw_model_execute_hook = safetyhook::create_vm(
-      this->model_render_hook, 19, &hooked_model_render::hooked_draw_model_execute);
-  client::g_console.printf("\t\tdraw model execute hooked", console_color_light_aqua);
+  { // engine_vgui hooks
+    hook_vmt(this->engine_vgui_hook, client::g_interfaces.engine_vgui, "engine vgui");
+    hook_vm(this->engine_vgui_hook, this->paint_hook, &hooked_engine_vgui::hooked_paint, 14,
+            "paint");
+  }
 
-  this->engine_vgui_hook = safetyhook::create_vmt(client::g_interfaces.engine_vgui);
-  client::g_console.printf("\tengine vgui:", console_color_light_yellow);
-  this->paint_hook =
-      safetyhook::create_vm(this->engine_vgui_hook, 14, &hooked_engine_vgui::hooked_paint);
-  client::g_console.printf("\t\tpaint hooked", console_color_light_aqua);
-
-  this->panel_hook = safetyhook::create_vmt(client::g_interfaces.panel);
-  client::g_console.printf("\tpanel:", console_color_light_yellow);
-  this->paint_traverse_hook =
-      safetyhook::create_vm(this->panel_hook, 41, &hooked_panel::hooked_paint_traverse);
-  client::g_console.printf("\t\tpaint traverse hooked", console_color_light_aqua);
+  { // panel hooks
+    hook_vmt(this->panel_hook, client::g_interfaces.panel, "panel");
+    hook_vm(this->panel_hook, this->paint_traverse_hook, &hooked_panel::hooked_paint_traverse,
+            41, "paint traverse");
+  }
 
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
 
