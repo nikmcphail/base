@@ -39,6 +39,8 @@
 #define BONE_HAS_SAVEFRAME_POS 0x00200000 // Vector48
 #define BONE_HAS_SAVEFRAME_ROT 0x00400000 // Quaternion64
 
+#define MAXSTUDIOBONES 128
+
 enum bone_ids_e {
   BONE_PELVIS = 0,
   BONE_LEFT_KNEE,
