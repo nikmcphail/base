@@ -15,15 +15,15 @@
 // =====================================================================================================
 //                                          hooking functions
 
-void hooks_t::hook_vmt(SafetyHookVmt& vmt, void* original, const std::string& name) {
+void hook_vmt(SafetyHookVmt& vmt, void* original, const std::string& name) {
   vmt                   = safetyhook::create_vmt(original);
   std::string formatted = fmt::format("\t{}:", name);
   client::g_console.print(formatted.c_str(), console_color_light_yellow);
 }
 
 template <typename T>
-void hooks_t::hook_vm(SafetyHookVmt& vmt, SafetyHookVm& vm, T detour, int index,
-                      const std::string& name) {
+void hook_vm(SafetyHookVmt& vmt, SafetyHookVm& vm, T detour, int index,
+             const std::string& name) {
   vm = safetyhook::create_vm(vmt, index, detour);
 
   std::string formatted = fmt::format("\t\thooked {}", name);
@@ -31,8 +31,8 @@ void hooks_t::hook_vm(SafetyHookVmt& vmt, SafetyHookVm& vm, T detour, int index,
 }
 
 template <typename T>
-void hooks_t::hook_inline(SafetyHookInline& inline_hook, T detour, void* original,
-                          const std::string& name) {
+void hook_inline(SafetyHookInline& inline_hook, T detour, void* original,
+                 const std::string& name) {
   inline_hook           = safetyhook::create_inline(original, detour);
   std::string formatted = fmt::format("\t\thooked {}", name);
   client::g_console.print(formatted.c_str(), console_color_light_aqua);
@@ -42,6 +42,8 @@ void hooks_t::hook_inline(SafetyHookInline& inline_hook, T detour, void* origina
 //                                          detour functions (vmt)
 class hooked_d3d9_device {
 public:
+  // IDirect3DDevice9::Present( const RECT *pSourceRect, const RECT *pDestRect, HWND
+  // hDestWindowOverride, const RGNDATA *pDirtyRegion)
   HRESULT hooked_present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect,
                          HWND dest_window_override, RGNDATA* dirty_region) {
     client::on_present();
@@ -49,6 +51,7 @@ public:
         this, device, source_rect, dest_rect, dest_window_override, dirty_region);
   }
 
+  // IDirect3DDevice9::Reset( D3DPRESENT_PARAMETERS *pPresentationParameters )
   HRESULT hooked_reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* present_parameters) {
     HRESULT result;
 
@@ -67,6 +70,7 @@ public:
 
 class hooked_client_mode {
 public:
+  // ClientModeShared::CreateMove( float flInputSampleTime, CUserCmd *cmd )
   bool hooked_create_move(float input_sample_time, usercmd_t* cmd) {
     if (!cmd || !cmd->command_number)
       return false;
@@ -77,7 +81,7 @@ public:
 
     return false;
   }
-
+  // ClientModeShared::OverrideView( CViewSetup *pSetup )
   void hooked_override_view(view_setup_t* setup) {
     client::g_hooks.override_view_hook.thiscall(this, setup);
   }
@@ -85,6 +89,7 @@ public:
 
 class hooked_surface {
 public:
+  // CMatSystemSurface::LockCursor()
   HCURSOR hooked_lock_cursor() {
     if (menu::open)
       return client::g_interfaces.surface->unlock_cursor();
@@ -95,6 +100,7 @@ public:
 
 class hooked_prediction {
 public:
+  // CPrediction::RunCommand( C_BasePlayer *player, CUserCmd *ucmd, IMoveHelper *moveHelper )
   void hooked_run_command(client_player_t* player, usercmd_t* cmd, move_helper_t* move_helper) {
     if (move_helper)
       client::g_interfaces.move_helper = move_helper;
@@ -105,11 +111,13 @@ public:
 
 class hooked_base_client {
 public:
+  // void CHLClient::LevelShutdown( void )
   void hooked_level_shutdown() {
     client::g_hooks.level_shutdown_hook.thiscall(this);
     client::on_level_shutdown();
   }
 
+  // void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
   void hooked_frame_stage_notify(client_frame_stage_e current_stage) {
     client::g_hooks.frame_stage_notify_hook.thiscall(this, current_stage);
   }
@@ -117,6 +125,8 @@ public:
 
 class hooked_model_render {
 public:
+  // CModelRender::DrawModelExecute( const DrawModelState_t &state, const ModelRenderInfo_t
+  // &pInfo, matrix3x4_t *pBoneToWorld )
   void hooked_draw_model_execute(const draw_model_state_t&  state,
                                  const model_render_info_t& info,
                                  matrix_3x4_t*              custom_bone_to_world) {
@@ -126,6 +136,7 @@ public:
 
 class hooked_engine_vgui {
 public:
+  // CEngineVGui::Paint( PaintMode_t mode )
   void hooked_paint(int32_t mode) {
     client::g_render.get_view_matrix();
     client::g_hooks.paint_hook.thiscall(this, mode);
@@ -134,6 +145,7 @@ public:
 
 class hooked_panel {
 public:
+  // Panel::PaintTraverse( bool repaint, bool allowForce )
   void hooked_paint_traverse(unsigned long long vgui_panel, bool force_repaint,
                              bool allow_force) {
     client::g_hooks.paint_traverse_hook.thiscall(this, vgui_panel, force_repaint, allow_force);

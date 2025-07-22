@@ -31,14 +31,6 @@ public:
   SafetyHookVmt panel_hook;
   SafetyHookVm  paint_traverse_hook;
 
-  void hook_vmt(SafetyHookVmt& vmt, void* original, const std::string& name);
-  template <typename T>
-  void hook_vm(SafetyHookVmt& vmt, SafetyHookVm& vm, T detour, int index,
-               const std::string& name);
-  template <typename T>
-  void hook_inline(SafetyHookInline& inline_hook, T detour, void* original,
-                   const std::string& name);
-
   bool initialize();
   void unload();
 };
