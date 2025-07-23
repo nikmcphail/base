@@ -54,3 +54,27 @@ void console_t::printf(const char* text, ...) {
 
   printf_s("%s\n", buffer);
 }
+
+void console_t::test(const char* text, bool passed) {
+  set_console_color(console_colors_e::console_color_light_green);
+
+  if (!passed)
+    set_console_color(console_colors_e::console_color_light_red);
+
+  printf_s("%s\n", text);
+}
+
+void console_t::testf(const char* text, bool passed, ...) {
+  set_console_color(console_colors_e::console_color_light_green);
+
+  if (!passed)
+    set_console_color(console_colors_e::console_color_light_red);
+
+  char    buffer[1024];
+  va_list args;
+  va_start(args, text);
+  vsnprintf(buffer, sizeof(buffer), text, args);
+  va_end(args);
+
+  printf_s("%s\n", buffer);
+}

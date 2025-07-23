@@ -28,4 +28,7 @@ public:
   void printf(const char* text, console_colors_e color = console_colors_e::console_color_white,
               ...);
   void printf(const char* text, ...);
+
+  void test(const char* text, bool passed = true);
+  void testf(const char* text, bool passed = true, ...);
 };
