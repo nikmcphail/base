@@ -36,6 +36,10 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BaseAnimating"), HASH("m_nHitboxSet"));
     client.base_player.flash_max_alpha =
         netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_flFlashMaxAlpha"));
+    client.base_player.view_offset =
+        netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_vecViewOffset[0]"));
+    client.base_player.aim_punch_angle =
+        netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_vecPunchAngle"));
   }
 
   client::g_console.print("\toffsets initialized", console_color_gray);

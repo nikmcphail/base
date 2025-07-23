@@ -19,6 +19,9 @@ bool global_addresses_t::collect_addresses() {
         client_dll.find_pattern_in_memory("40 55 48 83 EC ? 8B EA");
     this->client.functions.set_prediction_random_seed = client_dll.find_pattern_in_memory(
         "48 85 C9 75 0B C7 05 ? ? ? ? FF FF FF FF C3 8B 41 38 89 05 ? ? ? ? C3");
+    this->client.functions.get_weapon_data =
+        client_dll.find_pattern_in_memory("E9 ? ? ? ? CC CC CC CC CC CC CC CC CC CC CC 48 8D "
+                                          "05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 40 53 57");
   }
 
   {

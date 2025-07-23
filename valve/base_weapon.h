@@ -47,8 +47,30 @@ enum weapon_id_e {
   WEAPON_MAX, // number of weapons weapon index
 };
 
+enum weapon_type_e {
+  WEAPONTYPE_KNIFE = 0,
+  WEAPONTYPE_PISTOL,
+  WEAPONTYPE_SUBMACHINEGUN,
+  WEAPONTYPE_RIFLE,
+  WEAPONTYPE_SHOTGUN,
+  WEAPONTYPE_SNIPER_RIFLE,
+  WEAPONTYPE_MACHINEGUN,
+  WEAPONTYPE_C4,
+  WEAPONTYPE_GRENADE,
+  WEAPONTYPE_UNKNOWN
+};
+
+class weapon_info_t {
+public:
+};
+
 class base_weapon_t {
 public:
+  weapon_info_t& get_weapon_data() {
+    typedef weapon_info_t& (*get_weapon_data_func)(base_weapon_t*);
+    return ((get_weapon_data_func)client::g_addresses.client.functions.get_weapon_data)(this);
+  }
+
   weapon_id_e get_weapon_id() {
     return utils::get_virtual_function<weapon_id_e(__thiscall*)(base_weapon_t*)>(this,
                                                                                  371)(this);
