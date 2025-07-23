@@ -11,9 +11,14 @@ struct offsets_t {
     } base_entity;
 
     struct {
-      uint32_t health, tick_base, life_state, flags, hitbox_set, flash_max_alpha, view_offset,
+      uintptr_t health, tick_base, life_state, flags, hitbox_set, flash_max_alpha, view_offset,
           aim_punch_angle;
     } base_player;
+
+    struct {
+      uintptr_t clip;
+    } base_weapon;
+
   } client;
 
 } inline offsets;

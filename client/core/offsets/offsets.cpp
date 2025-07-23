@@ -42,6 +42,11 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_vecPunchAngle"));
   }
 
+  {
+    client.base_weapon.clip =
+        netvars.get_netvar_offset(HASH("DT_BaseCombatWeapon"), HASH("m_iClip1"));
+  }
+
   client::g_console.print("\toffsets initialized", console_color_gray);
   return true;
 }

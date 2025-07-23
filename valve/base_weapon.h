@@ -62,9 +62,26 @@ enum weapon_type_e {
 
 class weapon_info_t {
 public:
+  char pad_0000[1836];
+  int  type;
+  bool full_auto;
 };
 
 class base_weapon_t {
+
+  template <typename T> inline T get_ptr_at_offset(uint32_t offset) noexcept {
+    return reinterpret_cast<T>(reinterpret_cast<uintptr_t>(this) + offset);
+  }
+
+  template <typename T> inline T& get_value_at_offset(uint32_t offset) noexcept {
+    return *get_ptr_at_offset<T*>(offset);
+  }
+
+#define netvar_value_func(type, name, offset)                                                  \
+  type& name() noexcept { return get_value_at_offset<type>(offset); }
+#define get_ptr_value_func(type, name, offset)                                                 \
+  type name() noexcept { return get_ptr_at_offset<type>(offset); }
+
 public:
   weapon_info_t& get_weapon_data() {
     typedef weapon_info_t& (*get_weapon_data_func)(base_weapon_t*);
@@ -75,4 +92,6 @@ public:
     return utils::get_virtual_function<weapon_id_e(__thiscall*)(base_weapon_t*)>(this,
                                                                                  371)(this);
   }
+
+  netvar_value_func(int, clip, client::g_offsets.client.base_weapon.clip);
 };
