@@ -99,13 +99,6 @@ void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
   if (!get_local_player_global())
     return;
 
-  if (!client::g_local_player->is_alive())
-    return;
-
-  if (!all_tests_succeeded)
-    if (!run_tests())
-      return;
-
   g_prediction.update();
   g_prediction.start_prediction(cmd);
 
@@ -117,8 +110,3 @@ void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
 bool client::on_cl_move() { return true; }
 
 void client::on_level_shutdown() { g_local_player = nullptr; }
-
-bool client::run_tests() {
-  all_tests_succeeded = true;
-  return true;
-}

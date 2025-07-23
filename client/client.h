@@ -16,7 +16,6 @@ class client_local_player_t;
 
 namespace client {
   inline bool attached{};
-  inline bool all_tests_succeeded = false;
 
   inline console_t           g_console;
   inline interfaces_t        g_interfaces;
@@ -41,5 +40,4 @@ namespace client {
   void on_create_move(usercmd_t* cmd, bool* send_packet);
   bool on_cl_move();
   void on_level_shutdown();
-  bool run_tests();
 } // namespace client
