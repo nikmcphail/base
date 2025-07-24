@@ -1,9 +1,9 @@
 #pragma once
 
-#include "library/math.h"
 #include "library/utils.h"
 
 class view_setup_t;
+class view_matrix_t;
 
 class render_view_t {
 public:

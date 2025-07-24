@@ -1,6 +1,6 @@
 #pragma once
 
-#include "library/math.h"
+#include "valve/view_matrix.h"
 
 enum stereo_eye_t {
   STEREO_EYE_MONO  = 0,

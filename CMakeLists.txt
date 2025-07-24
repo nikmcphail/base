@@ -31,12 +31,6 @@ endif ()
 include(${CPM_DOWNLOAD_LOCATION})
 
 CPMAddPackage(
-    NAME glm
-    GIT_REPOSITORY https://github.com/g-truc/glm.git
-    GIT_TAG 1.0.1
-)
-
-CPMAddPackage(
     NAME fmt
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
     GIT_TAG e69e5f977d458f2650bb346dadf2ad30c5320281 # 10.2.1
@@ -67,9 +61,9 @@ add_library(base SHARED
     client/core/global_addresses/global_addresses.cpp
     client/core/engine_prediction/engine_prediction.cpp
     library/md5.cpp
-    library/math.cpp
     client/core/menu/custom_widgets/imgui_custom_widgets.cpp
     client/core/drawing/drawing.cpp
+    library/math.cpp
 )
 
 if (imgui_ADDED)
@@ -99,11 +93,6 @@ endif()
 
 target_include_directories(base PRIVATE /)
 target_compile_features(base PUBLIC cxx_std_23)
-target_compile_definitions(base PRIVATE
-    GLM_FORCE_SWIZZLE
-    GLM_FORCE_ALIGNED_GENTYPES
-    GLM_ENABLE_EXPERIMENTAL
-)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_definitions(base PRIVATE
@@ -184,7 +173,6 @@ elseif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif ()
 
 target_link_libraries(base PRIVATE 
-    glm::glm
     freetype
     d3d9
     safetyhook

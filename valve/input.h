@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include "valve/cusercmd.h"
 
 class verified_user_cmd_t {

@@ -2,9 +2,9 @@
 
 #include "library/utils.h"
 
-class ray_t;
-class i_trace_filter_t;
-class trace_t;
+#include "valve/ray_t.h"
+#include "valve/trace_filter.h"
+#include "valve/trace.h"
 
 class engine_trace_t {
 public:

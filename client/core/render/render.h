@@ -3,9 +3,9 @@
 #include <mutex>
 #include <Windows.h>
 
-#include "library/math.h"
-
 #include "imgui.h"
+#include "valve/vector2.h"
+#include "valve/view_matrix.h"
 
 class render_t {
 public:
@@ -13,7 +13,7 @@ public:
   WNDPROC              orig_wndproc{};
 
   ImDrawList*   draw_list;
-  glm::ivec2    screen_size{};
+  vector2_t    screen_size{};
   view_matrix_t view_matrix;
 
   void setup_style();

@@ -13,6 +13,8 @@
 #include "valve/model_info.h"
 #include "valve/bone.h"
 #include "valve/global_vars_base.h"
+#include "valve/vector3.h"
+#include "valve/matrix3x4.h"
 
 class client_player_t;
 class client_local_player_t;

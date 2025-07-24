@@ -1,19 +1,20 @@
 #pragma once
 
-#include "library/math.h"
+#include "valve/vector3.h"
+#include "valve/vector2.h"
 
 class ray_t {
 public:
-  vector3_t start;
-  vector3_t delta;
-  vector3_t start_offset;
-  vector3_t extents;
-  bool      is_ray;
-  bool      is_swept;
+  vector3_a_t start;
+  vector3_a_t delta;
+  vector3_a_t start_offset;
+  vector3_a_t extents;
+  bool        is_ray;
+  bool        is_swept;
 
   void init(vector3_t const& start, vector3_t const& end) {
     this->delta    = end - start;
-    this->is_swept = (glm::length(glm::vec2(this->delta)) != 0);
+    this->is_swept = (this->delta.as_vector_2d().length()) != 0;
     this->extents  = {0.0f, 0.0f, 0.0f};
     this->is_ray   = true;
 
@@ -25,11 +26,11 @@ public:
             vector3_t const& maxs) {
     this->delta = end - start;
 
-    this->is_swept = (glm::length(this->delta) != 0);
+    this->is_swept = this->delta.length() != 0;
 
     this->extents = (maxs - mins);
     this->extents *= 0.5f;
-    this->is_ray = (glm::length(glm::vec2(this->extents)) < 1e-6);
+    this->is_ray = this->extents.as_vector_2d().length() < 1e-6;
 
     vector3_t offset = (mins + maxs) * 0.5f;
 

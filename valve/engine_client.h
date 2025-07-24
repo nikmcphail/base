@@ -2,8 +2,8 @@
 
 #include "library/utils.h"
 
-#include "library/math.h"
-#include "player_info.h"
+#include "valve/player_info.h"
+#include "valve/vector3.h"
 
 class engine_client_t {
 public:

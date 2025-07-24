@@ -1,7 +1,8 @@
 #pragma once
 
-#include "library/math.h"
+#include "valve/vector3.h"
 
+class matrix_3x4_t;
 class model_t;
 class studio_header_t;
 
@@ -16,7 +17,7 @@ struct draw_model_state_t {
 };
 
 struct model_render_info_t {
-  vector3_t           origin;
+  vector3_t          origin;
   vector3_t           angles;
   void*               renderable;
   const model_t*      model;
