@@ -13,24 +13,24 @@ public:
   bool        is_swept;
 
   void init(vector3_t const& start, vector3_t const& end) {
-    this->delta    = end - start;
-    this->is_swept = (this->delta.as_vector_2d().length()) != 0;
-    this->extents  = {0.0f, 0.0f, 0.0f};
+    vector_subtract(start, end, delta);
+    this->is_swept = this->delta.length_sqr() != 0;
+    this->extents  = vector3_t{0.0f, 0.0f, 0.0f};
     this->is_ray   = true;
 
-    this->start_offset = {0.0f, 0.0f, 0.0f};
+    this->start_offset = vector3_t{0.0f, 0.0f, 0.0f};
     this->start        = start;
   }
 
   void init(vector3_t const& start, vector3_t const& end, vector3_t const& mins,
             vector3_t const& maxs) {
-    this->delta = end - start;
+    vector_subtract(start, end, delta);
 
     this->is_swept = this->delta.length() != 0;
 
-    this->extents = (maxs - mins);
+    vector_subtract(maxs, mins, extents);
     this->extents *= 0.5f;
-    this->is_ray = this->extents.as_vector_2d().length() < 1e-6;
+    this->is_ray = this->extents.length_sqr() < 1e-6;
 
     vector3_t offset = (mins + maxs) * 0.5f;
 

@@ -47,6 +47,12 @@ public:
   vector3_t operator/(float fl) const;
 };
 
+__forceinline void vector_subtract(const vector3_t& a, const vector3_t& b, vector3_t& c) {
+  c.x = a.x - b.x;
+  c.y = a.y - b.y;
+  c.z = a.z - b.z;
+}
+
 inline vector3_t::vector3_t() { x = y = z = 0.0f; }
 inline vector3_t::vector3_t(float ix, float iy, float iz) {
   x = ix;
@@ -163,9 +169,7 @@ inline vector3_t vector3_t::operator+(const vector3_t& v) const {
 
 inline vector3_t vector3_t::operator-(const vector3_t& v) const {
   vector3_t res;
-  res.x = x - v.x;
-  res.y = y - v.y;
-  res.z = z - v.z;
+  vector_subtract(*this, v, res);
   return res;
 }
 
@@ -203,10 +207,12 @@ inline vector3_t vector3_t::operator/(float fl) const {
 
 class vector3_a_t : public vector3_t {
 public:
-  float w;
+  // float w;
 
-  vector3_a_t(void) {}
-  vector3_a_t(float X, float Y, float Z) { init(X, Y, Z); }
+  inline vector3_a_t(void) {}
+  inline vector3_a_t(float X, float Y, float Z) { init(X, Y, Z); }
+
+  explicit vector3_a_t(const vector3_t& other) { init(other.x, other.y, other.z); }
 
   vector3_a_t& operator=(const vector3_t& other) {
     init(other.x, other.y, other.z);
