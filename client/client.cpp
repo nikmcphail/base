@@ -99,8 +99,6 @@ void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
   if (!get_local_player_global())
     return;
 
-  if (g_local_player->is_alive())
-
   g_prediction.update();
   g_prediction.start_prediction(cmd);
 

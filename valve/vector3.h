@@ -53,6 +53,41 @@ __forceinline void vector_subtract(const vector3_t& a, const vector3_t& b, vecto
   c.z = a.z - b.z;
 }
 
+__forceinline void vector_add(const vector3_t& a, const vector3_t& b, vector3_t& c) {
+  c.x = a.x + b.x;
+  c.y = a.y + b.y;
+  c.z = a.z + b.z;
+}
+
+__forceinline void vector_multiply(const vector3_t& a, float b, vector3_t& c) {
+  c.x = a.x * b;
+  c.y = a.x * b;
+  c.z = a.z * b;
+}
+
+__forceinline void vector_multiply(const vector3_t& a, const vector3_t& b, vector3_t& c) {
+  c.x = a.x * b.x;
+  c.y = a.y * b.y;
+  c.z = a.z * b.z;
+}
+
+inline void vector_scale(const vector3_t& in, float scale, vector3_t& result) {
+  vector_multiply(in, scale, result);
+}
+
+__forceinline void vector_divide(const vector3_t& a, float b, vector3_t& c) {
+  float oob = 1.0f / b;
+  c.x       = a.x * oob;
+  c.y       = a.y * oob;
+  c.z       = a.z * oob;
+}
+
+__forceinline void vector_divide(const vector3_t& a, const vector3_t& b, vector3_t& c) {
+  c.x = a.x / b.x;
+  c.y = a.y / b.y;
+  c.z = a.z / b.z;
+}
+
 inline vector3_t::vector3_t() { x = y = z = 0.0f; }
 inline vector3_t::vector3_t(float ix, float iy, float iz) {
   x = ix;
@@ -161,9 +196,7 @@ inline vector3_t vector3_t::operator-(void) const { return vector3_t(-x, -y, -z)
 
 inline vector3_t vector3_t::operator+(const vector3_t& v) const {
   vector3_t res;
-  res.x = x + v.x;
-  res.y = y + v.y;
-  res.z = y + v.z;
+  vector_add(*this, v, res);
   return res;
 }
 
@@ -175,33 +208,25 @@ inline vector3_t vector3_t::operator-(const vector3_t& v) const {
 
 inline vector3_t vector3_t::operator*(const vector3_t& v) const {
   vector3_t res;
-  res.x = x * v.x;
-  res.y = y * v.y;
-  res.z = z * v.z;
+  vector_multiply(*this, v, res);
   return res;
 }
 
 inline vector3_t vector3_t::operator/(const vector3_t& v) const {
   vector3_t res;
-  res.x = x / v.x;
-  res.y = y / v.y;
-  res.z = z / v.z;
+  vector_divide(*this, v, res);
   return res;
 }
 
 inline vector3_t vector3_t::operator*(float fl) const {
   vector3_t res;
-  res.x = x * fl;
-  res.y = y * fl;
-  res.z = z * fl;
+  vector_multiply(*this, fl, res);
   return res;
 }
 
 inline vector3_t vector3_t::operator/(float fl) const {
   vector3_t res;
-  res.x = x / fl;
-  res.y = y / fl;
-  res.z = z / fl;
+  vector_divide(*this, fl, res);
   return res;
 }
 
