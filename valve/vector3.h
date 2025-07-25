@@ -88,6 +88,14 @@ __forceinline void vector_divide(const vector3_t& a, const vector3_t& b, vector3
   c.z = a.z / b.z;
 }
 
+inline void vector_clear(vector3_t& a) { a.x = a.y = a.z = 0.0f; }
+
+__forceinline void vector_copy(const vector3_t& src, vector3_t& dst) {
+  dst.x = src.x;
+  dst.y = src.y;
+  dst.z = src.z;
+}
+
 inline vector3_t::vector3_t() { x = y = z = 0.0f; }
 inline vector3_t::vector3_t(float ix, float iy, float iz) {
   x = ix;
@@ -230,9 +238,9 @@ inline vector3_t vector3_t::operator/(float fl) const {
   return res;
 }
 
-class vector3_a_t : public vector3_t {
+class __declspec(align(16)) vector3_a_t : public vector3_t {
 public:
-  // float w;
+  float w;
 
   inline vector3_a_t(void) {}
   inline vector3_a_t(float X, float Y, float Z) { init(X, Y, Z); }

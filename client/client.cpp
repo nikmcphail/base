@@ -7,6 +7,9 @@
 #include "valve/cusercmd.h"
 #include "valve/client_local_player.h"
 
+#include "valve/tracing/engine_trace.h"
+#include "valve/tracing/trace.h"
+
 bool client::initialize() {
   g_console.open_console();
 
@@ -95,9 +98,31 @@ bool client::get_local_player_global() {
   return true;
 }
 
+void test() {
+  client_local_player_t* local = client::g_local_player;
+  if (!local || !local->is_alive())
+    return;
+
+  if (GetAsyncKeyState(VK_PRIOR) & 1) {
+    const vector3_t origin = local->origin();
+    const vector3_t end    = local->origin() + vector3_t{180.f, 0.f, 0.f};
+    trace_filter_t  filter(local);
+    trace_t         trace;
+    client::g_interfaces.engine_trace->trace_ray({origin, end}, MASK_SHOT, &filter, &trace);
+
+    if (!trace.entity || !trace.did_hit())
+      return;
+
+    client::g_console.printf("%d", trace.entity->is_player());
+  }
+}
+
 void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
   if (!get_local_player_global())
     return;
+
+  if (client::g_local_player->is_alive())
+    test();
 
   g_prediction.update();
   g_prediction.start_prediction(cmd);
