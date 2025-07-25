@@ -2,7 +2,9 @@
 
 #include "imgui.h"
 
-#include "library/math.h"
+#include "valve/vector3.h"
+#include "valve/view_matrix.h"
+#include <vector>
 
 struct im_gui_text_t {
   const char* text;

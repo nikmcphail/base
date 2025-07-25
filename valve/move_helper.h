@@ -1,6 +1,6 @@
 #pragma once
 
-#include "library/math.h"
+#include "valve/vector3.h"
 
 class client_base_entity_t;
 

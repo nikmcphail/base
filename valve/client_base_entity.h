@@ -13,6 +13,8 @@
 #include "valve/model_info.h"
 #include "valve/bone.h"
 #include "valve/global_vars_base.h"
+#include "valve/vector3.h"
+#include "valve/matrix3x4.h"
 
 class client_player_t;
 class client_local_player_t;
@@ -92,20 +94,11 @@ public:
   }
 
   vector3_t get_bone_pos(int index) {
-    vector3_t      ret    = {0.f, 0.f, 0.f};
-    studio_bbox_t* hitbox = get_hitbox(index);
-    if (!hitbox)
-      return ret;
-
     matrix_3x4_t bones[128];
-    if (!this->setup_bones(bones, MAXSTUDIOBONES, BONE_USED_BY_HITBOX,
-                           client::g_interfaces.global_vars->cur_time))
-      return ret;
-
-    vector3_t center = (hitbox->bb_min * 0.5f) + (hitbox->bb_max * 0.5f);
-    ret              = math::vector_transform(bones[hitbox->bone], center);
-
-    return ret;
+    if (setup_bones(bones, 128, 256, 0.0f))
+      return vector3_t{bones[index][0][3], bones[index][1][3], bones[index][2][3]};
+    else
+      return vector3_t{};
   }
 
   bool setup_bones(matrix_3x4_t* bone_to_world_out, int max_bones, int bone_mask,

@@ -7,71 +7,71 @@
 #include "valve/base_client_dll.h"
 #include "valve/client_player.h"
 
-#include <fmt/core.h>
-
-std::vector<std::string> all_modules = {
-    "shaderapidx9.dll",   "vstdlib.dll",      "client.dll",
-    "vguimatsurface.dll", "engine.dll",       "inputsystem.dll",
-    "materialsystem.dll", "studiorender.dll", "vgui2.dll"};
-
-bool find_module(pe::module_t& module, const std::string& module_name) {
-  if (!pe::get_module(module_name.c_str(), module)) {
-    std::string formatted = fmt::format("\t\tfailed to find {}", module_name);
-    client::g_console.print(formatted.c_str(), console_color_red);
-    return false;
-  }
-
-  std::string formatted = fmt::format("\t\tfound {}", module_name);
-  client::g_console.print(formatted.c_str(), console_color_light_aqua);
-  return true;
-}
-
-bool find_all_modules(const std::vector<std::string>&                module_names,
-                      std::unordered_map<std::string, pe::module_t>& out_modules) {
-  for (const auto& name : module_names) {
-    pe::module_t module;
-    if (!find_module(module, name)) {
-      return false;
-    }
-    out_modules[name] = module;
-  }
-  return true;
-}
-
-template <typename T>
-bool find_interface(pe::module_t& module, T& out_interface, const std::string& interface_name,
-                    const std::string& friendly_name) {
-  out_interface = module.get_interface<T>(hash::hash_crc(interface_name.c_str()));
-  if (!out_interface) {
-    std::string msg = fmt::format("\t\tfailed to find {}", friendly_name);
-    client::g_console.print(msg.c_str(), console_color_red);
-    return false;
-  }
-
-  std::string msg = fmt::format("\t\tfound {}", friendly_name);
-  client::g_console.print(msg.c_str(), console_color_light_aqua);
-  return true;
-}
-
 bool interfaces_t::collect_interfaces() {
 
   client::g_console.printf("\tmodules:", console_color_light_yellow);
-  std::unordered_map<std::string, pe::module_t> loaded_modules;
-  if (!find_all_modules(all_modules, loaded_modules)) {
-    client::g_console.print("\tOne or more required modules failed to load.",
-                            console_color_red);
+  pe::module_t shaderapidx9_dll;
+  if (!pe::get_module("shaderapidx9.dll", shaderapidx9_dll)) {
+    client::g_console.print("\t\tfailed to find shaderapidx9", console_color_red);
     return false;
   }
+  client::g_console.print("\t\tfound shaderapidx9", console_color_light_aqua);
 
-  pe::module_t& shaderapidx9_dll   = loaded_modules["shaderapidx9.dll"];
-  pe::module_t& vstdlib_dll        = loaded_modules["vstdlib.dll"];
-  pe::module_t& client_dll         = loaded_modules["client.dll"];
-  pe::module_t& vguimatsurface_dll = loaded_modules["vguimatsurface.dll"];
-  pe::module_t& engine_dll         = loaded_modules["engine.dll"];
-  pe::module_t& inputsystem_dll    = loaded_modules["inputsystem.dll"];
-  pe::module_t& materialsystem_dll = loaded_modules["materialsystem.dll"];
-  pe::module_t& studiorender_dll   = loaded_modules["studiorender.dll"];
-  pe::module_t& vgui2_dll          = loaded_modules["vgui2.dll"];
+  pe::module_t vstdlib_dll;
+  if (!pe::get_module("vstdlib.dll", vstdlib_dll)) {
+    client::g_console.print("\t\tfailed to find vstdlib", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound vstdlib", console_color_light_aqua);
+
+  pe::module_t client_dll;
+  if (!pe::get_module("client.dll", client_dll)) {
+    client::g_console.print("\t\tfailed to find client", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound client", console_color_light_aqua);
+
+  pe::module_t vguimatsurface_dll;
+  if (!pe::get_module("vguimatsurface.dll", vguimatsurface_dll)) {
+    client::g_console.print("\t\tfailed to find vguimatsurface", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound vguimatsurface", console_color_light_aqua);
+
+  pe::module_t engine_dll;
+  if (!pe::get_module("engine.dll", engine_dll)) {
+    client::g_console.print("\t\tfailed to find engine", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound engine", console_color_light_aqua);
+
+  pe::module_t inputsystem_dll;
+  if (!pe::get_module("inputsystem.dll", inputsystem_dll)) {
+    client::g_console.print("\t\tfailed to find inputsystem", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound inputsystem", console_color_light_aqua);
+
+  pe::module_t materialsystem_dll;
+  if (!pe::get_module("materialsystem.dll", materialsystem_dll)) {
+    client::g_console.print("\t\tfailed to get materialsystem", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound materialsystem", console_color_light_aqua);
+
+  pe::module_t studiorender_dll;
+  if (!pe::get_module("studiorender.dll", studiorender_dll)) {
+    client::g_console.print("\t\tfailed to get studiorender", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound studiorender", console_color_light_aqua);
+
+  pe::module_t vgui2_dll;
+  if (!pe::get_module("vgui2.dll", vgui2_dll)) {
+    client::g_console.print("\t\tfailed to get vgui2", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound vgui2", console_color_light_aqua);
 
   client::g_console.printf("\taddresses:", console_color_light_yellow);
   this->d3d9_device = *(shaderapidx9_dll.find_pattern_in_memory("48 89 1D ?? ?? ?? ?? 48 8B CF")
@@ -122,6 +122,22 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound client state", console_color_light_aqua);
 
+  client::g_console.printf("\tinterfaces:", console_color_light_yellow);
+
+  this->cvar = vstdlib_dll.get_interface<cvar_t*>(HASH("VEngineCvar004"));
+  if (!this->cvar) {
+    client::g_console.print("\t\tfailed to find cvar", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound cvar", console_color_light_aqua);
+
+  this->base_client = client_dll.get_interface<base_client_dll_t*>(HASH("VClient017"));
+  if (!this->base_client) {
+    client::g_console.print("\t\tfailed to find base client", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound base client", console_color_light_aqua);
+
   this->client_mode =
       *(client_dll
             .find_pattern_in_memory(
@@ -133,54 +149,98 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound client mode", console_color_light_aqua);
 
-  client::g_console.printf("\tinterfaces:", console_color_light_yellow);
-
-  if (!find_interface(vstdlib_dll, this->cvar, "VEngineCvar004", "cvar"))
+  this->surface = vguimatsurface_dll.get_interface<surface_t*>(HASH("VGUI_Surface030"));
+  if (!this->surface) {
+    client::g_console.print("\t\tfailed to find surface", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound surface", console_color_light_aqua);
 
-  if (!find_interface(client_dll, this->base_client, "VClient017", "base client"))
+  this->entity_list = client_dll.get_interface<entity_list_t*>(HASH("VClientEntityList003"));
+  if (!this->entity_list) {
+    client::g_console.print("\t\tfailed to find entity list", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound entity list", console_color_light_aqua);
 
-  if (!find_interface(vguimatsurface_dll, this->surface, "VGUI_Surface030", "surface"))
+  this->prediction = client_dll.get_interface<prediction_t*>(HASH("VClientPrediction001"));
+  if (!this->prediction) {
+    client::g_console.print("\t\tfailed to find prediction", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound prediction", console_color_light_aqua);
 
-  if (!find_interface(client_dll, this->entity_list, "VClientEntityList003", "entity list"))
+  this->game_movement = client_dll.get_interface<game_movement_t*>(HASH("GameMovement001"));
+  if (!this->game_movement) {
+    client::g_console.print("\t\tfailed to find game movement", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound game movement", console_color_light_aqua);
 
-  if (!find_interface(client_dll, this->prediction, "VClientPrediction001", "prediction"))
+  this->engine_client = engine_dll.get_interface<engine_client_t*>(HASH("VEngineClient013"));
+  if (!this->engine_client) {
+    client::g_console.print("\t\tfailed to find engine client", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound engine client", console_color_light_aqua);
 
-  if (!find_interface(client_dll, this->game_movement, "GameMovement001", "game movement"))
+  this->input_system =
+      inputsystem_dll.get_interface<input_system_t*>(HASH("InputSystemVersion001"));
+  if (!this->input_system) {
+    client::g_console.print("\t\tfailed to find input system", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound input system", console_color_light_aqua);
 
-  if (!find_interface(engine_dll, this->engine_client, "VEngineClient013", "engine client"))
+  this->model_info = engine_dll.get_interface<model_info_t*>(HASH("VModelInfoClient006"));
+  if (!this->model_info) {
+    client::g_console.print("\t\tfailed to find model info", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound model info", console_color_light_aqua);
 
-  if (!find_interface(inputsystem_dll, this->input_system, "InputSystemVersion001",
-                      "input system"))
+  this->engine_trace = engine_dll.get_interface<engine_trace_t*>(HASH("EngineTraceClient003"));
+  if (!this->engine_trace) {
+    client::g_console.print("\t\tfailed to find engine trace", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound engine trace", console_color_light_aqua);
 
-  if (!find_interface(engine_dll, this->model_info, "VModelInfoClient006", "model info"))
+  this->material_system =
+      materialsystem_dll.get_interface<material_system_t*>(HASH("VMaterialSystem082"));
+  if (!this->material_system) {
+    client::g_console.print("\t\tfailed to find material system", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound material system", console_color_light_aqua);
 
-  if (!find_interface(engine_dll, this->engine_trace, "EngineTraceClient003", "engine trace"))
+  this->model_render = engine_dll.get_interface<model_render_t*>(HASH("VEngineModel016"));
+  if (!this->model_render) {
+    client::g_console.print("\t\tfailed to find model render", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound model render", console_color_light_aqua);
 
-  if (!find_interface(materialsystem_dll, this->material_system, "VMaterialSystem082",
-                      "material system"))
+  this->render_view = engine_dll.get_interface<render_view_t*>(HASH("VEngineRenderView014"));
+  if (!this->render_view) {
+    client::g_console.print("\t\tfailed to find render view", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound render view", console_color_light_aqua);
 
-  if (!find_interface(engine_dll, this->model_render, "VEngineModel016", "model render"))
+  this->engine_vgui = engine_dll.get_interface<void*>(HASH("VEngineVGui001"));
+  if (!this->engine_vgui) {
+    client::g_console.print("\t\tfailed to find engine vgui", console_color_red);
     return false;
+  }
+  client::g_console.print("\t\tfound engine vgui", console_color_light_aqua);
 
-  if (!find_interface(engine_dll, this->render_view, "VEngineRenderView014", "render view"))
+  this->panel = vgui2_dll.get_interface<panel_t*>(HASH("VGUI_Panel009"));
+  if (!this->panel) {
+    client::g_console.print("\t\tfailed to find panel", console_color_red);
     return false;
-
-  if (!find_interface(engine_dll, this->engine_vgui, "VEngineVGui001", "engine vgui"))
-    return false;
-
-  if (!find_interface(vgui2_dll, this->panel, "VGUI_Panel009", "panel"))
-    return false;
+  }
+  client::g_console.print("\t\tfound panel", console_color_light_aqua);
 
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;

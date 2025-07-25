@@ -1,5 +1,6 @@
 #include "drawing.h"
 
+#include "library/math.h"
 #include "client/client.h"
 #include <fmt/core.h>
 

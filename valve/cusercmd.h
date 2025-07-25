@@ -1,6 +1,6 @@
 #pragma once
 
-#include "library/math.h"
+class vector3_t;
 
 #define IN_ATTACK    (1 << 0)
 #define IN_JUMP      (1 << 1)

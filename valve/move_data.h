@@ -1,6 +1,6 @@
 #pragma once
 
-#include "library/math.h"
+#include "valve/vector3.h"
 
 #pragma pack(push, 1)
 class move_data_t {
