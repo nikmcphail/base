@@ -2,7 +2,7 @@
 
 #include "valve/cusercmd.h"
 #include "valve/move_data.h"
-#include "valve/client_local_player.h"
+#include "valve/entities/client_local_player.h"
 #include "client/client.h"
 #include "valve/move_helper.h"
 #include "valve/prediction.h"

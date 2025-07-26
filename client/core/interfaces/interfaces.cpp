@@ -5,7 +5,7 @@
 
 #include "client/client.h"
 #include "valve/base_client_dll.h"
-#include "valve/client_player.h"
+#include "valve/entities/client_player.h"
 
 bool interfaces_t::collect_interfaces() {
 
