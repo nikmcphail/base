@@ -13,7 +13,7 @@ public:
   explicit vector3_t(float XYZ);
   vector3_t(const float* v);
 
-  void init(float ix, float iy, float iz);
+  void initialize(float ix, float iy, float iz);
 
   vector2_t&       as_vector_2d();
   const vector2_t& as_vector_2d() const;
@@ -36,6 +36,8 @@ public:
   __forceinline vector3_t& operator/=(float s);
   __forceinline vector3_t& operator+=(float fl); ///< broadcast add
   __forceinline vector3_t& operator-=(float fl); ///< broadcast sub
+
+  vector3_t& operator=(const vector3_t& v);
 
   vector3_t operator-(void) const;
 
@@ -97,6 +99,7 @@ __forceinline void vector_copy(const vector3_t& src, vector3_t& dst) {
 }
 
 inline vector3_t::vector3_t() { x = y = z = 0.0f; }
+
 inline vector3_t::vector3_t(float ix, float iy, float iz) {
   x = ix;
   y = iy;
@@ -111,7 +114,7 @@ inline vector3_t::vector3_t(const float* v) {
   z = v[2];
 }
 
-inline void vector3_t::init(float ix, float iy, float iz) {
+inline void vector3_t::initialize(float ix, float iy, float iz) {
   x = ix;
   y = iy;
   z = iz;
@@ -200,6 +203,13 @@ inline vector3_t& vector3_t::operator-=(float fl) {
   return *this;
 }
 
+inline vector3_t& vector3_t::operator=(const vector3_t& v) {
+  x = v.x;
+  y = v.y;
+  z = v.z;
+  return *this;
+}
+
 inline vector3_t vector3_t::operator-(void) const { return vector3_t(-x, -y, -z); }
 
 inline vector3_t vector3_t::operator+(const vector3_t& v) const {
@@ -243,12 +253,12 @@ public:
   float w;
 
   inline vector3_a_t(void) {}
-  inline vector3_a_t(float X, float Y, float Z) { init(X, Y, Z); }
+  inline vector3_a_t(float X, float Y, float Z) { initialize(X, Y, Z); }
 
-  explicit vector3_a_t(const vector3_t& other) { init(other.x, other.y, other.z); }
+  explicit vector3_a_t(const vector3_t& other) { initialize(other.x, other.y, other.z); }
 
   vector3_a_t& operator=(const vector3_t& other) {
-    init(other.x, other.y, other.z);
+    initialize(other.x, other.y, other.z);
     return *this;
   }
 };
