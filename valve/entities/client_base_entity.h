@@ -119,4 +119,5 @@ public:
   netvar_value_func(int, hitbox_set, client::g_offsets.client.base_player.hitbox_set);
   netvar_value_func(unsigned char, move_type, client::g_offsets.client.base_entity.move_type);
   netvar_value_func(bool, dormant, client::g_offsets.client.base_entity.dormant);
+  netvar_value_func(vector3_t, abs_origin, client::g_offsets.client.base_entity.abs_origin);
 };

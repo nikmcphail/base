@@ -21,6 +21,8 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("C_BaseEntity"), HASH("m_MoveType"));
     client.base_entity.dormant =
         netvars.get_netvar_offset(HASH("C_BaseEntity"), HASH("m_bDormant"));
+    client.base_entity.abs_origin =
+        netvars.get_netvar_offset(HASH("C_BaseEntity"), HASH("m_vecAbsOrigin"));
   }
 
   { // client player

@@ -7,7 +7,7 @@ struct offsets_t {
 
   struct {
     struct {
-      uintptr_t origin, team_number, vec_mins, vec_maxs, move_type, dormant;
+      uintptr_t origin, team_number, vec_mins, vec_maxs, move_type, dormant, abs_origin;
     } base_entity;
 
     struct {
