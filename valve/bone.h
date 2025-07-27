@@ -40,3 +40,33 @@
 #define BONE_HAS_SAVEFRAME_ROT 0x00400000 // Quaternion64
 
 #define MAXSTUDIOBONES 128
+
+enum bone_indexes_e {
+  BONE_PELVIS         = 0,
+  BONE_LEFT_HIP       = 1,
+  BONE_LEFT_KNEE      = 2,
+  BONE_LEFT_ANKLE     = 3,
+  BONE_LEFT_TOE       = 4,
+  BONE_RIGHT_HIP      = 5,
+  BONE_RIGHT_KNEE     = 6,
+  BONE_RIGHT_ANKLE    = 7,
+  BONE_RIGHT_TOE      = 8,
+  BONE_LOWER_BACK     = 9,
+  BONE_STOMACH        = 10,
+  BONE_LOWER_CHEST    = 11,
+  BONE_UPPER_CHEST    = 12,
+  BONE_NECK           = 13,
+  BONE_HEAD           = 14,
+  BONE_LEFT_COLLAR    = 15,
+  BONE_LEFT_SHOULDER  = 16,
+  BONE_LEFT_ELBOW     = 17,
+  BONE_LEFT_FOREARM   = 43,
+  BONE_LEFT_WRIST     = 42,
+  BONE_LEFT_HAND      = 25,
+  BONE_RIGHT_COLLAR   = 28,
+  BONE_RIGHT_SHOULDER = 29,
+  BONE_RIGHT_ELBOW    = 30,
+  BONE_RIGHT_FOREARM  = 44,
+  BONE_RIGHT_WRIST    = 41,
+  BONE_RIGHT_HAND     = 38
+};
