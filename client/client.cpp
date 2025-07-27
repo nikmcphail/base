@@ -98,17 +98,13 @@ bool client::get_local_player_global() {
 }
 
 void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
-  g_drawing.clear_initial();
   if (!get_local_player_global())
     return;
 
   g_prediction.update();
   g_prediction.start_prediction(cmd);
 
-  // Do stuff here
-
   g_prediction.finish_prediction();
-  g_drawing.copy_to_intermediary();
 }
 
 typedef bool(__stdcall* host_should_run_func)();
@@ -126,3 +122,10 @@ void client::on_cl_move() {
 }
 
 void client::on_level_shutdown() { g_local_player = nullptr; }
+
+void client::on_paint() {
+  g_drawing.clear_initial();
+  g_render.get_view_matrix();
+
+  g_drawing.copy_to_intermediary();
+}

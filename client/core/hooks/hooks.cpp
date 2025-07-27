@@ -138,7 +138,7 @@ class hooked_engine_vgui {
 public:
   // CEngineVGui::Paint( PaintMode_t mode )
   void hooked_paint(int32_t mode) {
-    client::g_render.get_view_matrix();
+    client::on_paint();
     client::g_hooks.paint_hook.thiscall(this, mode);
   }
 };

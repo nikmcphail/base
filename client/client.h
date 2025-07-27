@@ -40,4 +40,5 @@ namespace client {
   void on_create_move(usercmd_t* cmd, bool* send_packet);
   void on_cl_move();
   void on_level_shutdown();
+  void on_paint();
 } // namespace client
