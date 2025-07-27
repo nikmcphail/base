@@ -82,6 +82,7 @@ bool client::check_insecure() {
 
 void client::on_present() {
   g_render.begin();
+  g_drawing.copy_from_intermediary();
   g_drawing.draw();
   menu::present();
   g_render.finish();
@@ -97,6 +98,7 @@ bool client::get_local_player_global() {
 }
 
 void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
+  g_drawing.clear_initial();
   if (!get_local_player_global())
     return;
 
@@ -106,6 +108,7 @@ void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
   // Do stuff here
 
   g_prediction.finish_prediction();
+  g_drawing.copy_to_intermediary();
 }
 
 typedef bool(__stdcall* host_should_run_func)();
