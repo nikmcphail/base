@@ -152,6 +152,10 @@ public:
   }
 };
 
+void hooked_cl_move(float accumulated_extra_samples, bool final_tick) {
+  client::g_hooks.cl_move_hook.fastcall(accumulated_extra_samples, final_tick);
+}
+
 // =====================================================================================================
 //                                          detour functions (sig)
 
@@ -212,6 +216,10 @@ bool hooks_t::initialize() {
   }
 
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
+  { // inline hooks
+    hook_inline(this->cl_move_hook, &hooked_cl_move,
+                (void*)client::g_addresses.engine.functions.cl_move, "cl move");
+  }
 
   client::g_console.print("\thooks initialized", console_color_gray);
   return true;

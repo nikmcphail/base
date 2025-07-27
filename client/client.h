@@ -38,6 +38,6 @@ namespace client {
 
   void on_present();
   void on_create_move(usercmd_t* cmd, bool* send_packet);
-  bool on_cl_move();
+  void on_cl_move();
   void on_level_shutdown();
 } // namespace client

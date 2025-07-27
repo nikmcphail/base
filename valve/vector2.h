@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 class vector2_t {
 public:
   float x, y;
