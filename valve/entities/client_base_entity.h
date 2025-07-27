@@ -48,6 +48,16 @@ public:
                                                                                  132)(this);
   }
 
+  int get_observer_mode() {
+    return utils::get_virtual_function<int(__thiscall*)(client_base_entity_t*)>(this,
+                                                                                242)(this);
+  }
+
+  client_base_entity_t* get_observer_target() {
+    return utils::get_virtual_function<client_base_entity_t*(
+        __thiscall*)(client_base_entity_t*)>(this, 243)(this);
+  }
+
   static client_local_player_t* get_local_player() {
     return (client_local_player_t*)client::g_interfaces.entity_list->get_client_entity(
         client::g_interfaces.engine_client->get_local_player_index());
