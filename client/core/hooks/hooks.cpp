@@ -152,12 +152,13 @@ public:
   }
 };
 
+// =====================================================================================================
+//                                           detour functions (sig)
+
+// void CL_Move(float accumulated_extra_samples, bool bFinalTick )
 void hooked_cl_move(float accumulated_extra_samples, bool final_tick) {
   client::g_hooks.cl_move_hook.fastcall(accumulated_extra_samples, final_tick);
 }
-
-// =====================================================================================================
-//                                          detour functions (sig)
 
 // =====================================================================================================
 //                                          initialization / unloading

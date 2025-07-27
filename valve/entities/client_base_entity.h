@@ -93,10 +93,11 @@ public:
     return hitbox;
   }
 
-  vector3_t get_bone_pos(int index) {
-    matrix_3x4_t bones[128];
-    if (setup_bones(bones, 128, 256, 0.0f))
-      return vector3_t{bones[index][0][3], bones[index][1][3], bones[index][2][3]};
+  vector3_t get_hitbox_pos(int id) {
+    matrix_3x4_t hitboxes[128];
+    if (setup_bones(hitboxes, 128, BONE_USED_BY_HITBOX,
+                    client::g_interfaces.global_vars->cur_time))
+      return vector3_t(hitboxes[id][0][3], hitboxes[id][1][3], hitboxes[id][2][3]);
     else
       return vector3_t{};
   }

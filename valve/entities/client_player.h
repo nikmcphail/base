@@ -18,6 +18,7 @@ public:
     return utils::get_virtual_function<base_weapon_t*(__thiscall*)(client_player_t*)>(
         this, 227)(this);
   }
+
   netvar_value_func(int, health, client::g_offsets.client.base_player.health);
   netvar_value_func(int, tick_base, client::g_offsets.client.base_player.tick_base);
   netvar_value_func(char, life_state, client::g_offsets.client.base_player.life_state);
