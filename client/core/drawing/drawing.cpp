@@ -75,7 +75,6 @@ void drawing_t::copy_from_intermediary() {
 }
 
 void drawing_t::draw() {
-  std::scoped_lock draw_lock{drawing_mutex};
   for (auto&& object : render) {
     if (auto* line = std::get_if<line_t>(&object)) {
       if ((line->color & IM_COL32_A_MASK) == 0) {
