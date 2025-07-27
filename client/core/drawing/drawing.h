@@ -37,7 +37,7 @@ struct text_t {
   ImU32       color{};
   ImU32       outline_color{};
   bool        outlined{false};
-  const char* text{};
+  std::string text{};
 };
 
 struct circle_t {
@@ -93,7 +93,7 @@ public:
                 const ImU32 color = COLOR_WHITE, float thickness = 1.f);
 
   void add_text(const vector2_t& position, const ImU32 color = COLOR_WHITE,
-                const char* text = "", bool outlined = false,
+                std::string text = "", bool outlined = false,
                 const ImU32 outline_color = COLOR_BLACK);
 
   void add_circle(const vector2_t& center, float radius, const ImU32 color = COLOR_WHITE,

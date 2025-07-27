@@ -64,7 +64,7 @@ void drawing_t::add_line(const vector2_t& position_one, const vector2_t& positio
   initial.push_back(line_t{position_one, position_two, color, thickness});
 }
 
-void drawing_t::add_text(const vector2_t& position, const ImU32 color, const char* text,
+void drawing_t::add_text(const vector2_t& position, const ImU32 color, std::string text,
                          bool outlined, const ImU32 outline_color) {
   initial.push_back(text_t{position, color, outline_color, outlined, text});
 }
@@ -103,9 +103,10 @@ void drawing_t::draw() {
       draw_line(line->position_one, line->position_two, line->color, line->thickness);
     } else if (auto* text = std::get_if<text_t>(&object)) {
       if (text->outlined) {
-        draw_text_outlined(text->position, text->color, text->outline_color, text->text);
+        draw_text_outlined(text->position, text->color, text->outline_color,
+                           text->text.c_str());
       } else {
-        draw_text(text->position, text->color, text->text);
+        draw_text(text->position, text->color, text->text.c_str());
       }
     } else if (auto* circle = std::get_if<circle_t>(&object)) {
       if (circle->filled) {
