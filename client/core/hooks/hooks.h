@@ -31,6 +31,9 @@ public:
   SafetyHookVmt panel_hook;
   SafetyHookVm  paint_traverse_hook;
 
+  SafetyHookVmt game_events_manager_hook;
+  SafetyHookVm  fire_event;
+
   SafetyHookInline cl_move_hook;
 
   bool initialize();

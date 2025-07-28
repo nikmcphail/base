@@ -242,6 +242,13 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound panel", console_color_light_aqua);
 
+  this->game_events_manager = engine_dll.get_interface<void*>(HASH("GAMEEVENTSMANAGER002"));
+  if (!this->game_events_manager) {
+    client::g_console.print("\t\tfailed to find game events manager", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound game events manager", console_color_light_aqua);
+
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
 }

@@ -46,6 +46,7 @@ public:
   render_view_t*      render_view{nullptr};
   void*               engine_vgui{nullptr};
   panel_t*            panel{nullptr};
+  void*               game_events_manager{nullptr};
 
   bool collect_interfaces();
 };

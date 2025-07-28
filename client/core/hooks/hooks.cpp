@@ -10,6 +10,7 @@
 #include "valve/client_frame_stage.h"
 #include "valve/model_render_info.h"
 #include "valve/panel.h"
+#include "valve/game_event.h"
 
 #include <fmt/core.h>
 
@@ -163,6 +164,14 @@ public:
   }
 };
 
+class hooked_game_events_manager {
+public:
+  // bool CGameEventManager::FireEvent( IGameEvent* event, bool bServerOnly)
+  bool hooked_fire_event(game_event_t* event, bool dont_broadcast) {
+    return client::g_hooks.fire_event.thiscall<bool>(this, event, dont_broadcast);
+  }
+};
+
 // =====================================================================================================
 //                                           detour functions (sig)
 
@@ -227,6 +236,13 @@ bool hooks_t::initialize() {
             41, "paint traverse");
   }
 
+  { // game events manager hooks
+    hook_vmt(this->game_events_manager_hook, client::g_interfaces.game_events_manager,
+             "game events manager");
+    hook_vm(this->game_events_manager_hook, this->fire_event,
+            &hooked_game_events_manager::hooked_fire_event, 8, "fire event");
+  }
+
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
   { // inline hooks
     hook_inline(this->cl_move_hook, &hooked_cl_move,
@@ -238,12 +254,13 @@ bool hooks_t::initialize() {
 }
 
 void hooks_t::unload() {
-  d3d9_device_hook  = {};
-  client_mode_hook  = {};
-  surface_hook      = {};
-  prediction_hook   = {};
-  base_client_hook  = {};
-  model_render_hook = {};
-  engine_vgui_hook  = {};
-  panel_hook        = {};
+  d3d9_device_hook         = {};
+  client_mode_hook         = {};
+  surface_hook             = {};
+  prediction_hook          = {};
+  base_client_hook         = {};
+  model_render_hook        = {};
+  engine_vgui_hook         = {};
+  panel_hook               = {};
+  game_events_manager_hook = {};
 }
