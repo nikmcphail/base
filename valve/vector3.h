@@ -23,6 +23,7 @@ public:
 
   bool  is_zero(float tolerance = 0.01f) const;
   float dot(const vector3_t& other);
+  float dist_to(const vector3_t& other);
 
   float                    operator[](int i) const;
   float&                   operator[](int i);
@@ -133,6 +134,12 @@ inline bool vector3_t::is_zero(float tolerance) const {
 
 inline float vector3_t::dot(const vector3_t& other) {
   return (x * other.x + y * other.y + z * other.z);
+}
+
+inline float vector3_t::dist_to(const vector3_t& other) {
+  vector3_t delta;
+  vector_subtract(*this, other, delta);
+  return delta.length();
 }
 
 inline float  vector3_t::operator[](int i) const { return ((float*)this)[i]; }
