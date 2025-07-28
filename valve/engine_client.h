@@ -21,13 +21,13 @@ public:
     return utils::get_virtual_function<int(__thiscall*)(engine_client_t*)>(this, 12)(this);
   }
 
-  void get_view_angles(vector3_t& angles) {
-    utils::get_virtual_function<void(__thiscall*)(engine_client_t*, vector3_t&)>(this, 19)(
+  void get_view_angles(qangle_t& angles) {
+    utils::get_virtual_function<void(__thiscall*)(engine_client_t*, qangle_t&)>(this, 19)(
         this, angles);
   }
 
-  void set_view_angles(vector3_t& angles) {
-    utils::get_virtual_function<void(__thiscall*)(engine_client_t*, vector3_t&)>(this, 20)(
+  void set_view_angles(qangle_t& angles) {
+    utils::get_virtual_function<void(__thiscall*)(engine_client_t*, qangle_t&)>(this, 20)(
         this, angles);
   }
 

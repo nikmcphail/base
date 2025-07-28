@@ -1,6 +1,7 @@
 #pragma once
 
 #include "valve/view_matrix.h"
+#include "valve/qangle.h"
 
 enum stereo_eye_t {
   STEREO_EYE_MONO  = 0,
@@ -28,7 +29,7 @@ public:
   float         fov             = 0;
   float         fov_viewmodel   = 0;
   vector3_t     origin{};
-  vector3_t     angles{};
+  qangle_t      angles{};
   float         near_                              = 0;
   float         far_                               = 0;
   float         near_view_model                    = 0;

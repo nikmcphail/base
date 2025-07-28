@@ -1,6 +1,6 @@
 #pragma once
 
-class vector3_t;
+class qangle_t;
 
 #define IN_ATTACK    (1 << 0)
 #define IN_JUMP      (1 << 1)
@@ -32,22 +32,22 @@ class vector3_t;
 #pragma pack(push, 1)
 class usercmd_t {
 public:
-  int64_t   pad0{};
-  int       command_number{};
-  int       tick_count{};
-  vector3_t view_angles{};
-  float     forward_move{};
-  float     side_move{};
-  float     up_move{};
-  int       buttons{};
-  char      impulse{};
-  char      gap[3];
-  int       weapon_select{};
-  int       weapon_subtype{};
-  int       random_seed{};
-  short     mousedx{};
-  short     mousedy{};
-  bool      predicted{};
-  char      pad[7];
+  int64_t  pad0{};
+  int      command_number{};
+  int      tick_count{};
+  qangle_t view_angles{};
+  float    forward_move{};
+  float    side_move{};
+  float    up_move{};
+  int      buttons{};
+  char     impulse{};
+  char     gap[3];
+  int      weapon_select{};
+  int      weapon_subtype{};
+  int      random_seed{};
+  short    mousedx{};
+  short    mousedy{};
+  bool     predicted{};
+  char     pad[7];
 };
 #pragma pack(pop)

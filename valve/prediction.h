@@ -2,6 +2,8 @@
 
 #include "library/utils.h"
 
+#include "valve/qangle.h"
+
 class client_player_t;
 class usercmd_t;
 class move_helper_t;
@@ -9,9 +11,9 @@ class move_data_t;
 
 class prediction_t {
 public:
-  void set_local_view_angles(vector3_t& ang) {
-    utils::get_virtual_function<void(__thiscall*)(prediction_t*, vector3_t&)>(this, 16)(this,
-                                                                                        ang);
+  void set_local_view_angles(qangle_t& ang) {
+    utils::get_virtual_function<void(__thiscall*)(prediction_t*, qangle_t&)>(this, 16)(this,
+                                                                                       ang);
   }
 
   void run_command(client_player_t* player, usercmd_t* cmd, move_helper_t* move_helper) {

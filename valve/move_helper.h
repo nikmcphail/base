@@ -1,6 +1,7 @@
 #pragma once
 
 #include "valve/vector3.h"
+#include "valve/qangle.h"
 
 class client_base_entity_t;
 
@@ -24,7 +25,7 @@ public:
                             float volume, int soundlevel, int fFlags, int pitch) = 0;
   virtual void  start_sound(const vector3_t& origin, const char* soundname)      = 0;
   virtual void  playback_event_full(int flags, int clientindex, unsigned short eventindex,
-                                    float delay, vector3_t& origin, vector3_t& angles,
+                                    float delay, vector3_t& origin, qangle_t& angles,
                                     float fparam1, float fparam2, int iparam1, int iparam2,
                                     int bparam1, int bparam2)                    = 0;
   virtual void* get_surface_props(void)                                          = 0;

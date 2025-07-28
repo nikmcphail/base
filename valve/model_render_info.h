@@ -1,6 +1,7 @@
 #pragma once
 
 #include "valve/vector3.h"
+#include "valve/qangle.h"
 
 class matrix_3x4_t;
 class model_t;
@@ -17,8 +18,8 @@ struct draw_model_state_t {
 };
 
 struct model_render_info_t {
-  vector3_t          origin;
-  vector3_t           angles;
+  vector3_t           origin;
+  qangle_t            angles;
   void*               renderable;
   const model_t*      model;
   const matrix_3x4_t* model_to_world;
