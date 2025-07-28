@@ -9,6 +9,7 @@
 #include "valve/prediction.h"
 #include "valve/client_frame_stage.h"
 #include "valve/model_render_info.h"
+#include "valve/panel.h"
 
 #include <fmt/core.h>
 
@@ -148,7 +149,17 @@ public:
   // Panel::PaintTraverse( bool repaint, bool allowForce )
   void hooked_paint_traverse(unsigned long long vgui_panel, bool force_repaint,
                              bool allow_force) {
+    static unsigned long long panel_id = 0;
+
     client::g_hooks.paint_traverse_hook.thiscall(this, vgui_panel, force_repaint, allow_force);
+
+    if (!panel_id) {
+      const auto panel_name = client::g_interfaces.panel->get_name(vgui_panel);
+      if (!strcmp(panel_name, "MatSystemTopPanel"))
+        panel_id = vgui_panel;
+    }
+
+    if (vgui_panel == panel_id) {}
   }
 };
 
