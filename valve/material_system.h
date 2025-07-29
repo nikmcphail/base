@@ -3,9 +3,16 @@
 #include "library/utils.h"
 
 class material_t;
+class key_values_t;
 
 class material_system_t {
 public:
+  material_t* create_material(const char* name, key_values_t* key_values) {
+    return utils::get_virtual_function<material_t*(
+        __thiscall*)(material_system_t*, const char*, key_values_t*)>(this, 70)(this, name,
+                                                                                key_values);
+  }
+
   material_t* find_material(const char* name, const char* group_name, bool complain = true,
                             const char* complain_prefix = NULL) {
     return utils::get_virtual_function<material_t*(

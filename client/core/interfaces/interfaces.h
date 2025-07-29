@@ -47,6 +47,7 @@ public:
   void*               engine_vgui{nullptr};
   panel_t*            panel{nullptr};
   void*               game_events_manager{nullptr};
+  void*               file_system{nullptr};
 
   bool collect_interfaces();
 };

@@ -22,6 +22,10 @@ bool global_addresses_t::collect_addresses() {
     this->client.functions.get_weapon_data =
         client_dll.find_pattern_in_memory("E9 ? ? ? ? CC CC CC CC CC CC CC CC CC CC CC 48 8D "
                                           "05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 40 53 57");
+    this->client.functions.key_values_init =
+        client_dll.find_pattern_in_memory("40 53 48 83 EC ? 48 8B D9 C7 01");
+    this->client.functions.load_from_buffer =
+        client_dll.find_pattern_in_memory("4C 89 4C 24 ? 48 89 4C 24 ? 55 56 48 81 EC");
   }
 
   {
