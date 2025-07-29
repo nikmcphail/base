@@ -86,3 +86,8 @@ void engine_prediction_t::update() {
                                           client::g_interfaces.client_state->delta_tick > 0,
                                           start, stop);
 }
+
+void engine_prediction_t::restore() {
+  client::g_interfaces.prediction->restore_entity_to_predicted_frame(
+      client::g_interfaces.prediction->commands_predicted - 1);
+}
