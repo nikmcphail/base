@@ -58,6 +58,18 @@ void drawing_t::draw_rect_outlined(const vector2_t& position, const vector2_t& s
                                       ImDrawFlags_None, thickness);
 }
 
+void drawing_t::draw_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
+                          const vector2_t& p3, const ImU32 color, float thickness) {
+  client::g_render.draw_list->AddQuad({p0.x, p0.y}, {p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y},
+                                      color, thickness);
+}
+
+void drawing_t::draw_quad_filled(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
+                                 const vector2_t& p3, const ImU32 color) {
+  client::g_render.draw_list->AddQuadFilled({p0.x, p0.y}, {p1.x, p1.y}, {p2.x, p2.y},
+                                            {p3.x, p3.y}, color);
+}
+
 // public functions
 void drawing_t::add_line(const vector2_t& position_one, const vector2_t& position_two,
                          const ImU32 color, float thickness) {
@@ -79,6 +91,11 @@ void drawing_t::add_rect(const vector2_t& position, const vector2_t& size, const
                          const ImU32 outline_color) {
   initial.push_back(
       rect_t{position, size, color, outline_color, outlined, rounding, thickness});
+}
+
+void drawing_t::add_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
+                         const vector2_t& p3, const ImU32 color, float thickness, bool filled) {
+  initial.push_back(quad_t{p0, p1, p2, p3, color, filled, thickness});
 }
 
 void drawing_t::clear_initial() { initial.clear(); }
@@ -121,6 +138,12 @@ void drawing_t::draw() {
                            rect->rounding, rect->thickness);
       } else {
         draw_rect(rect->position, rect->size, rect->color, rect->rounding, rect->thickness);
+      }
+    } else if (auto* quad = std::get_if<quad_t>(&object)) {
+      if (quad->filled) {
+        draw_quad_filled(quad->p0, quad->p1, quad->p2, quad->p3, quad->color);
+      } else {
+        draw_quad(quad->p0, quad->p1, quad->p2, quad->p3, quad->color, quad->thickness);
       }
     }
   }

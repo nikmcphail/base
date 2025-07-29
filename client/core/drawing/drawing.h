@@ -59,12 +59,22 @@ struct rect_t {
   float     thickness{1.f};
 };
 
+struct quad_t {
+  vector2_t p0{};
+  vector2_t p1{};
+  vector2_t p2{};
+  vector2_t p3{};
+  ImU32     color{};
+  bool      filled{false};
+  float     thickness{1.f};
+};
+
 class drawing_t {
 public:
-  std::mutex                                                  drawing_mutex{};
-  std::vector<std::variant<line_t, text_t, circle_t, rect_t>> initial;
-  std::vector<std::variant<line_t, text_t, circle_t, rect_t>> intermediary;
-  std::vector<std::variant<line_t, text_t, circle_t, rect_t>> render;
+  std::mutex                                                          drawing_mutex{};
+  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t>> initial;
+  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t>> intermediary;
+  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t>> render;
 
 private:
   void draw_text(const vector2_t& position, const ImU32 color = COLOR_WHITE,
@@ -88,6 +98,11 @@ private:
                           const ImU32 outline_color = COLOR_BLACK, float rounding = 0.f,
                           float thickness = 1.f);
 
+  void draw_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
+                 const vector2_t& p3, const ImU32 color = COLOR_WHITE, float thickness = 1.f);
+  void draw_quad_filled(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
+                        const vector2_t& p3, const ImU32 color = COLOR_WHITE);
+
 public:
   void add_line(const vector2_t& position_one, const vector2_t& position_two,
                 const ImU32 color = COLOR_WHITE, float thickness = 1.f);
@@ -102,6 +117,10 @@ public:
   void add_rect(const vector2_t& position, const vector2_t& size,
                 const ImU32 color = COLOR_WHITE, float rounding = 0.f, float thickness = 1.f,
                 bool outlined = false, const ImU32 outline_color = COLOR_BLACK);
+
+  void add_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
+                const vector2_t& p3, const ImU32 color = COLOR_WHITE, float thickness = 1.f,
+                bool filled = false);
 
   void clear_initial();
   void copy_to_intermediary();
