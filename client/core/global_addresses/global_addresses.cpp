@@ -26,6 +26,8 @@ bool global_addresses_t::collect_addresses() {
         client_dll.find_pattern_in_memory("40 53 48 83 EC ? 48 8B D9 C7 01");
     this->client.functions.load_from_buffer =
         client_dll.find_pattern_in_memory("4C 89 4C 24 ? 48 89 4C 24 ? 55 56 48 81 EC");
+    this->client.functions.eye_vectors = client_dll.find_pattern_in_memory(
+        "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC ? 44 8B 91 ? ? ? ? 49 8B F9");
   }
 
   {

@@ -8,6 +8,8 @@
 #include "valve/entities/client_local_player.h"
 #include "valve/client_state.h"
 
+#include "fmt/core.h"
+
 bool client::initialize() {
   g_console.open_console();
 

@@ -74,6 +74,13 @@ public:
                                                                                   5)(this);
   }
 
+  __int64 eye_vectors(vector3_t* forward, vector3_t* right = NULL, vector3_t* up = NULL) {
+    static auto func =
+        (__int64(__fastcall*)(client_base_entity_t*, vector3_t*, vector3_t*,
+                              vector3_t*))client::g_addresses.client.functions.eye_vectors;
+    return func(this, forward, right, up);
+  }
+
   model_t* get_model() {
     void* client_renderable = this->get_client_renderable();
     if (!client_renderable)
