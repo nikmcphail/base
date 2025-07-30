@@ -20,4 +20,24 @@ public:
                            const char*))client::g_addresses.client.functions.load_from_buffer;
     return func(this, resource_name, buffer, file_system, path_id);
   }
+
+  int      key_name;
+  char*    s_value;
+  wchar_t* ws_value;
+
+  union {
+    int           int_value;
+    float         float_value;
+    void*         pointer_value;
+    unsigned char color[4];
+  };
+
+  char data_type;
+  char has_escape_sequences;
+  char evaluate_conditionals;
+  char unused[1];
+
+  key_values_t* peer;
+  key_values_t* sub;
+  key_values_t* chain;
 };
