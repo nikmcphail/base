@@ -74,6 +74,13 @@ public:
                                                                                   5)(this);
   }
 
+  vector3_t get_eye_position() {
+    vector3_t position;
+    utils::get_virtual_function<void(__thiscall*)(client_base_entity_t*, vector3_t*)>(
+        this, 142)(this, &position);
+    return position;
+  }
+
   __int64 eye_vectors(vector3_t* forward, vector3_t* right = NULL, vector3_t* up = NULL) {
     static auto func =
         (__int64(__fastcall*)(client_base_entity_t*, vector3_t*, vector3_t*,
