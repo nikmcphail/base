@@ -21,6 +21,10 @@ bool client::initialize() {
   if (!g_addresses.collect_addresses())
     return false;
 
+  client::g_console.print("initializing atlas", console_color_white);
+  if (!g_atlas.initialize())
+    return false;
+
   client::g_console.print("initializing offsets", console_color_white);
   if (!g_offsets.get_offsets())
     return false;

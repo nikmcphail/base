@@ -64,6 +64,7 @@ add_library(base SHARED
     client/core/menu/custom_widgets/imgui_custom_widgets.cpp
     client/core/drawing/drawing.cpp
     library/math.cpp
+    client/core/atlas/atlas.cpp
 )
 
 if (imgui_ADDED)
