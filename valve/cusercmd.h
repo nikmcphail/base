@@ -1,6 +1,6 @@
 #pragma once
 
-class qangle_t;
+#include "valve/qangle.h"
 
 #define IN_ATTACK    (1 << 0)
 #define IN_JUMP      (1 << 1)

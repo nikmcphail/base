@@ -11,6 +11,7 @@ public:
   SafetyHookVmt client_mode_hook;
   SafetyHookVm  create_move_hook;
   SafetyHookVm  override_view_hook;
+  SafetyHookVm  get_viewmodel_fov_hook;
 
   SafetyHookVmt surface_hook;
   SafetyHookVm  lock_cursor_hook;

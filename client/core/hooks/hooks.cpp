@@ -87,6 +87,10 @@ public:
   void hooked_override_view(view_setup_t* setup) {
     client::g_hooks.override_view_hook.thiscall(this, setup);
   }
+  // ClientModeShared::GetViewModelFOV( void )
+  float hooked_get_viewmodel_fov() {
+    return client::g_hooks.get_viewmodel_fov_hook.thiscall<float>(this);
+  }
 };
 
 class hooked_surface {
@@ -197,6 +201,8 @@ bool hooks_t::initialize() {
             &hooked_client_mode::hooked_create_move, 21, "createmove");
     hook_vm(this->client_mode_hook, this->override_view_hook,
             &hooked_client_mode::hooked_override_view, 16, "overrideview");
+    hook_vm(this->client_mode_hook, this->get_viewmodel_fov_hook,
+            &hooked_client_mode::hooked_get_viewmodel_fov, 32, "getviewmodelfov");
   }
 
   { // surface hooks
