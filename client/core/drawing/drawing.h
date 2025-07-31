@@ -29,9 +29,10 @@ struct line_t {
   vector2_t position_one{};
   vector2_t position_two{};
   ImU32     color{};
+  ImU32     outline_color{};
+  bool      outlined{false};
   float     thickness{1.0f};
 };
-
 struct text_t {
   vector2_t   position{};
   ImU32       color{};
@@ -90,6 +91,10 @@ private:
   void draw_line(const vector2_t& pos_one, const vector2_t& pos_two,
                  const ImU32 color = COLOR_WHITE, float thickness = 1.0f);
 
+  void draw_line_outlined(const vector2_t& pos_one, const vector2_t& pos_two,
+                          const ImU32 color         = COLOR_WHITE,
+                          const ImU32 outline_color = COLOR_BLACK, float thickness = 1.0f);
+
   void draw_rect(const vector2_t& position, const vector2_t& size,
                  const ImU32 color = COLOR_WHITE, float rounding = 0.f, float thickness = 1.f);
 
@@ -105,7 +110,8 @@ private:
 
 public:
   void add_line(const vector2_t& position_one, const vector2_t& position_two,
-                const ImU32 color = COLOR_WHITE, float thickness = 1.f);
+                const ImU32 color = COLOR_WHITE, float thickness = 1.f, bool outlined = false,
+                const ImU32 outline_color = COLOR_BLACK);
 
   void add_text(const vector2_t& position, const ImU32 color = COLOR_WHITE,
                 std::string text = "", bool outlined = false,

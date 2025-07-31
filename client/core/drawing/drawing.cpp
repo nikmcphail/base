@@ -35,6 +35,19 @@ void drawing_t::draw_line(const vector2_t& pos_one, const vector2_t& pos_two, co
   client::g_render.draw_list->AddLine({pos_one.x, pos_one.y}, {pos_two.x, pos_two.y}, color,
                                       thickness);
 }
+void drawing_t::draw_line_outlined(const vector2_t& pos_one, const vector2_t& pos_two,
+                                   const ImU32 color, const ImU32 outline_color,
+                                   float thickness) {
+  float outline_thickness = thickness + 2.0f;
+
+  // Draw the outline first
+  client::g_render.draw_list->AddLine({pos_one.x, pos_one.y}, {pos_two.x, pos_two.y},
+                                      outline_color, outline_thickness);
+
+  // Draw the main line over it
+  client::g_render.draw_list->AddLine({pos_one.x, pos_one.y}, {pos_two.x, pos_two.y}, color,
+                                      thickness);
+}
 
 void drawing_t::draw_rect(const vector2_t& position, const vector2_t& size, const ImU32 color,
                           float rounding, float thickness) {
@@ -72,8 +85,10 @@ void drawing_t::draw_quad_filled(const vector2_t& p0, const vector2_t& p1, const
 
 // public functions
 void drawing_t::add_line(const vector2_t& position_one, const vector2_t& position_two,
-                         const ImU32 color, float thickness) {
-  initial.push_back(line_t{position_one, position_two, color, thickness});
+                         const ImU32 color, float thickness, bool outlined,
+                         const ImU32 outline_color) {
+  initial.push_back(
+      line_t{position_one, position_two, color, outline_color, outlined, thickness});
 }
 
 void drawing_t::add_text(const vector2_t& position, const ImU32 color, std::string text,
@@ -117,7 +132,12 @@ void drawing_t::draw() {
         break;
       }
 
-      draw_line(line->position_one, line->position_two, line->color, line->thickness);
+      if (line->outlined) {
+        draw_line_outlined(line->position_one, line->position_two, line->color,
+                           line->outline_color, line->thickness);
+      } else {
+        draw_line(line->position_one, line->position_two, line->color, line->thickness);
+      }
     } else if (auto* text = std::get_if<text_t>(&object)) {
       if (text->outlined) {
         draw_text_outlined(text->position, text->color, text->outline_color,
