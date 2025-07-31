@@ -42,6 +42,6 @@ bool global_addresses_t::collect_addresses() {
         "48 83 EC ? 48 8B 05 ? ? ? ? 83 78 ? ? 74 ? 48 8B 05");
   }
 
-  client::g_console.print("\taddresses initialized", console_color_light_aqua);
+  client::g_console.print("\taddresses initialized", console_color_gray);
   return true;
 }
