@@ -13,7 +13,7 @@ public:
   explicit vector3_t(float XYZ);
   vector3_t(const float* v);
 
-  void initialize(float ix, float iy, float iz);
+  void initialize(float ix = 0.0f, float iy = 0.0f, float iz = 0.0f);
 
   vector2_t&       as_vector_2d();
   const vector2_t& as_vector_2d() const;
