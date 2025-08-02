@@ -3,6 +3,7 @@
 #include "client_base_entity.h"
 
 #include "library/utils.h"
+#include "valve/qangle.h"
 
 #define LIFE_ALIVE       0
 #define LIFE_DYING       1
@@ -23,4 +24,6 @@ public:
   netvar_value_func(int, tick_base, client::g_offsets.client.base_player.tick_base);
   netvar_value_func(char, life_state, client::g_offsets.client.base_player.life_state);
   netvar_value_func(int, flags, client::g_offsets.client.base_player.flags);
+  netvar_value_func(qangle_t, eye_angles, client::g_offsets.client.base_player.eye_angles);
+  netvar_value_func(vector3_t, view_offset, client::g_offsets.client.base_player.view_offset);
 };
