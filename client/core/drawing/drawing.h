@@ -56,6 +56,7 @@ struct rect_t {
   ImU32     color{};
   ImU32     outline_color{};
   bool      outlined{false};
+  bool      filled{false};
   float     rounding{0.f};
   float     thickness{1.f};
 };
@@ -103,6 +104,9 @@ private:
                           const ImU32 outline_color = COLOR_BLACK, float rounding = 0.f,
                           float thickness = 1.f);
 
+  void draw_rect_filled(const vector2_t& position, const vector2_t& size,
+                        const ImU32 color = COLOR_WHITE, float rounding = 0.f);
+
   void draw_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
                  const vector2_t& p3, const ImU32 color = COLOR_WHITE, float thickness = 1.f);
   void draw_quad_filled(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
@@ -122,7 +126,8 @@ public:
 
   void add_rect(const vector2_t& position, const vector2_t& size,
                 const ImU32 color = COLOR_WHITE, float rounding = 0.f, float thickness = 1.f,
-                bool outlined = false, const ImU32 outline_color = COLOR_BLACK);
+                bool outlined = false, const ImU32 outline_color = COLOR_BLACK,
+                bool filled = false);
 
   void add_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
                 const vector2_t& p3, const ImU32 color = COLOR_WHITE, float thickness = 1.f,

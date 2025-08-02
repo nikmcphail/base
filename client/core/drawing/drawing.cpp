@@ -71,6 +71,13 @@ void drawing_t::draw_rect_outlined(const vector2_t& position, const vector2_t& s
                                       ImDrawFlags_None, thickness);
 }
 
+void drawing_t::draw_rect_filled(const vector2_t& position, const vector2_t& size,
+                                 const ImU32 color, float rounding) {
+  auto max = position + size;
+  client::g_render.draw_list->AddRectFilled({position.x, position.y}, {max.x, max.y}, color,
+                                            rounding);
+}
+
 void drawing_t::draw_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
                           const vector2_t& p3, const ImU32 color, float thickness) {
   client::g_render.draw_list->AddQuad({p0.x, p0.y}, {p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y},
@@ -103,9 +110,9 @@ void drawing_t::add_circle(const vector2_t& center, float radius, const ImU32 co
 
 void drawing_t::add_rect(const vector2_t& position, const vector2_t& size, const ImU32 color,
                          float rounding, float thickness, bool outlined,
-                         const ImU32 outline_color) {
+                         const ImU32 outline_color, bool filled) {
   initial.push_back(
-      rect_t{position, size, color, outline_color, outlined, rounding, thickness});
+      rect_t{position, size, color, outline_color, outlined, filled, rounding, thickness});
 }
 
 void drawing_t::add_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
@@ -153,11 +160,15 @@ void drawing_t::draw() {
                     circle->thickness);
       }
     } else if (auto* rect = std::get_if<rect_t>(&object)) {
-      if (rect->outlined) {
-        draw_rect_outlined(rect->position, rect->size, rect->color, rect->outline_color,
-                           rect->rounding, rect->thickness);
+      if (rect->filled) {
+        draw_rect_filled(rect->position, rect->size, rect->color, rect->rounding);
       } else {
-        draw_rect(rect->position, rect->size, rect->color, rect->rounding, rect->thickness);
+        if (rect->outlined) {
+          draw_rect_outlined(rect->position, rect->size, rect->color, rect->outline_color,
+                             rect->rounding, rect->thickness);
+        } else {
+          draw_rect(rect->position, rect->size, rect->color, rect->rounding, rect->thickness);
+        }
       }
     } else if (auto* quad = std::get_if<quad_t>(&object)) {
       if (quad->filled) {
