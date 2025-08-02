@@ -42,6 +42,8 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_vecViewOffset[0]"));
     client.base_player.aim_punch_angle =
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_vecPunchAngle"));
+    client.base_player.eye_angles =
+        netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_angEyeAngles[1]"));
   }
 
   {
