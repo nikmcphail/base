@@ -64,7 +64,7 @@ __forceinline void vector_add(const vector3_t& a, const vector3_t& b, vector3_t&
 
 __forceinline void vector_multiply(const vector3_t& a, float b, vector3_t& c) {
   c.x = a.x * b;
-  c.y = a.x * b;
+  c.y = a.y * b;
   c.z = a.z * b;
 }
 

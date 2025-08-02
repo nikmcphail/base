@@ -83,10 +83,12 @@ public:
 
     return false;
   }
+
   // ClientModeShared::OverrideView( CViewSetup *pSetup )
   void hooked_override_view(view_setup_t* setup) {
     client::g_hooks.override_view_hook.thiscall(this, setup);
   }
+
   // ClientModeShared::GetViewModelFOV( void )
   float hooked_get_viewmodel_fov() {
     return client::g_hooks.get_viewmodel_fov_hook.thiscall<float>(this);
