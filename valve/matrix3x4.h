@@ -47,5 +47,13 @@ struct matrix_3x4_t {
   float*       base() { return &values[0][0]; }
   const float* base() const { return &values[0][0]; }
 
+  bool is_zero() const {
+    for (int i = 0; i < 3; ++i)
+      for (int j = 0; j < 4; ++j)
+        if (values[i][j] != 0.0f)
+          return false;
+    return true;
+  }
+
   float values[3][4];
 };
