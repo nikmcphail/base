@@ -33,9 +33,10 @@ public:
   SafetyHookVm  paint_traverse_hook;
 
   SafetyHookVmt game_events_manager_hook;
-  SafetyHookVm  fire_event;
+  SafetyHookVm  fire_event_hook;
 
   SafetyHookInline cl_move_hook;
+  SafetyHookInline send_datagram_hook;
 
   bool initialize();
   void unload();

@@ -16,7 +16,7 @@ struct global_addresses_t {
 
   struct {
     struct {
-      uintptr_t cl_move, host_should_run;
+      uintptr_t cl_move, host_should_run, send_datagram;
     } functions;
   } engine;
 
