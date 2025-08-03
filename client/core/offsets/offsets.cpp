@@ -23,6 +23,8 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("C_BaseEntity"), HASH("m_bDormant"));
     client.base_entity.abs_origin =
         netvars.get_netvar_offset(HASH("C_BaseEntity"), HASH("m_vecAbsOrigin"));
+    client.base_entity.simulation_time =
+        netvars.get_netvar_offset(HASH("DT_BaseEntity"), HASH("m_flSimulationTime"));
   }
 
   { // client player
@@ -44,6 +46,12 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_vecPunchAngle"));
     client.base_player.eye_angles =
         netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_angEyeAngles[1]"));
+    client.base_player.sequence =
+        netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_nSequence"));
+    client.base_player.cycle =
+        netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_flCycle"));
+    client.base_player.pose_parameter =
+        netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_flPoseParameter"));
   }
 
   {

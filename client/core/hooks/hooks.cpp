@@ -127,6 +127,7 @@ public:
 
   // void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
   void hooked_frame_stage_notify(client_frame_stage_e current_stage) {
+    client::on_frame_stage_notify(current_stage);
     client::g_hooks.frame_stage_notify_hook.thiscall(this, current_stage);
   }
 };

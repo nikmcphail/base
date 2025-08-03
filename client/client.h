@@ -9,6 +9,7 @@
 #include "client/core/engine_prediction/engine_prediction.h"
 #include "client/core/drawing/drawing.h"
 #include "client/core/atlas/atlas.h"
+#include "client/core/lag_compensation/lag_compensation.h"
 
 #include <Windows.h>
 
@@ -27,6 +28,7 @@ namespace client {
   inline engine_prediction_t g_prediction;
   inline drawing_t           g_drawing;
   inline atlas_t             g_atlas;
+  inline lag_compensation_t  g_lag_compensation;
 
   inline HWND                   g_window;
   inline client_local_player_t* g_local_player;
@@ -43,4 +45,5 @@ namespace client {
   void on_cl_move();
   void on_level_shutdown();
   void on_paint();
+  void on_frame_stage_notify(int stage);
 } // namespace client

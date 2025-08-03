@@ -65,6 +65,7 @@ add_library(base SHARED
     client/core/drawing/drawing.cpp
     library/math.cpp
     client/core/atlas/atlas.cpp
+    client/core/lag_compensation/lag_compensation.cpp
 )
 
 if (imgui_ADDED)

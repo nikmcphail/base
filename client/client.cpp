@@ -7,6 +7,7 @@
 #include "valve/cusercmd.h"
 #include "valve/entities/client_local_player.h"
 #include "valve/client_state.h"
+#include "valve/client_frame_stage.h"
 
 #include "fmt/core.h"
 
@@ -134,4 +135,16 @@ void client::on_paint() {
   g_render.get_view_matrix();
 
   g_drawing.copy_to_intermediary();
+}
+
+void client::on_frame_stage_notify(int stage) {
+  switch (stage) {
+    case FRAME_NET_UPDATE_POSTDATAUPDATE_START: {
+      g_lag_compensation.on_frame_stage_notify();
+      break;
+    }
+
+    default:
+      break;
+  }
 }

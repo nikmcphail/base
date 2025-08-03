@@ -7,12 +7,13 @@ struct offsets_t {
 
   struct {
     struct {
-      uintptr_t origin, team_number, vec_mins, vec_maxs, move_type, dormant, abs_origin;
+      uintptr_t origin, team_number, vec_mins, vec_maxs, move_type, dormant, abs_origin,
+          simulation_time;
     } base_entity;
 
     struct {
       uintptr_t health, tick_base, life_state, flags, hitbox_set, flash_max_alpha, view_offset,
-          aim_punch_angle, eye_angles;
+          aim_punch_angle, eye_angles, sequence, cycle, pose_parameter;
     } base_player;
 
     struct {
