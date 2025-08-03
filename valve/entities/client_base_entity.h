@@ -138,7 +138,6 @@ public:
   }
 
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);
-  netvar_value_func(int, team_number, client::g_offsets.client.base_entity.team_number);
   netvar_value_func(vector3_t, vec_mins, client::g_offsets.client.base_entity.vec_mins);
   netvar_value_func(vector3_t, vec_maxs, client::g_offsets.client.base_entity.vec_maxs);
   netvar_value_func(int, hitbox_set, client::g_offsets.client.base_player.hitbox_set);

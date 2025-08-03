@@ -42,4 +42,5 @@ public:
   netvar_value_func(vector3_t, view_offset, client::g_offsets.client.base_player.view_offset);
   netvar_value_func(int, sequence, client::g_offsets.client.base_player.sequence);
   netvar_value_func(float, cycle, client::g_offsets.client.base_player.cycle);
+  netvar_value_func(int, team_number, client::g_offsets.client.base_player.team_number);
 };

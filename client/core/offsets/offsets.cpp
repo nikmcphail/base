@@ -11,8 +11,6 @@ bool offsets_t::get_offsets() {
   { // client entity
     client.base_entity.origin =
         netvars.get_netvar_offset(HASH("DT_BaseEntity"), HASH("m_vecOrigin"));
-    client.base_entity.team_number =
-        netvars.get_netvar_offset(HASH("DT_BaseEntity"), HASH("m_iTeamNum"));
     client.base_entity.vec_mins =
         netvars.get_netvar_offset(HASH("DT_BaseEntity"), HASH("m_vecMins"));
     client.base_entity.vec_maxs =
@@ -52,6 +50,8 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_flCycle"));
     client.base_player.pose_parameter =
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_flPoseParameter"));
+    client.base_player.team_number =
+        netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_iTeamNum"));
   }
 
   {
