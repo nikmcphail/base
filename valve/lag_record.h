@@ -2,6 +2,7 @@
 
 #include "valve/vector3.h"
 #include "valve/qangle.h"
+#include "valve/matrix3x4.h"
 
 #define MAX_LAYER_RECORDS  15
 #define MAXSTUDIOPOSEPARAM 24
@@ -38,6 +39,11 @@ public:
     simulation_time = -1;
     master_sequence = 0;
     master_cycle    = 0;
+    head_pos.initialize();
+
+    for (int i = 0; i < 128; i++) {
+      bones[i] = matrix_3x4_t();
+    }
 
     for (int i = 0; i < MAXSTUDIOPOSEPARAM; i++) {
       pose_parameters[i] = 0;
@@ -51,6 +57,11 @@ public:
     mins_pre_scaled = src.mins_pre_scaled;
     maxs_pre_scaled = src.maxs_pre_scaled;
     simulation_time = src.simulation_time;
+    head_pos        = src.head_pos;
+
+    for (int i = 0; i < 128; i++) {
+      bones[i] = src.bones[i];
+    }
 
     for (int layer_index = 0; layer_index < MAX_LAYER_RECORDS; ++layer_index) {
       layer_records[layer_index] = src.layer_records[layer_index];
@@ -74,4 +85,6 @@ public:
   int            master_sequence;
   float          master_cycle;
   float          pose_parameters[MAXSTUDIOPOSEPARAM];
+  vector3_t      head_pos;
+  matrix_3x4_t   bones[128];
 };

@@ -20,6 +20,5 @@ public:
   void clear_history();
 
   std::deque<lag_record_t> player_track[64]{};
-  client_player_t*         current;
   float                    teleport_distance_sqr;
 };

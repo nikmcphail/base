@@ -49,9 +49,13 @@ void lag_compensation_t::on_frame_stage_notify() {
 
     record.simulation_time = player->simulation_time();
     record.angles          = player->eye_angles();
-    record.origin          = player->origin();
+    record.origin          = player->abs_origin();
     record.mins_pre_scaled = player->vec_mins();
     record.maxs_pre_scaled = player->vec_maxs();
+    record.head_pos        = player->get_hitbox_pos(HITBOX_HEAD);
+
+    player->setup_bones(record.bones, 127, BONE_USED_BY_ANYTHING,
+                        client::g_interfaces.global_vars->cur_time);
 
     for (int j = 0; j < MAX_LAYER_RECORDS; ++j) {
       if (animation_layer_t* current_layer = player->get_anim_overlay(j)) {
@@ -69,8 +73,6 @@ void lag_compensation_t::on_frame_stage_notify() {
       record.pose_parameters[k] = player->get_pose_parameter(k);
     }
   }
-
-  current = nullptr;
 }
 
 void lag_compensation_t::clear_history() {
