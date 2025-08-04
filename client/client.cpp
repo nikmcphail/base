@@ -109,6 +109,7 @@ void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
     return;
 
   g_prediction.update();
+  g_prediction.store_old_global_variables();
   g_prediction.start_prediction(cmd);
 
   g_prediction.finish_prediction();

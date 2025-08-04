@@ -20,6 +20,8 @@ namespace math {
   void angle_vectors(const qangle_t& from, vector3_t* forward, vector3_t* right, vector3_t* up);
   void normalize_angles(qangle_t& angles);
   void clamp_angles(qangle_t& angles);
-  float ticks_to_time(int ticks);
-  int   time_to_ticks(float time);
+  float    ticks_to_time(int ticks);
+  int      time_to_ticks(float time);
+  qangle_t calc_angle(const vector3_t& from, const vector3_t& to);
+  void     vector_angles(const vector3_t& forward, qangle_t& angles);
 }; // namespace math

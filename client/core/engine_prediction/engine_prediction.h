@@ -12,7 +12,8 @@ public:
   int         old_tickcount{};
   int         old_flags{};
 
-  void start_prediction(usercmd_t* cmd);
+  void store_old_global_variables();
+  void start_prediction(usercmd_t* cmd, bool first = true);
   void finish_prediction();
   void update();
   void restore();

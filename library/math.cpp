@@ -117,3 +117,35 @@ void math::angle_vectors(const qangle_t& from, vector3_t* forward, vector3_t* ri
     up->z = cr * cp;
   }
 }
+
+void math::vector_angles(const vector3_t& forward, qangle_t& angles) {
+  float tmp, yaw, pitch;
+
+  if (forward[1] == 0 && forward[0] == 0) {
+    yaw = 0;
+    if (forward[2] > 0)
+      pitch = 270;
+    else
+      pitch = 90;
+  } else {
+    yaw = (radian_to_degrees(atan2(forward[1], forward[0])));
+    if (yaw < 0)
+      yaw += 360;
+
+    tmp   = sqrtf(forward[0] * forward[0] + forward[1] * forward[1]);
+    pitch = (radian_to_degrees(atan2(-forward[2], tmp)));
+    if (pitch < 0)
+      pitch += 360;
+  }
+
+  angles[0] = pitch;
+  angles[1] = yaw;
+  angles[2] = 0;
+}
+
+qangle_t math::calc_angle(const vector3_t& from, const vector3_t& to) {
+  vector3_t delta = to - from;
+  qangle_t  angles;
+  vector_angles(delta, angles);
+  return angles;
+}
