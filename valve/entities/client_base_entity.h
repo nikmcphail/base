@@ -146,4 +146,6 @@ public:
   netvar_value_func(vector3_t, abs_origin, client::g_offsets.client.base_entity.abs_origin);
   netvar_value_func(float, simulation_time,
                     client::g_offsets.client.base_entity.simulation_time);
+
+  template <typename T> T* as() { return reinterpret_cast<T*>(this); }
 };

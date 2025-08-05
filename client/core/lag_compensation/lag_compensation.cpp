@@ -18,6 +18,9 @@ void lag_compensation_t::on_frame_stage_notify() {
   int dead_time         = client::g_interfaces.global_vars->cur_time - 1.0f;
 
   for (int i = 1; i <= 64; i++) {
+    if (i == client::g_interfaces.engine_client->get_local_player_index())
+      continue;
+
     client_player_t* player =
         (client_player_t*)(client::g_interfaces.entity_list->get_client_entity(i));
 
