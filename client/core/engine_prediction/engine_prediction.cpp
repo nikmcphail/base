@@ -17,8 +17,13 @@ inline usercmd_t*& set_command(client_player_t* player) {
 }
 
 void engine_prediction_t::store_old_global_variables() {
+  if (!client::g_local_player)
+    return;
+
   old_frametime = client::g_interfaces.global_vars->frame_time;
   old_curtime   = client::g_interfaces.global_vars->cur_time;
+  old_tickbase  = client::g_local_player->tick_base();
+  old_tickcount = client::g_interfaces.global_vars->tick_count;
 }
 
 void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
@@ -33,7 +38,6 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
     memset(&move_data, 0, sizeof(move_data_t));
 
   set_command(client::g_local_player) = cmd;
-#undef max
   cmd->random_seed =
       (md5::pseudo_random(cmd->command_number) & std::numeric_limits<int>::max());
   client::g_local_player->set_prediction_random_seed(cmd);
@@ -48,6 +52,7 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
       client::g_local_player->tick_base() * client::g_interfaces.global_vars->interval_per_tick;
   client::g_interfaces.global_vars->frame_time =
       client::g_interfaces.global_vars->interval_per_tick;
+  client::g_interfaces.global_vars->tick_count = client::g_local_player->tick_base();
 
   client::g_interfaces.prediction->in_prediction        = true;
   client::g_interfaces.prediction->first_time_predicted = false;
@@ -76,10 +81,12 @@ void engine_prediction_t::finish_prediction() {
 
   client::g_interfaces.global_vars->cur_time   = old_curtime;
   client::g_interfaces.global_vars->frame_time = old_frametime;
+  client::g_interfaces.global_vars->tick_count = old_tickcount;
 
   client::g_local_player->set_prediction_random_seed(nullptr);
   *client::g_interfaces.prediction_player = nullptr;
   client::g_interfaces.move_helper->set_host(nullptr);
+  client::g_local_player->tick_base() = old_tickbase;
 }
 
 void engine_prediction_t::update() {

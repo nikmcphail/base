@@ -9,6 +9,7 @@ public:
   move_data_t move_data{};
   float       old_curtime{};
   float       old_frametime{};
+  int         old_tickbase{};
   int         old_tickcount{};
   int         old_flags{};
 
