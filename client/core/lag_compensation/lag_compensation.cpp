@@ -24,7 +24,7 @@ void lag_compensation_t::on_frame_stage_notify() {
     client_player_t* player =
         (client_player_t*)(client::g_interfaces.entity_list->get_client_entity(i));
 
-    auto& track = player_track[i - 1];
+    auto& track = player_track[player];
 
     if (!player || !player->is_player() || !player->is_alive() || player->dormant()) {
       if (!track.empty())
@@ -78,8 +78,4 @@ void lag_compensation_t::on_frame_stage_notify() {
   }
 }
 
-void lag_compensation_t::clear_history() {
-  for (int i = 0; i < 64; i++) {
-    player_track[i].clear();
-  }
-}
+void lag_compensation_t::clear_history() { player_track.clear(); }

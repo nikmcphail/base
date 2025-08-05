@@ -1,7 +1,11 @@
 #pragma once
 
 #include "valve/lag_record.h"
+
 #include <deque>
+#include <unordered_map>
+
+class client_base_entity_t;
 
 #define LC_NONE  0
 #define LC_ALIVE (1 << 0)
@@ -19,6 +23,6 @@ public:
   void on_frame_stage_notify();
   void clear_history();
 
-  std::deque<lag_record_t> player_track[64]{};
-  float                    teleport_distance_sqr;
+  std::unordered_map<client_base_entity_t*, std::deque<lag_record_t>> player_track = {};
+  float                                                               teleport_distance_sqr;
 };
