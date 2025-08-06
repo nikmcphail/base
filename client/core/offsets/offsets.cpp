@@ -46,8 +46,18 @@ bool offsets_t::get_offsets() {
   }
 
   { // base weapon
-    client.base_weapon.clip =
+    client.base_weapon.clip_one =
         netvars.get_netvar_offset(HASH("DT_BaseCombatWeapon"), HASH("m_iClip1"));
+    client.base_weapon.clip_two =
+        netvars.get_netvar_offset(HASH("DT_BaseCombatWeapon"), HASH("m_iClip2"));
+    client.base_weapon.primary_ammo_type =
+        netvars.get_netvar_offset(HASH("DT_BaseCombatWeapon"), HASH("m_iPrimaryAmmoType"));
+    client.base_weapon.secondary_ammo_type =
+        netvars.get_netvar_offset(HASH("DT_BaseCombatWeapon"), HASH("m_iSecondaryAmmoType"));
+    client.base_weapon.next_primary_attack =
+        netvars.get_netvar_offset(HASH("DT_BaseCombatWeapon"), HASH("m_flNextPrimaryAttack"));
+    client.base_weapon.next_secondary_attack =
+        netvars.get_netvar_offset(HASH("DT_BaseCombatWeapon"), HASH("m_flNextSecondaryAttack"));
   }
 
   { // base animating

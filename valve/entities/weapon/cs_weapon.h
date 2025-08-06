@@ -1,8 +1,6 @@
 #pragma once
 
-#include "library/utils.h"
-
-#include "client_base_entity.h"
+#include "base_combat_weapon.h"
 
 enum weapon_id_e {
   WEAPON_NONE = 0,
@@ -47,50 +45,10 @@ enum weapon_id_e {
   WEAPON_MAX, // number of weapons weapon index
 };
 
-enum weapon_type_e {
-  WEAPONTYPE_KNIFE = 0,
-  WEAPONTYPE_PISTOL,
-  WEAPONTYPE_SUBMACHINEGUN,
-  WEAPONTYPE_RIFLE,
-  WEAPONTYPE_SHOTGUN,
-  WEAPONTYPE_SNIPER_RIFLE,
-  WEAPONTYPE_MACHINEGUN,
-  WEAPONTYPE_C4,
-  WEAPONTYPE_GRENADE,
-  WEAPONTYPE_UNKNOWN
-};
-
-class weapon_info_t {
+class cs_weapon_t : public base_combat_weapon_t {
 public:
-  char pad_0000[1836];
-  int  type;
-  bool full_auto;
-};
-
-class base_weapon_t {
-
-  template <typename T> inline T get_ptr_at_offset(uint32_t offset) noexcept {
-    return reinterpret_cast<T>(reinterpret_cast<uintptr_t>(this) + offset);
-  }
-
-  template <typename T> inline T& get_value_at_offset(uint32_t offset) noexcept {
-    return *get_ptr_at_offset<T*>(offset);
-  }
-
-#define netvar_value_func(type, name, offset)                                                  \
-  type& name() noexcept { return get_value_at_offset<type>(offset); }
-#define get_ptr_value_func(type, name, offset)                                                 \
-  type name() noexcept { return get_ptr_at_offset<type>(offset); }
-
-public:
-  weapon_info_t& get_weapon_data() {
-    typedef weapon_info_t& (*get_weapon_data_func)(base_weapon_t*);
-    return ((get_weapon_data_func)client::g_addresses.client.functions.get_weapon_data)(this);
-  }
-
   weapon_id_e get_weapon_id() {
-    return utils::get_virtual_function<weapon_id_e(__thiscall*)(base_weapon_t*)>(this,
-                                                                                 371)(this);
+    return utils::get_virtual_function<weapon_id_e(__fastcall*)(void*)>(this, 371)(this);
   }
 
   const char* get_weapon_name() noexcept {
@@ -167,6 +125,4 @@ public:
         return "Unknown";
     }
   }
-
-  netvar_value_func(int, clip, client::g_offsets.client.base_weapon.clip);
 };

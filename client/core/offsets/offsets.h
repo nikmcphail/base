@@ -16,7 +16,8 @@ struct offsets_t {
     } base_player;
 
     struct {
-      uintptr_t clip;
+      uintptr_t clip_one, clip_two, primary_ammo_type, secondary_ammo_type, next_primary_attack,
+          next_secondary_attack;
     } base_weapon;
 
     struct {

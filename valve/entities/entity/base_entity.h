@@ -11,6 +11,8 @@ class base_entity_t : public client_entity_t {
   friend class base_player_t;
   friend class base_animating_t;
   friend class cs_player_t;
+  friend class base_combat_weapon_t;
+  friend class cs_weapon_t;
 
   template <typename T> inline T get_ptr_at_offset(uint32_t offset) noexcept {
     return reinterpret_cast<T>(reinterpret_cast<uintptr_t>(this) + offset);
