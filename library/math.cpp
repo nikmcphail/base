@@ -149,3 +149,5 @@ qangle_t math::calc_angle(const vector3_t& from, const vector3_t& to) {
   vector_angles(delta, angles);
   return angles;
 }
+
+float math::get_fov(const qangle_t& from, const qangle_t& to) { return (to - from).length(); }

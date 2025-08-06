@@ -24,4 +24,5 @@ namespace math {
   int      time_to_ticks(float time);
   qangle_t calc_angle(const vector3_t& from, const vector3_t& to);
   void     vector_angles(const vector3_t& forward, qangle_t& angles);
+  float    get_fov(const qangle_t& from, const qangle_t& to);
 }; // namespace math
