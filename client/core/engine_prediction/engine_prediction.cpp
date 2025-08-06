@@ -22,7 +22,6 @@ void engine_prediction_t::store_old_global_variables() {
 
   old_frametime = client::g_interfaces.global_vars->frame_time;
   old_curtime   = client::g_interfaces.global_vars->cur_time;
-  old_tickbase  = client::g_local_player->tick_base();
   old_tickcount = client::g_interfaces.global_vars->tick_count;
 }
 
@@ -43,7 +42,7 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
   client::g_local_player->set_prediction_random_seed(cmd);
   *client::g_interfaces.prediction_player = client::g_local_player;
 
-  old_frametime = client::g_interfaces.global_vars->frame_time;
+  old_tickbase = client::g_local_player->tick_base();
 
   const bool old_first_time_predicted = client::g_interfaces.prediction->first_time_predicted;
   const bool old_in_prediction        = client::g_interfaces.prediction->in_prediction;

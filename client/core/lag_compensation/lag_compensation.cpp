@@ -26,7 +26,8 @@ void lag_compensation_t::on_frame_stage_notify() {
 
     auto& track = player_track[player];
 
-    if (!player || !player->is_player() || !player->is_alive() || player->dormant()) {
+    if (!player || !player->is_player() || !player->is_alive() || player->dormant() ||
+        player->team_number() == client::g_local_player->team_number()) {
       if (!track.empty())
         track.clear();
       continue;
@@ -56,6 +57,7 @@ void lag_compensation_t::on_frame_stage_notify() {
     record.mins_pre_scaled = player->vec_mins();
     record.maxs_pre_scaled = player->vec_maxs();
     record.head_pos        = player->get_hitbox_pos(HITBOX_HEAD);
+    record.tick            = client::g_interfaces.global_vars->tick_count;
 
     player->setup_bones(record.bones, 127, BONE_USED_BY_ANYTHING,
                         client::g_interfaces.global_vars->cur_time);

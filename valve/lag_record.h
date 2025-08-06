@@ -40,6 +40,7 @@ public:
     master_sequence = 0;
     master_cycle    = 0;
     head_pos.initialize();
+    tick = 0;
 
     for (int i = 0; i < 128; i++) {
       bones[i] = matrix_3x4_t();
@@ -58,6 +59,7 @@ public:
     maxs_pre_scaled = src.maxs_pre_scaled;
     simulation_time = src.simulation_time;
     head_pos        = src.head_pos;
+    tick            = src.tick;
 
     for (int i = 0; i < 128; i++) {
       bones[i] = src.bones[i];
@@ -87,4 +89,5 @@ public:
   float          pose_parameters[MAXSTUDIOPOSEPARAM];
   vector3_t      head_pos;
   matrix_3x4_t   bones[128];
+  int            tick;
 };
