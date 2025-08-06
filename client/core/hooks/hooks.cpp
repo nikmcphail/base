@@ -11,6 +11,7 @@
 #include "valve/model_render_info.h"
 #include "valve/panel.h"
 #include "valve/game_event.h"
+#include "valve/net_channel.h"
 
 #include <fmt/core.h>
 
@@ -127,6 +128,7 @@ public:
 
   // void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
   void hooked_frame_stage_notify(client_frame_stage_e current_stage) {
+    client::on_frame_stage_notify(current_stage);
     client::g_hooks.frame_stage_notify_hook.thiscall(this, current_stage);
   }
 };
@@ -174,16 +176,21 @@ class hooked_game_events_manager {
 public:
   // bool CGameEventManager::FireEvent( IGameEvent* event, bool bServerOnly)
   bool hooked_fire_event(game_event_t* event, bool dont_broadcast) {
-    return client::g_hooks.fire_event.thiscall<bool>(this, event, dont_broadcast);
+    return client::g_hooks.fire_event_hook.thiscall<bool>(this, event, dont_broadcast);
   }
 };
 
 // =====================================================================================================
 //                                           detour functions (sig)
 
-// void CL_Move(float accumulated_extra_samples, bool bFinalTick )
+// void CL_Move( float accumulated_extra_samples, bool bFinalTick )
 void hooked_cl_move(float accumulated_extra_samples, bool final_tick) {
   client::g_hooks.cl_move_hook.fastcall(accumulated_extra_samples, final_tick);
+}
+
+// int CNetChan::SendDataGram( bf_write* datagram )
+__int64 hooked_send_datagram(net_channel_t* _thisptr, void* datagram) {
+  return client::g_hooks.send_datagram_hook.fastcall<__int64>(_thisptr, datagram);
 }
 
 // =====================================================================================================
@@ -247,7 +254,7 @@ bool hooks_t::initialize() {
   { // game events manager hooks
     hook_vmt(this->game_events_manager_hook, client::g_interfaces.game_events_manager,
              "game events manager");
-    hook_vm(this->game_events_manager_hook, this->fire_event,
+    hook_vm(this->game_events_manager_hook, this->fire_event_hook,
             &hooked_game_events_manager::hooked_fire_event, 8, "fire event");
   }
 
@@ -255,6 +262,8 @@ bool hooks_t::initialize() {
   { // inline hooks
     hook_inline(this->cl_move_hook, &hooked_cl_move,
                 (void*)client::g_addresses.engine.functions.cl_move, "cl move");
+    hook_inline(this->send_datagram_hook, &hooked_send_datagram,
+                (void*)client::g_addresses.engine.functions.send_datagram, "send datagram");
   }
 
   client::g_console.print("\thooks initialized", console_color_gray);

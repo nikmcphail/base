@@ -16,5 +16,12 @@ namespace math {
 
   bool world_to_screen(const vector3_t& origin, vector2_t& screen_position,
                        view_matrix_t& matrix);
-  void angle_vectors(const qangle_t& angles, vector3_t* forward);
+  void angle_vector(const qangle_t& angles, vector3_t* forward);
+  void angle_vectors(const qangle_t& from, vector3_t* forward, vector3_t* right, vector3_t* up);
+  void normalize_angles(qangle_t& angles);
+  void clamp_angles(qangle_t& angles);
+  float    ticks_to_time(int ticks);
+  int      time_to_ticks(float time);
+  qangle_t calc_angle(const vector3_t& from, const vector3_t& to);
+  void     vector_angles(const vector3_t& forward, qangle_t& angles);
 }; // namespace math

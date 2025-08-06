@@ -9,10 +9,12 @@ public:
   move_data_t move_data{};
   float       old_curtime{};
   float       old_frametime{};
+  int         old_tickbase{};
   int         old_tickcount{};
   int         old_flags{};
 
-  void start_prediction(usercmd_t* cmd);
+  void store_old_global_variables();
+  void start_prediction(usercmd_t* cmd, bool first = true);
   void finish_prediction();
   void update();
   void restore();

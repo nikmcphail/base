@@ -15,7 +15,7 @@ public:
   float length_sqr() const;
 
   float     operator[](int i) const;
-  float     operator[](int i);
+  float&    operator[](int i);
   bool      operator==(const qangle_t& v) const;
   bool      operator!=(const qangle_t& v) const;
   qangle_t& operator+=(const qangle_t& v);
@@ -51,7 +51,7 @@ inline float qangle_t::length_sqr() const { return x * x + y * y + z * z; }
 
 inline float qangle_t::operator[](int i) const { return ((float*)this)[i]; }
 
-inline float qangle_t::operator[](int i) { return ((float*)this)[i]; }
+inline float& qangle_t::operator[](int i) { return ((float*)this)[i]; }
 
 inline bool qangle_t::operator==(const qangle_t& v) const {
   return (v.x == x) && (v.y == y) && (v.z == z);
