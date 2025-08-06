@@ -4,8 +4,11 @@
 
 #include "valve/global_vars_base.h"
 #include "valve/cvar.h"
-#include "valve/entities/client_local_player.h"
+#include "valve/entities/player/cs_player.h"
 #include "valve/animation_layer.h"
+#include "valve/bone.h"
+#include "valve/engine_client.h"
+#include "valve/entity_list.h"
 
 void lag_compensation_t::on_frame_stage_notify() {
 
@@ -21,13 +24,11 @@ void lag_compensation_t::on_frame_stage_notify() {
     if (i == client::g_interfaces.engine_client->get_local_player_index())
       continue;
 
-    client_player_t* player =
-        (client_player_t*)(client::g_interfaces.entity_list->get_client_entity(i));
+    cs_player_t* player = cs_player_t::get_cs_player(i);
 
     auto& track = player_track[player];
 
-    if (!player || !player->is_player() || !player->is_alive() || player->dormant() ||
-        player->team_number() == client::g_local_player->team_number()) {
+    if (!player->is_valid() || player->team_number() == client::g_local_player->team_number()) {
       if (!track.empty())
         track.clear();
       continue;

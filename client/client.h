@@ -14,7 +14,7 @@
 #include <Windows.h>
 
 class usercmd_t;
-class client_local_player_t;
+class cs_player_t;
 
 namespace client {
   inline bool attached{};
@@ -30,8 +30,8 @@ namespace client {
   inline atlas_t             g_atlas;
   inline lag_compensation_t  g_lag_compensation;
 
-  inline HWND                   g_window;
-  inline client_local_player_t* g_local_player;
+  inline HWND         g_window;
+  inline cs_player_t* g_local_player;
 
   bool initialize();
   bool should_unload();

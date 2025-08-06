@@ -7,17 +7,21 @@ struct offsets_t {
 
   struct {
     struct {
-      uintptr_t origin, vec_mins, vec_maxs, move_type, dormant, abs_origin, simulation_time;
+      uintptr_t origin, vec_mins, vec_maxs, move_type, abs_origin, simulation_time;
     } base_entity;
 
     struct {
-      uintptr_t health, tick_base, life_state, flags, hitbox_set, flash_max_alpha, view_offset,
-          aim_punch_angle, eye_angles, sequence, cycle, pose_parameter, team_number;
+      uintptr_t health, tick_base, life_state, flags, flash_max_alpha, view_offset, eye_angles,
+          team_number, velocity;
     } base_player;
 
     struct {
       uintptr_t clip;
     } base_weapon;
+
+    struct {
+      uintptr_t sequence, hitbox_set, cycle, pose_parameter;
+    } base_animating;
 
   } client;
 
