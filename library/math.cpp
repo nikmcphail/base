@@ -1,5 +1,7 @@
 #include "math.h"
 
+#include <random>
+
 #include "valve/vector3.h"
 #include "valve/view_matrix.h"
 #include "valve/vector2.h"
@@ -7,6 +9,7 @@
 #include "valve/matrix3x4.h"
 #include "valve/qangle.h"
 #include "valve/global_vars_base.h"
+#include "valve/cusercmd.h"
 
 #include "client/client.h"
 
@@ -151,3 +154,32 @@ qangle_t math::calc_angle(const vector3_t& from, const vector3_t& to) {
 }
 
 float math::get_fov(const qangle_t& from, const qangle_t& to) { return (to - from).length(); }
+
+void math::movement_fix(qangle_t old_angles, usercmd_t* cmd, float old_forward,
+                        float old_sidemove) {
+  float delta;
+  float f1;
+  float f2;
+
+  if (old_angles.y < 0.f)
+    f1 = 360.0f + old_angles.y;
+  else
+    f1 = old_angles.y;
+
+  if (cmd->view_angles.y < 0.0f)
+    f2 = 360.0f + cmd->view_angles.y;
+  else
+    f2 = cmd->view_angles.y;
+
+  if (f2 < f1)
+    delta = abs(f2 - f1);
+  else
+    delta = 360.0f - abs(f1 - f2);
+
+  delta = 360.0f - delta;
+
+  cmd->forward_move = cos(degrees_to_radian(delta)) * old_forward +
+                      cos(degrees_to_radian(delta + 90.f)) * old_sidemove;
+  cmd->side_move = sin(degrees_to_radian(delta)) * old_forward +
+                   sin(degrees_to_radian(delta + 90.f)) * old_sidemove;
+}
