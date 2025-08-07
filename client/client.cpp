@@ -98,7 +98,7 @@ void client::on_present() {
 bool client::get_local_player_global() {
   g_local_player = cs_player_t::get_local_player();
 
-  if (!g_local_player->is_local_player())
+  if (!g_local_player || !g_local_player->is_local_player())
     return false;
 
   return true;
