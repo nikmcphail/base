@@ -6,6 +6,7 @@
 class usercmd_t;
 class matrix_3x4_t;
 class vector3_t;
+class model_t;
 
 class base_entity_t : public client_entity_t {
   friend class base_player_t;
@@ -33,6 +34,7 @@ public:
   bool                  is_player();
   bool           setup_bones(matrix_3x4_t* bone_to_world_out, int max_bones, int bone_mask,
                              float current_time);
+  const model_t* get_model();
   vector3_t      get_eye_position();
   base_entity_t* get_observer_target();
   vector3_t      get_hitbox_pos(int id);

@@ -69,6 +69,7 @@ add_library(base SHARED
     valve/entities/entity/base_entity.cpp
     valve/entities/player/base_player.cpp
     valve/entities/player/cs_player.cpp
+    valve/entities/entity/base_animating.cpp
 )
 
 if (imgui_ADDED)

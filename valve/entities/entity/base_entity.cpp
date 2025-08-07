@@ -33,6 +33,8 @@ bool base_entity_t::setup_bones(matrix_3x4_t* bone_to_world_out, int max_bones, 
                                               current_time);
 }
 
+const model_t* base_entity_t::get_model() { return get_client_renderable()->get_model(); }
+
 base_entity_t* base_entity_t::get_observer_target() {
   return utils::get_virtual_function<base_entity_t*(__fastcall*)(void*)>(this, 243)(this);
 }
