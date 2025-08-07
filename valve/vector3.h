@@ -20,6 +20,8 @@ public:
 
   float               length() const;
   __forceinline float length_sqr();
+  float               length_2d(void) const;
+  float               length_2d_sqr(void) const;
 
   bool  is_zero(float tolerance = 0.01f) const;
   float dot(const vector3_t& other);
@@ -126,6 +128,8 @@ inline const vector2_t& vector3_t::as_vector_2d() const { return *(const vector2
 
 inline float vector3_t::length() const { return (float)std::sqrtf(x * x + y * y + z * z); }
 inline float vector3_t::length_sqr() { return (x * x + y * y + z * z); }
+inline float vector3_t::length_2d(void) const { return (float)std::sqrtf(x * x + y * y); }
+inline float vector3_t::length_2d_sqr(void) const { return (x * x + y * y); }
 
 inline bool vector3_t::is_zero(float tolerance) const {
   return (x > -tolerance && x < tolerance && y > -tolerance && y < tolerance &&
