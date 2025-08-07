@@ -30,6 +30,8 @@ bool global_addresses_t::collect_addresses() {
         "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC ? 44 8B 91 ? ? ? ? 49 8B F9");
     this->client.functions.get_anim_overlay =
         client_dll.find_pattern_in_memory("8B C2 48 6B C0");
+    this->client.functions.weapon_id_to_alias =
+        client_dll.find_pattern_in_memory("4C 8D 05 ? ? ? ? 33 D2 49 8B C0");
   }
 
   {

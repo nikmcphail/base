@@ -4,7 +4,7 @@
 
 class cs_weapon_data_t {
 public:
-  char pad_0000[0x0728]; // 0x0000
+  char pad_0000[0x0728];
 
   float max_speed; // 0x0728
   char  pad_072C[0x018C];
