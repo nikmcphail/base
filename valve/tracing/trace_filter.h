@@ -1,6 +1,6 @@
 #pragma once
 
-class client_base_entity_t;
+class base_entity_t;
 
 enum class trace_type_t {
   TRACE_EVERYTHING = 0,
@@ -10,19 +10,19 @@ enum class trace_type_t {
 };
 
 class i_trace_filter_t {
-  virtual bool         should_hit_entity(client_base_entity_t* ent, int contents_mask) = 0;
-  virtual trace_type_t get_type() const                                                = 0;
+  virtual bool         should_hit_entity(base_entity_t* ent, int contents_mask) = 0;
+  virtual trace_type_t get_type() const                                         = 0;
 };
 
 class trace_filter_t : public i_trace_filter_t {
-  virtual bool should_hit_entity(client_base_entity_t* ent, int contents_mask) {
+  virtual bool should_hit_entity(base_entity_t* ent, int contents_mask) {
     return ent != skip_entity;
   }
 
   virtual trace_type_t get_type() const { return trace_type_t::TRACE_EVERYTHING; }
 
 public:
-  trace_filter_t(client_base_entity_t* skip) : skip_entity(skip) {}
+  trace_filter_t(base_entity_t* skip) : skip_entity(skip) {}
 
-  client_base_entity_t* skip_entity;
+  base_entity_t* skip_entity;
 };

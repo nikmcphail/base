@@ -10,7 +10,7 @@
 #define DISPSURF_FLAG_SURFPROP1 (1 << 3)
 #define DISPSURF_FLAG_SURFPROP2 (1 << 4)
 
-class client_base_entity_t;
+class base_entity_t;
 
 struct plane_t {
   vector3_t normal;
@@ -27,20 +27,20 @@ struct surface_t {
 };
 
 struct trace_t {
-  vector3_t             start{};
-  vector3_t             end{};
-  plane_t               plane{};
-  float                 fraction            = 0.f;
-  int                   contents            = 0;
-  unsigned short        disp_flags          = 0;
-  bool                  all_solid           = false;
-  bool                  start_solid         = false;
-  float                 fraction_left_solid = 0.f;
-  surface_t             surface{};
-  int                   hit_group    = 0;
-  short                 physics_bone = 0;
-  client_base_entity_t* entity       = nullptr;
-  int                   hit_box      = 0;
+  vector3_t      start{};
+  vector3_t      end{};
+  plane_t        plane{};
+  float          fraction            = 0.f;
+  int            contents            = 0;
+  unsigned short disp_flags          = 0;
+  bool           all_solid           = false;
+  bool           start_solid         = false;
+  float          fraction_left_solid = 0.f;
+  surface_t      surface{};
+  int            hit_group    = 0;
+  short          physics_bone = 0;
+  base_entity_t* entity       = nullptr;
+  int            hit_box      = 0;
 
   bool did_hit() const { return fraction < 1.f || all_solid || start_solid; }
 };
