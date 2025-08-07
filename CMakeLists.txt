@@ -66,6 +66,10 @@ add_library(base SHARED
     library/math.cpp
     client/core/atlas/atlas.cpp
     client/core/lag_compensation/lag_compensation.cpp
+    valve/entities/entity/base_entity.cpp
+    valve/entities/player/base_player.cpp
+    valve/entities/player/cs_player.cpp
+    valve/entities/entity/base_animating.cpp
 )
 
 if (imgui_ADDED)

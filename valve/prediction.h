@@ -4,7 +4,7 @@
 
 #include "valve/qangle.h"
 
-class client_player_t;
+class base_player_t;
 class usercmd_t;
 class move_helper_t;
 class move_data_t;
@@ -16,21 +16,21 @@ public:
                                                                                        ang);
   }
 
-  void run_command(client_player_t* player, usercmd_t* cmd, move_helper_t* move_helper) {
-    utils::get_virtual_function<void(__thiscall*)(prediction_t*, client_player_t*, usercmd_t*,
+  void run_command(base_player_t* player, usercmd_t* cmd, move_helper_t* move_helper) {
+    utils::get_virtual_function<void(__thiscall*)(prediction_t*, base_player_t*, usercmd_t*,
                                                   move_helper_t*)>(this, 17)(this, player, cmd,
                                                                              move_helper);
   }
 
-  void setup_move(client_player_t* player, usercmd_t* cmd, move_helper_t* move_helper,
+  void setup_move(base_player_t* player, usercmd_t* cmd, move_helper_t* move_helper,
                   move_data_t* move_data) {
-    utils::get_virtual_function<void(__thiscall*)(prediction_t*, client_player_t*, usercmd_t*,
+    utils::get_virtual_function<void(__thiscall*)(prediction_t*, base_player_t*, usercmd_t*,
                                                   move_helper_t*, move_data_t*)>(this, 18)(
         this, player, cmd, move_helper, move_data);
   }
 
-  void finish_move(client_player_t* player, usercmd_t* cmd, move_data_t* move_data) {
-    utils::get_virtual_function<void(__thiscall*)(prediction_t*, client_player_t*, usercmd_t*,
+  void finish_move(base_player_t* player, usercmd_t* cmd, move_data_t* move_data) {
+    utils::get_virtual_function<void(__thiscall*)(prediction_t*, base_player_t*, usercmd_t*,
                                                   move_data_t*)>(this, 19)(this, player, cmd,
                                                                            move_data);
   }

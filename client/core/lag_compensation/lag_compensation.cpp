@@ -4,8 +4,11 @@
 
 #include "valve/global_vars_base.h"
 #include "valve/cvar.h"
-#include "valve/entities/client_local_player.h"
+#include "valve/entities/player/cs_player.h"
 #include "valve/animation_layer.h"
+#include "valve/bone.h"
+#include "valve/engine_client.h"
+#include "valve/entity_list.h"
 
 void lag_compensation_t::on_frame_stage_notify() {
 
@@ -21,12 +24,11 @@ void lag_compensation_t::on_frame_stage_notify() {
     if (i == client::g_interfaces.engine_client->get_local_player_index())
       continue;
 
-    client_player_t* player =
-        (client_player_t*)(client::g_interfaces.entity_list->get_client_entity(i));
+    cs_player_t* player = cs_player_t::get_cs_player(i);
 
     auto& track = player_track[player];
 
-    if (!player || !player->is_player() || !player->is_alive() || player->dormant() ||
+    if (!player || !player->is_valid() ||
         player->team_number() == client::g_local_player->team_number()) {
       if (!track.empty())
         track.clear();
@@ -81,3 +83,33 @@ void lag_compensation_t::on_frame_stage_notify() {
 }
 
 void lag_compensation_t::clear_history() { player_track.clear(); }
+
+float lag_compensation_t::get_lerp_time() {
+  static auto cl_interp       = client::g_interfaces.cvar->find_var("cl_interp");
+  static auto cl_interp_ratio = client::g_interfaces.cvar->find_var("cl_interp_ratio");
+  static auto sv_client_min_interp_ratio =
+      client::g_interfaces.cvar->find_var("sv_client_min_interp_ratio");
+  static auto sv_client_max_interp_ratio =
+      client::g_interfaces.cvar->find_var("sv_client_max_interp_ratio");
+  static auto cl_updaterate    = client::g_interfaces.cvar->find_var("cl_updaterate");
+  static auto sv_minupdaterate = client::g_interfaces.cvar->find_var("sv_minupdaterate");
+  static auto sv_maxupdaterate = client::g_interfaces.cvar->find_var("sv_maxupdaterate");
+
+  auto interp           = cl_interp->value.float_value;
+  auto interp_ratio     = cl_interp_ratio->value.float_value;
+  auto min_interp_ratio = sv_client_min_interp_ratio->value.float_value;
+  auto max_interp_ratio = sv_client_max_interp_ratio->value.float_value;
+  auto update_rate      = cl_updaterate->value.int_value;
+  auto min_update_rate  = sv_minupdaterate->value.int_value;
+  auto max_update_rate  = sv_maxupdaterate->value.int_value;
+
+  auto clamp_interp_ratio = std::clamp(interp_ratio, min_interp_ratio, max_interp_ratio);
+  auto clamp_update_rate  = std::clamp(update_rate, min_update_rate, max_update_rate);
+
+  auto lerp = clamp_interp_ratio / static_cast<float>(clamp_update_rate);
+
+  if (lerp <= interp)
+    lerp = interp;
+
+  return lerp;
+}

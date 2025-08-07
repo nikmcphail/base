@@ -2,7 +2,7 @@
 
 #include "valve/cusercmd.h"
 #include "valve/move_data.h"
-#include "valve/entities/client_local_player.h"
+#include "valve/entities/player/cs_player.h"
 #include "client/client.h"
 #include "valve/move_helper.h"
 #include "valve/prediction.h"
@@ -11,10 +11,6 @@
 #include "valve/game_movement.h"
 #include "valve/prediction.h"
 #include "valve/client_state.h"
-
-inline usercmd_t*& set_command(client_player_t* player) {
-  return *reinterpret_cast<usercmd_t**>(reinterpret_cast<uintptr_t>(player) + 0x15B8);
-}
 
 void engine_prediction_t::store_old_global_variables() {
   if (!client::g_local_player)
@@ -36,7 +32,7 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
   if (first)
     memset(&move_data, 0, sizeof(move_data_t));
 
-  set_command(client::g_local_player) = cmd;
+  client::g_local_player->set_current_command(cmd);
   cmd->random_seed =
       (md5::pseudo_random(cmd->command_number) & std::numeric_limits<int>::max());
   client::g_local_player->set_prediction_random_seed(cmd);

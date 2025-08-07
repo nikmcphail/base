@@ -110,7 +110,7 @@ public:
 class hooked_prediction {
 public:
   // CPrediction::RunCommand( C_BasePlayer *player, CUserCmd *ucmd, IMoveHelper *moveHelper )
-  void hooked_run_command(client_player_t* player, usercmd_t* cmd, move_helper_t* move_helper) {
+  void hooked_run_command(player_t* player, usercmd_t* cmd, move_helper_t* move_helper) {
     if (move_helper)
       client::g_interfaces.move_helper = move_helper;
 

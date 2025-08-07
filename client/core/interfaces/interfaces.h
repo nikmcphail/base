@@ -13,7 +13,7 @@ class game_movement_t;
 class global_vars_base_t;
 class input_t;
 class input_system_t;
-class client_player_t;
+class cs_player_t;
 class model_info_t;
 class engine_trace_t;
 struct client_state_t;
@@ -37,7 +37,7 @@ public:
   global_vars_base_t* global_vars{nullptr};
   input_t*            input{nullptr};
   input_system_t*     input_system{nullptr};
-  client_player_t**   prediction_player{nullptr};
+  cs_player_t**       prediction_player{nullptr};
   model_info_t*       model_info{nullptr};
   engine_trace_t*     engine_trace{nullptr};
   client_state_t*     client_state{nullptr};
