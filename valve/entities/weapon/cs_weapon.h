@@ -45,10 +45,18 @@ enum weapon_id_e {
   WEAPON_MAX, // number of weapons weapon index
 };
 
+class cs_weapon_data_t;
+
 class cs_weapon_t : public base_combat_weapon_t {
 public:
   weapon_id_e get_weapon_id() {
     return utils::get_virtual_function<weapon_id_e(__fastcall*)(void*)>(this, 371)(this);
+  }
+
+  cs_weapon_data_t* get_weapon_data() {
+    static auto func = (cs_weapon_data_t * (__fastcall*)(void*))
+                           client::g_addresses.client.functions.get_weapon_data;
+    return func(this);
   }
 
   const char* get_weapon_name() noexcept {
