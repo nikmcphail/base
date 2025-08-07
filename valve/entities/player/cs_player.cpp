@@ -16,6 +16,4 @@ bool cs_player_t::is_local_player() {
   return (ent_index() == client::g_interfaces.engine_client->get_local_player_index());
 }
 
-bool cs_player_t::is_valid() {
-  return (this != nullptr && this->is_player() && this->is_alive() && !is_dormant());
-}
+bool cs_player_t::is_valid() { return (is_player() && is_alive() && !is_dormant()); }

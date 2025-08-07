@@ -38,7 +38,6 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_vecViewOffset[0]"));
     client.base_player.eye_angles =
         netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_angEyeAngles[1]"));
-
     client.base_player.team_number =
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_iTeamNum"));
     client.base_player.velocity =

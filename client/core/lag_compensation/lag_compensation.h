@@ -20,8 +20,9 @@ class convar_t;
 
 class lag_compensation_t {
 public:
-  void on_frame_stage_notify();
-  void clear_history();
+  void  on_frame_stage_notify();
+  void  clear_history();
+  float get_lerp_time();
 
   std::unordered_map<base_entity_t*, std::deque<lag_record_t>> player_track = {};
   float                                                        teleport_distance_sqr;
