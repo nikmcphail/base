@@ -77,7 +77,8 @@ bool render_t::initialize() {
     return false;
   }
 
-  io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf", 15.0f);
+  io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\consola.ttf",
+                               16.0f); // 16 looks best on 1440p for me
   io.FontDefault = io.Fonts->Fonts.back();
 
   io.Fonts->AddFontDefault();
