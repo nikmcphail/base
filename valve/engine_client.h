@@ -130,9 +130,7 @@ public:
   virtual char const* get_level_name(void)                               = 0;
   virtual int         get_level_version(void)                            = 0;
 
-#if !defined(NO_VOICE)
   virtual struct IVoiceTweak_s* get_voice_tweak_api(void) = 0;
-#endif
 
   virtual void engine_stats_begin_frame(void) = 0;
   virtual void engine_stats_end_frame(void)   = 0;
