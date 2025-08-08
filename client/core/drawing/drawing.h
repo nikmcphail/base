@@ -71,12 +71,23 @@ struct quad_t {
   float     thickness{1.f};
 };
 
+struct hull_t {
+  vector3_t origin{};
+  vector3_t mins{};
+  vector3_t maxs{};
+  ImU32     color{};
+  float     thickness{1.f};
+  bool      filled{false};
+  ImU32     fill_color{};
+  float     fill_alpha{0.7f};
+};
+
 class drawing_t {
 public:
-  std::mutex                                                          drawing_mutex{};
-  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t>> initial;
-  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t>> intermediary;
-  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t>> render;
+  std::mutex                                                                  drawing_mutex{};
+  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t, hull_t>> initial;
+  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t, hull_t>> intermediary;
+  std::vector<std::variant<line_t, text_t, circle_t, rect_t, quad_t, hull_t>> render;
 
 private:
   void draw_text(const vector2_t& position, const ImU32 color = COLOR_WHITE,
@@ -91,19 +102,16 @@ private:
 
   void draw_line(const vector2_t& pos_one, const vector2_t& pos_two,
                  const ImU32 color = COLOR_WHITE, float thickness = 1.0f);
-
   void draw_line_outlined(const vector2_t& pos_one, const vector2_t& pos_two,
                           const ImU32 color         = COLOR_WHITE,
                           const ImU32 outline_color = COLOR_BLACK, float thickness = 1.0f);
 
   void draw_rect(const vector2_t& position, const vector2_t& size,
                  const ImU32 color = COLOR_WHITE, float rounding = 0.f, float thickness = 1.f);
-
   void draw_rect_outlined(const vector2_t& position, const vector2_t& size,
                           const ImU32 color         = COLOR_WHITE,
                           const ImU32 outline_color = COLOR_BLACK, float rounding = 0.f,
                           float thickness = 1.f);
-
   void draw_rect_filled(const vector2_t& position, const vector2_t& size,
                         const ImU32 color = COLOR_WHITE, float rounding = 0.f);
 
@@ -111,6 +119,12 @@ private:
                  const vector2_t& p3, const ImU32 color = COLOR_WHITE, float thickness = 1.f);
   void draw_quad_filled(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
                         const vector2_t& p3, const ImU32 color = COLOR_WHITE);
+
+  void draw_hull(const vector3_t& origin, const vector3_t& mins, const vector3_t& maxs,
+                 const ImU32 color = COLOR_RED, float thickness = 1.f);
+  void draw_hull_filled(const vector3_t& origin, const vector3_t& mins, const vector3_t& maxs,
+                        ImU32 line_color = COLOR_RED, ImU32 fill_color = COLOR_GREEN,
+                        float thickness = 1.0f, float fill_alpha = 0.7f);
 
 public:
   void add_line(const vector2_t& position_one, const vector2_t& position_two,
@@ -132,6 +146,10 @@ public:
   void add_quad(const vector2_t& p0, const vector2_t& p1, const vector2_t& p2,
                 const vector2_t& p3, const ImU32 color = COLOR_WHITE, float thickness = 1.f,
                 bool filled = false);
+
+  void add_hull(const vector3_t& origin, const vector3_t& mins, const vector3_t& maxs,
+                const ImU32 color = COLOR_RED, float thickness = 1.0f, bool filled = false,
+                const ImU32 fill_color = COLOR_GREEN, float fill_alpha = 0.7f);
 
   void clear_initial();
   void copy_to_intermediary();
