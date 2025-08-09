@@ -42,6 +42,10 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_BasePlayer"), HASH("m_iTeamNum"));
     client.base_player.velocity =
         netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_vecVelocity[0]"));
+    client.base_player.is_defusing =
+        netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_bIsDefusing"));
+    client.base_player.is_defusing =
+        netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_iShotsFired"));
   }
 
   { // base weapon
