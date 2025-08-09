@@ -32,6 +32,8 @@ bool global_addresses_t::collect_addresses() {
         client_dll.find_pattern_in_memory("8B C2 48 6B C0");
     this->client.functions.weapon_id_to_alias =
         client_dll.find_pattern_in_memory("4C 8D 05 ? ? ? ? 33 D2 49 8B C0");
+    this->client.functions.draw_client_hitboxes =
+        client_dll.find_pattern_in_memory("44 88 44 24 ? 55");
   }
 
   {

@@ -32,3 +32,10 @@ bool base_animating_t::get_bone_vector(int bone, vector3_t& out) {
 
   return !(out.is_zero());
 }
+
+void base_animating_t::draw_client_boxes(float duration, bool mono_color) {
+  static auto func = (void(__fastcall*)(
+      void*, float, bool))client::g_addresses.client.functions.draw_client_hitboxes;
+
+  func(this, duration, mono_color);
+}
