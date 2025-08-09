@@ -15,6 +15,9 @@ public:
   netvar_value_func(qangle_t, eye_angles, client::g_offsets.client.base_player.eye_angles);
   netvar_value_func(bool, is_defusing, client::g_offsets.client.base_player.is_defusing);
   netvar_value_func(int, shots_fired, client::g_offsets.client.base_player.shots_fired);
+  netvar_value_func(qangle_t, punch_angle, client::g_offsets.client.base_player.punch_angle);
+  netvar_value_func(qangle_t, punch_angle_vel,
+                    client::g_offsets.client.base_player.punch_angle_vel);
 };
 
 inline cs_player_t* to_cs_player(base_entity_t* base_entity) {
