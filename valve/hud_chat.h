@@ -6,6 +6,7 @@
 
 class hud_chat_t {
 public:
+  // hex color codes can be done as such hud_chat->chat_printf("\7<hex code><your text>")
   void chat_printf(const char* fmt, ...) {
 
     char    buffer[1024];
