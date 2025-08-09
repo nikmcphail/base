@@ -11,10 +11,6 @@
 
 #include "fmt/core.h"
 
-#include "valve/bone.h"
-#include "library/math.h"
-#include "valve/engine_client.h"
-
 bool client::initialize() {
   g_console.open_console();
 
