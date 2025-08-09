@@ -129,6 +129,24 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound client state", console_color_light_aqua);
 
+  this->client_mode =
+      *(client_dll
+            .find_pattern_in_memory(
+                "48 8B 0D ? ? ? ? 48 8B 01 48 FF 60 ? CC CC 48 83 EC ? 48 8D 0D")
+            .rel32<void**>(0x3));
+  if (!this->client_mode) {
+    client::g_console.print("\t\tfailed to find client mode", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound client mode", console_color_light_aqua);
+
+  this->hud_chat = *(hud_chat_t**)((uintptr_t)this->client_mode + 32);
+  if (!this->hud_chat) {
+    client::g_console.print("\t\tfailed to find hud chat", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound hud chat", console_color_light_aqua);
+
   client::g_console.printf("\tinterfaces:", console_color_light_yellow);
 
   this->cvar = vstdlib_dll.get_interface<cvar_t*>(HASH("VEngineCvar004"));
@@ -144,17 +162,6 @@ bool interfaces_t::collect_interfaces() {
     return false;
   }
   client::g_console.print("\t\tfound base client", console_color_light_aqua);
-
-  this->client_mode =
-      *(client_dll
-            .find_pattern_in_memory(
-                "48 8B 0D ? ? ? ? 48 8B 01 48 FF 60 ? CC CC 48 83 EC ? 48 8D 0D")
-            .rel32<void**>(0x3));
-  if (!this->client_mode) {
-    client::g_console.print("\t\tfailed to find client mode", console_color_red);
-    return false;
-  }
-  client::g_console.print("\t\tfound client mode", console_color_light_aqua);
 
   this->surface = vguimatsurface_dll.get_interface<surface_t*>(HASH("VGUI_Surface030"));
   if (!this->surface) {

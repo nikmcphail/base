@@ -22,6 +22,7 @@ class model_render_t;
 class render_view_t;
 class panel_t;
 class debug_overlay_t;
+class hud_chat_t;
 
 class interfaces_t {
 public:
@@ -50,6 +51,7 @@ public:
   void*               game_events_manager{nullptr};
   void*               file_system{nullptr};
   debug_overlay_t*    debug_overlay{nullptr};
+  hud_chat_t*         hud_chat{nullptr};
 
   bool collect_interfaces();
 };
