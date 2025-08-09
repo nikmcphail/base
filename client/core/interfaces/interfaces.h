@@ -21,6 +21,7 @@ class material_system_t;
 class model_render_t;
 class render_view_t;
 class panel_t;
+class debug_overlay_t;
 
 class interfaces_t {
 public:
@@ -48,6 +49,7 @@ public:
   panel_t*            panel{nullptr};
   void*               game_events_manager{nullptr};
   void*               file_system{nullptr};
+  debug_overlay_t*    debug_overlay{nullptr};
 
   bool collect_interfaces();
 };

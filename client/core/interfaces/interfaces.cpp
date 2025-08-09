@@ -263,6 +263,13 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound file system", console_color_light_aqua);
 
+  this->debug_overlay = engine_dll.get_interface<debug_overlay_t*>(HASH("VDebugOverlay003"));
+  if (!this->debug_overlay) {
+    client::g_console.print("\t\tfailed to find debug overlay", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound debug overlay", console_color_light_aqua);
+
   client::g_console.print("\tinterfaces initialized", console_color_gray);
   return true;
 }
