@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <Windows.h>
 
+#include "valve/color.h"
+
 void console_t::open_console() {
   AllocConsole();
   SetConsoleTitleA("x64 base");
@@ -77,4 +79,55 @@ void console_t::testf(const char* text, bool passed, ...) {
   va_end(args);
 
   printf_s("%s\n", buffer);
+}
+
+void console_t::con_msg(const char* fmt, ...) {
+  static ULONG64 con_msg_address =
+      (ULONG64)GetProcAddress(GetModuleHandleA("tier0.dll"), "?ConMsg@@YAXPEBDZZ");
+
+  static auto func = (void (*)(const char*))con_msg_address;
+
+  char    buffer[1024];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  snprintf(buffer, sizeof(buffer), "%s\n", buffer);
+
+  func(buffer);
+}
+
+void console_t::con_color_msg(const color_t& color, const char* fmt, ...) {
+  static ULONG64 con_color_msg_address = (ULONG64)GetProcAddress(
+      GetModuleHandleA("tier0.dll"), "?ConColorMsg@@YAXAEBVColor@@PEBDZZ");
+
+  static auto func = (void (*)(const color_t& color, const char*))con_color_msg_address;
+
+  char    buffer[1024];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  snprintf(buffer, sizeof(buffer), "%s\n", buffer);
+
+  func(color, buffer);
+}
+
+void console_t::con_warning(const char* fmt, ...) {
+  static ULONG64 con_warning_address =
+      (ULONG64)GetProcAddress(GetModuleHandleA("tier0.dll"), "?ConWarning@@YAXPEBDZZ");
+
+  static auto func = (void (*)(const char*))con_warning_address;
+
+  char    buffer[1024];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+
+  snprintf(buffer, sizeof(buffer), "%s\n", buffer);
+
+  func(buffer);
 }

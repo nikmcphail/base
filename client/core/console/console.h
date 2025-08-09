@@ -19,6 +19,8 @@ enum console_colors_e {
   console_color_white        = 15
 };
 
+class color_t;
+
 class console_t {
 public:
   void open_console();
@@ -31,4 +33,9 @@ public:
 
   void test(const char* text, bool passed = true);
   void testf(const char* text, bool passed = true, ...);
+
+  // valve functions
+  void con_msg(const char* fmt, ...);
+  void con_color_msg(const color_t& color, const char* fmt, ...);
+  void con_warning(const char* fmt, ...);
 };
