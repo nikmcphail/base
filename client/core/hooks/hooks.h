@@ -35,7 +35,10 @@ public:
   SafetyHookVmt game_events_manager_hook;
   SafetyHookVm  fire_event_hook;
 
-  SafetyHookInline cl_move_hook;
+  SafetyHookVmt engine_client_hook;
+  SafetyHookVm  client_cmd_unrestricted_hook;
+
+  // SafetyHookInline cl_move_hook;
   SafetyHookInline send_datagram_hook;
 
   bool initialize();

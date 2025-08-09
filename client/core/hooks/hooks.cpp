@@ -50,7 +50,7 @@ public:
   HRESULT hooked_present(IDirect3DDevice9* device, RECT* source_rect, RECT* dest_rect,
                          HWND dest_window_override, RGNDATA* dirty_region) {
     client::on_present();
-    return client::g_hooks.d3d9_present_hook.thiscall<HRESULT>(
+    return client::g_hooks.d3d9_present_hook.fastcall<HRESULT>(
         this, device, source_rect, dest_rect, dest_window_override, dirty_region);
   }
 
@@ -62,7 +62,7 @@ public:
       std::scoped_lock _{client::g_render.imgui_mutex};
       client::g_render.detach();
       result =
-          client::g_hooks.d3d9_reset_hook.thiscall<HRESULT>(this, device, present_parameters);
+          client::g_hooks.d3d9_reset_hook.fastcall<HRESULT>(this, device, present_parameters);
       client::get_window_handle();
       client::g_render.initialize();
     }
@@ -87,12 +87,12 @@ public:
 
   // ClientModeShared::OverrideView( CViewSetup *pSetup )
   void hooked_override_view(view_setup_t* setup) {
-    client::g_hooks.override_view_hook.thiscall(this, setup);
+    client::g_hooks.override_view_hook.fastcall(this, setup);
   }
 
   // ClientModeShared::GetViewModelFOV( void )
   float hooked_get_viewmodel_fov() {
-    return client::g_hooks.get_viewmodel_fov_hook.thiscall<float>(this);
+    return client::g_hooks.get_viewmodel_fov_hook.fastcall<float>(this);
   }
 };
 
@@ -103,7 +103,7 @@ public:
     if (menu::open)
       return client::g_interfaces.surface->unlock_cursor();
 
-    return client::g_hooks.lock_cursor_hook.thiscall<HCURSOR>(this);
+    return client::g_hooks.lock_cursor_hook.fastcall<HCURSOR>(this);
   }
 };
 
@@ -114,7 +114,7 @@ public:
     if (move_helper)
       client::g_interfaces.move_helper = move_helper;
 
-    client::g_hooks.run_command_hook.thiscall(this, player, cmd, move_helper);
+    client::g_hooks.run_command_hook.fastcall(this, player, cmd, move_helper);
   }
 };
 
@@ -122,14 +122,14 @@ class hooked_base_client {
 public:
   // void CHLClient::LevelShutdown( void )
   void hooked_level_shutdown() {
-    client::g_hooks.level_shutdown_hook.thiscall(this);
+    client::g_hooks.level_shutdown_hook.fastcall(this);
     client::on_level_shutdown();
   }
 
   // void CHLClient::FrameStageNotify( ClientFrameStage_t curStage )
   void hooked_frame_stage_notify(client_frame_stage_e current_stage) {
     client::on_frame_stage_notify(current_stage);
-    client::g_hooks.frame_stage_notify_hook.thiscall(this, current_stage);
+    client::g_hooks.frame_stage_notify_hook.fastcall(this, current_stage);
   }
 };
 
@@ -140,7 +140,7 @@ public:
   void hooked_draw_model_execute(const draw_model_state_t&  state,
                                  const model_render_info_t& info,
                                  matrix_3x4_t*              custom_bone_to_world) {
-    client::g_hooks.draw_model_execute_hook.thiscall(this, state, info, custom_bone_to_world);
+    client::g_hooks.draw_model_execute_hook.fastcall(this, state, info, custom_bone_to_world);
   }
 };
 
@@ -149,7 +149,7 @@ public:
   // CEngineVGui::Paint( PaintMode_t mode )
   void hooked_paint(int32_t mode) {
     client::on_paint();
-    client::g_hooks.paint_hook.thiscall(this, mode);
+    client::g_hooks.paint_hook.fastcall(this, mode);
   }
 };
 
@@ -160,7 +160,7 @@ public:
                              bool allow_force) {
     static unsigned long long panel_id = 0;
 
-    client::g_hooks.paint_traverse_hook.thiscall(this, vgui_panel, force_repaint, allow_force);
+    client::g_hooks.paint_traverse_hook.fastcall(this, vgui_panel, force_repaint, allow_force);
 
     if (!panel_id) {
       const auto panel_name = client::g_interfaces.panel->get_name(vgui_panel);
@@ -176,7 +176,15 @@ class hooked_game_events_manager {
 public:
   // bool CGameEventManager::FireEvent( IGameEvent* event, bool bServerOnly)
   bool hooked_fire_event(game_event_t* event, bool dont_broadcast) {
-    return client::g_hooks.fire_event_hook.thiscall<bool>(this, event, dont_broadcast);
+    return client::g_hooks.fire_event_hook.fastcall<bool>(this, event, dont_broadcast);
+  }
+};
+
+class hooked_engine_client {
+public:
+  // void CEngineClient::ClientCmd_Unrestricted(const char* szCmdString)
+  void hooked_client_cmd_unrestricted(const char* cmd) {
+    return client::g_hooks.client_cmd_unrestricted_hook.fastcall(this, cmd);
   }
 };
 
@@ -184,9 +192,9 @@ public:
 //                                           detour functions (sig)
 
 // void CL_Move( float accumulated_extra_samples, bool bFinalTick )
-void hooked_cl_move(float accumulated_extra_samples, bool final_tick) {
-  client::g_hooks.cl_move_hook.fastcall(accumulated_extra_samples, final_tick);
-}
+// void hooked_cl_move(float accumulated_extra_samples, bool final_tick) {
+//   client::g_hooks.cl_move_hook.fastcall(accumulated_extra_samples, final_tick);
+// }
 
 // int CNetChan::SendDataGram( bf_write* datagram )
 __int64 hooked_send_datagram(net_channel_t* _thisptr, void* datagram) {
@@ -258,10 +266,17 @@ bool hooks_t::initialize() {
             &hooked_game_events_manager::hooked_fire_event, 8, "fire event");
   }
 
+  { // engine client hooks
+    hook_vmt(this->engine_client_hook, client::g_interfaces.engine_client, "engine client");
+    hook_vm(this->engine_client_hook, this->client_cmd_unrestricted_hook,
+            &hooked_engine_client::hooked_client_cmd_unrestricted, 106,
+            "client cmd unrestricted");
+  }
+
   client::g_console.printf("\tinline hooks:", console_color_light_yellow);
   { // inline hooks
-    hook_inline(this->cl_move_hook, &hooked_cl_move,
-                (void*)client::g_addresses.engine.functions.cl_move, "cl move");
+    // hook_inline(this->cl_move_hook, &hooked_cl_move,
+    //             (void*)client::g_addresses.engine.functions.cl_move, "cl move");
     hook_inline(this->send_datagram_hook, &hooked_send_datagram,
                 (void*)client::g_addresses.engine.functions.send_datagram, "send datagram");
   }
@@ -280,4 +295,5 @@ void hooks_t::unload() {
   engine_vgui_hook         = {};
   panel_hook               = {};
   game_events_manager_hook = {};
+  engine_client_hook       = {};
 }

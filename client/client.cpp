@@ -11,6 +11,10 @@
 
 #include "fmt/core.h"
 
+#include "valve/bone.h"
+#include "library/math.h"
+#include "valve/engine_client.h"
+
 bool client::initialize() {
   g_console.open_console();
 
@@ -115,19 +119,19 @@ void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
   g_prediction.finish_prediction();
 }
 
-typedef bool(__stdcall* host_should_run_func)();
-host_should_run_func host_should_run =
-    (host_should_run_func)(client::g_addresses.engine.functions.host_should_run);
+// typedef bool(__stdcall* host_should_run_func)();
+// host_should_run_func host_should_run =
+//     (host_should_run_func)(client::g_addresses.engine.functions.host_should_run);
 
-void client::on_cl_move() {
-  if (!(client::g_interfaces.client_state->signon_state >= 2))
-    return;
+// void client::on_cl_move() {
+//   if (!(client::g_interfaces.client_state->signon_state >= 2))
+//     return;
 
-  if (!host_should_run())
-    return;
+//   if (!host_should_run())
+//     return;
 
-  bool send_packet = true;
-}
+//   bool send_packet = true;
+// }
 
 void client::on_level_shutdown() { g_local_player = nullptr; }
 
