@@ -101,8 +101,6 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
 
   client::g_interfaces.move_helper->process_impacts();
 
-  client::g_local_player->post_think();
-
   client::g_local_player->tick_base() = old_tickbase;
 
   client::g_interfaces.prediction->first_time_predicted = old_first_prediction;
@@ -123,6 +121,7 @@ void engine_prediction_t::finish_prediction() {
   client::g_interfaces.global_vars->frame_time = old_frametime;
   client::g_interfaces.global_vars->tick_count = old_tickcount;
 
+  client::g_local_player->set_current_command(nullptr);
   client::g_local_player->set_prediction_random_seed(nullptr);
   *client::g_interfaces.prediction_player = nullptr;
 }
