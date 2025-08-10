@@ -39,6 +39,12 @@ public:
   base_entity_t* get_observer_target();
   vector3_t      get_hitbox_pos(int id);
   int            get_observer_mode();
+  void           apply_abs_velocity_impulse(const vector3_t& impulse);
+  bool           physics_run_think(int think_method = 0);
+  int            get_next_think_tick(const char* context = NULL);
+  void           set_next_think(float think_time, const char* context = NULL);
+  void           think();
+  void           post_think();
 
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);
   netvar_value_func(vector3_t, vec_mins, client::g_offsets.client.base_entity.vec_mins);

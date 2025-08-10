@@ -34,6 +34,16 @@ bool global_addresses_t::collect_addresses() {
         client_dll.find_pattern_in_memory("4C 8D 05 ? ? ? ? 33 D2 49 8B C0");
     this->client.functions.draw_client_hitboxes =
         client_dll.find_pattern_in_memory("44 88 44 24 ? 55");
+    this->client.functions.update_button_state =
+        client_dll.find_pattern_in_memory("44 8B 81 ? ? ? ? 89 91");
+    this->client.functions.apply_abs_velocity_impulse =
+        client_dll.find_pattern_in_memory("48 89 5C 24 ? 57 48 83 EC ? F3 0F 10 05");
+    this->client.functions.physics_run_think =
+        client_dll.find_pattern_in_memory("4C 8B DC 49 89 73 ? 57 48 81 EC ? ? ? ? 8B 81");
+    this->client.functions.get_next_think_tick =
+        client_dll.find_pattern_in_memory("40 53 48 83 EC ? 48 8B D9 48 85 D2 75 ? 8B 81");
+    this->client.functions.set_next_think =
+        client_dll.find_pattern_in_memory("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 0F 2E 0D");
   }
 
   {

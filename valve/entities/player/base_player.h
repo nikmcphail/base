@@ -14,6 +14,11 @@ public:
 
   void set_current_command(usercmd_t* cmd);
 
+  void select_item(const char* str, int sub_type);
+  void update_button_state(int button_mask);
+  void set_local_view_angles(const qangle_t& angles);
+  void pre_think();
+
   netvar_value_func(char, life_state, client::g_offsets.client.base_player.life_state);
   netvar_value_func(int, flags, client::g_offsets.client.base_player.flags);
   netvar_value_func(int, health, client::g_offsets.client.base_player.health);
@@ -21,6 +26,13 @@ public:
   netvar_value_func(vector3_t, velocity, client::g_offsets.client.base_player.velocity);
   netvar_value_func(vector3_t, view_offset, client::g_offsets.client.base_player.view_offset);
   netvar_value_func(int, team_number, client::g_offsets.client.base_player.team_number);
+  netvar_value_func(int, buttons, client::g_offsets.client.base_player.buttons);
+  netvar_value_func(int, button_last, client::g_offsets.client.base_player.button_last);
+  netvar_value_func(int, button_pressed, client::g_offsets.client.base_player.button_pressed);
+  netvar_value_func(int, button_released, client::g_offsets.client.base_player.button_released);
+  netvar_value_func(vector3_t, base_velocity,
+                    client::g_offsets.client.base_player.base_velocity);
+  netvar_value_func(int, impulse, client::g_offsets.client.base_player.impulse);
 };
 
 inline base_player_t* to_base_player(base_entity_t* base_entity) {

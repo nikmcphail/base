@@ -12,7 +12,8 @@ struct offsets_t {
 
     struct {
       uintptr_t health, tick_base, life_state, flags, flash_max_alpha, view_offset, eye_angles,
-          team_number, velocity, is_defusing, shots_fired, punch_angle, punch_angle_vel;
+          team_number, velocity, is_defusing, shots_fired, punch_angle, punch_angle_vel,
+          button_last, buttons, button_pressed, button_released, base_velocity, impulse;
     } base_player;
 
     struct {

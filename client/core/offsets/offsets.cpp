@@ -50,6 +50,18 @@ bool offsets_t::get_offsets() {
         netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_vecPunchAngle"));
     client.base_player.punch_angle_vel =
         netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_vecPunchAngleVel"));
+    client.base_player.button_last =
+        netvars.get_netvar_offset(HASH("C_BasePlayer"), HASH("m_afButtonLast"));
+    client.base_player.buttons =
+        netvars.get_netvar_offset(HASH("C_BasePlayer"), HASH("m_nButtons"));
+    client.base_player.button_pressed =
+        netvars.get_netvar_offset(HASH("C_BasePlayer"), HASH("m_afButtonPressed"));
+    client.base_player.button_released =
+        netvars.get_netvar_offset(HASH("C_BasePlayer"), HASH("m_afButtonReleased"));
+    client.base_player.base_velocity =
+        netvars.get_netvar_offset(HASH("DT_CSPlayer"), HASH("m_vecBaseVelocity"));
+    client.base_player.impulse =
+        netvars.get_netvar_offset(HASH("C_BasePlayer"), HASH("m_nImpulse"));
   }
 
   { // base weapon

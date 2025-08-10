@@ -60,9 +60,6 @@ public:
   }
 
   const char* get_weapon_name() {
-    weapon_id_e id = get_weapon_id();
-    static auto func =
-        (const char*(__fastcall*)(int))client::g_addresses.client.functions.weapon_id_to_alias;
-    return func(id);
+    return utils::get_virtual_function<const char*(__fastcall*)(void*)>(this, 316)(this);
   }
 };
