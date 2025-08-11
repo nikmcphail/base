@@ -7,7 +7,6 @@
 #include "valve/move_helper.h"
 #include "valve/prediction.h"
 #include "valve/global_vars_base.h"
-#include "library/md5.h"
 #include "valve/game_movement.h"
 #include "valve/prediction.h"
 #include "valve/client_state.h"
@@ -15,6 +14,8 @@
 #include "valve/entities/weapon/cs_weapon.h"
 #include "valve/entity_list.h"
 #include "valve/flags.h"
+
+#include "library/math.h"
 
 void engine_prediction_t::start_prediction(usercmd_t* cmd) {
   if (!client::g_interfaces.move_helper || !cmd)
@@ -27,10 +28,8 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
 
   { // CPrediction::StartCommand(C_BasePlayer* player, CUserCmd* cmd)
     client::g_local_player->set_current_command(cmd);
-// Replace with in game pseudo_random
-#undef max
     cmd->random_seed =
-        (md5::pseudo_random(cmd->command_number) & std::numeric_limits<int>::max());
+        (math::md5_pseudo_random(cmd->command_number) & std::numeric_limits<int>::max());
     client::g_local_player->set_prediction_random_seed(cmd);
     *client::g_interfaces.prediction_player = client::g_local_player;
   }

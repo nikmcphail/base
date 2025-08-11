@@ -11,9 +11,6 @@
 
 #include "fmt/core.h"
 
-#include "valve/entity_list.h"
-#include "valve/entities/weapon/cs_weapon.h"
-
 bool client::initialize() {
   g_console.open_console();
 

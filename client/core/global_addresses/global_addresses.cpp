@@ -44,6 +44,8 @@ bool global_addresses_t::collect_addresses() {
         client_dll.find_pattern_in_memory("40 53 48 83 EC ? 48 8B D9 48 85 D2 75 ? 8B 81");
     this->client.functions.set_next_think =
         client_dll.find_pattern_in_memory("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 0F 2E 0D");
+    this->client.functions.md5_pseudo_random =
+        client_dll.find_pattern_in_memory("89 4C 24 ? 55 48 8B EC 48 81 EC");
   }
 
   {
