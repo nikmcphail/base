@@ -183,3 +183,10 @@ void math::movement_fix(qangle_t old_angles, usercmd_t* cmd, float old_forward,
   cmd->side_move = sin(degrees_to_radian(delta)) * old_forward +
                    sin(degrees_to_radian(delta + 90.f)) * old_sidemove;
 }
+
+unsigned int math::md5_pseudo_random(int seed) {
+  static auto func =
+      (unsigned int(__fastcall*)(int))client::g_addresses.client.functions.md5_pseudo_random;
+
+  return func(seed);
+}

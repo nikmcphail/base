@@ -30,4 +30,5 @@ namespace math {
   void     vector_angles(const vector3_t& forward, qangle_t& angles);
   float    get_fov(const qangle_t& from, const qangle_t& to);
   void movement_fix(qangle_t old_angles, usercmd_t* cmd, float old_forward, float old_sidemove);
+  unsigned int md5_pseudo_random(int seed);
 }; // namespace math

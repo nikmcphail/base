@@ -57,3 +57,36 @@ vector3_t base_entity_t::get_eye_position() {
   utils::get_virtual_function<void(__fastcall*)(void*, vector3_t*)>(this, 142)(this, &position);
   return position;
 }
+
+void base_entity_t::apply_abs_velocity_impulse(const vector3_t& impulse) {
+  static auto func = (void(__fastcall*)(
+      void*, const vector3_t&))client::g_addresses.client.functions.apply_abs_velocity_impulse;
+  func(this, impulse);
+}
+
+bool base_entity_t::physics_run_think(int think_method) {
+  static auto func =
+      (bool(__fastcall*)(void*, int))client::g_addresses.client.functions.physics_run_think;
+  return func(this, think_method);
+}
+
+int base_entity_t::get_next_think_tick(const char* context) {
+  static auto func = (int(__fastcall*)(
+      void*, const char*))client::g_addresses.client.functions.get_next_think_tick;
+  return func(this, context);
+}
+
+void base_entity_t::set_next_think(float think_time, const char* context) {
+  static auto func = (void(__fastcall*)(
+      void*, float, const char*))client::g_addresses.client.functions.set_next_think;
+
+  func(this, think_time, context);
+}
+
+void base_entity_t::think() {
+  utils::get_virtual_function<void(__fastcall*)(void*)>(this, 122)(this);
+}
+
+void base_entity_t::post_think() {
+  utils::get_virtual_function<void(__fastcall*)(void*)>(this, 259)(this);
+}
