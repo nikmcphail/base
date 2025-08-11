@@ -128,7 +128,10 @@ void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
 //   bool send_packet = true;
 // }
 
-void client::on_level_shutdown() { g_local_player = nullptr; }
+void client::on_level_shutdown() {
+  g_local_player = nullptr;
+  g_lag_compensation.clear_history();
+}
 
 void client::on_paint() {
   g_drawing.clear_initial();

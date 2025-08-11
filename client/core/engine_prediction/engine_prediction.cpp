@@ -85,7 +85,7 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
     client::g_local_player->flags() &= ~FL_BASEVELOCITY;
   }
 
-  client::g_local_player->set_local_view_angles(cmd->view_angles);
+  client::g_interfaces.prediction->set_local_view_angles(cmd->view_angles);
 
   run_pre_think();
 

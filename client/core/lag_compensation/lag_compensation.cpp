@@ -11,6 +11,8 @@
 #include "valve/entity_list.h"
 
 void lag_compensation_t::on_frame_stage_notify() {
+  if (!client::g_local_player || !client::g_local_player->is_alive())
+    return;
 
   if (client::g_interfaces.global_vars->max_clients <= 1) {
     clear_history();
@@ -61,7 +63,7 @@ void lag_compensation_t::on_frame_stage_notify() {
     record.head_pos        = player->get_hitbox_pos(HITBOX_HEAD);
     record.tick            = client::g_interfaces.global_vars->tick_count;
 
-    player->setup_bones(record.bones, 127, BONE_USED_BY_ANYTHING,
+    player->setup_bones(record.bones, 128, BONE_USED_BY_HITBOX,
                         client::g_interfaces.global_vars->cur_time);
 
     for (int j = 0; j < MAX_LAYER_RECORDS; ++j) {

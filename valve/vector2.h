@@ -18,6 +18,7 @@ public:
   bool  is_zero(float tolerance = 0.01f) const;
   float dot(const vector2_t& v) const;
   float normalize_in_place();
+  float dist_to(const vector2_t& other) const;
 
   float      operator[](int i) const;
   float&     operator[](int i);
@@ -200,4 +201,10 @@ inline vector2_t vector2_t::operator/(float fl) const {
   vector2_t res;
   vector_2d_divide(*this, fl, res);
   return res;
+}
+
+inline float vector2_t::dist_to(const vector2_t& other) const {
+  vector2_t delta;
+  vector_2d_subtract(*this, other, delta);
+  return delta.length();
 }

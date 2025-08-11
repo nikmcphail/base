@@ -77,6 +77,8 @@ public:
     }
   }
 
+  bool valid();
+
   int            flags;
   vector3_t      origin;
   qangle_t       angles;

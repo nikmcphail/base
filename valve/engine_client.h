@@ -9,6 +9,9 @@
 class net_channel_info_t;
 class key_values_t;
 class model_t;
+class material_t;
+class view_matrix_t;
+class material_system_t;
 
 struct client_textmessage_t {
   int         effect;
