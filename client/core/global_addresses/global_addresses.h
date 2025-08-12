@@ -19,7 +19,7 @@ struct global_addresses_t {
 
   struct {
     struct {
-      uintptr_t cl_move, host_should_run, send_datagram;
+      uintptr_t cl_move, host_should_run, send_datagram, start_dynamic_sound;
     } functions;
   } engine;
 

@@ -64,6 +64,8 @@ bool global_addresses_t::collect_addresses() {
         "48 83 EC ? 48 8B 05 ? ? ? ? 83 78 ? ? 74 ? 48 8B 05");
     this->engine.functions.send_datagram =
         engine_dll.find_pattern_in_memory("40 55 57 41 56 48 8D AC 24");
+    this->engine.functions.start_dynamic_sound =
+        engine_dll.find_pattern_in_memory("4C 8B DC 57 48 81 EC");
   }
 
   client::g_console.print("\taddresses initialized", console_color_gray);

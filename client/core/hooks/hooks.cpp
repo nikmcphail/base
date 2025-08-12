@@ -12,6 +12,9 @@
 #include "valve/panel.h"
 #include "valve/game_event.h"
 #include "valve/net_channel.h"
+#include "valve/start_sound_params.h"
+
+#include "library/math.h"
 
 #include <fmt/core.h>
 
@@ -197,8 +200,13 @@ public:
 // }
 
 // int CNetChan::SendDataGram( bf_write* datagram )
-__int64 hooked_send_datagram(net_channel_t* _thisptr, void* datagram) {
-  return client::g_hooks.send_datagram_hook.fastcall<__int64>(_thisptr, datagram);
+int hooked_send_datagram(net_channel_t* _thisptr, void* datagram) {
+  return client::g_hooks.send_datagram_hook.fastcall<int>(_thisptr, datagram);
+}
+
+// int S_StartDynamicSound( StartSoundParams_t& params )
+int hooked_start_dynamic_sound(start_sound_params_t& params) {
+  return client::g_hooks.start_dynamic_sound_hook.fastcall<int>(params);
 }
 
 // =====================================================================================================
@@ -279,6 +287,9 @@ bool hooks_t::initialize() {
     //             (void*)client::g_addresses.engine.functions.cl_move, "cl move");
     hook_inline(this->send_datagram_hook, &hooked_send_datagram,
                 (void*)client::g_addresses.engine.functions.send_datagram, "send datagram");
+    hook_inline(this->start_dynamic_sound_hook, &hooked_start_dynamic_sound,
+                (void*)client::g_addresses.engine.functions.start_dynamic_sound,
+                "start dynamic sound");
   }
 
   client::g_console.print("\thooks initialized", console_color_gray);

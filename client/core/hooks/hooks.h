@@ -40,6 +40,7 @@ public:
 
   // SafetyHookInline cl_move_hook;
   SafetyHookInline send_datagram_hook;
+  SafetyHookInline start_dynamic_sound_hook;
 
   bool initialize();
   void unload();
