@@ -6,32 +6,31 @@
 #pragma pack(push, 1)
 class move_data_t {
 public:
-  uintptr_t vtable_pad;              // 0x0
-  bool      first_run_of_functions;  // 0x8
-  bool      game_code_moved_player;  // 0x9
-  char      pad[2];                  // 0xa
-  int       entity_handle;           // 0xc
-  int       impulse_command;         // 0x10
-  qangle_t  view_angles;             // 0x14
-  qangle_t  abs_view_angles;         // 0x20
-  int       buttons;                 // 0x2c
-  int       old_buttons;             // 0x30
-  float     forward_move;            // 0x34
-  float     old_forward_move;        // 0x38
-  float     side_move;               // 0x3c
-  float     up_move;                 // 0x40
-  float     max_speed;               // 0x44
-  float     client_max_speed;        // 0x48
-  vector3_t velocity;                // 0x4c
-  qangle_t  angles;                  // 0x58
-  qangle_t  old_angles;              // 0x64
-  float     step_height;             // 0x70
-  vector3_t wish_vel;                // 0x74
-  vector3_t jump_vel;                // 0x80
-  vector3_t constraint_center;       // 0x8c
-  float     constraint_radius;       // 0x98
-  float     constraint_width;        // 0x9c
-  float     constraint_speed_factor; // 0xa0
-  vector3_t abs_origin;              // 0xa4
-}; // Size: 0xb0
+  bool      first_run_of_functions;  // 0x0
+  bool      game_code_moved_player;  // 0x1
+  char      pad[2];                  // 0x2
+  int       player_handle;           // 0x4
+  int       impulse_command;         // 0x8
+  qangle_t  view_angles;             // 0xc
+  qangle_t  abs_view_angles;         // 0x18
+  int       buttons;                 // 0x24
+  int       old_buttons;             // 0x28
+  float     forward_move;            // 0x2c
+  float     old_forward_move;        // 0x30
+  float     side_move;               // 0x34
+  float     up_move;                 // 0x38
+  float     max_speed;               // 0x3c
+  float     client_max_speed;        // 0x40
+  vector3_t velocity;                // 0x44
+  qangle_t  angles;                  // 0x50
+  qangle_t  old_angles;              // 0x5c
+  float     out_step_height;         // 0x68
+  vector3_t out_wish_vel;            // 0x6c
+  vector3_t out_jump_vel;            // 0x78
+  vector3_t constraint_center;       // 0x84
+  float     contraint_radius;        // 0x90
+  float     constraint_width;        // 0x94
+  float     constraint_speed_factor; // 0x98
+  vector3_t abs_origin;              // 0x9c
+}; // Size: 0xa8
 #pragma pack(pop)

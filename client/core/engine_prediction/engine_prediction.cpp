@@ -17,14 +17,15 @@
 
 #include "library/math.h"
 
-void engine_prediction_t::start_prediction(usercmd_t* cmd) {
+void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
   if (!client::g_interfaces.move_helper || !cmd)
     return;
 
   if (!client::g_local_player)
     return;
 
-  memset(&move_data, 0, sizeof(move_data_t));
+  if (first)
+    memset(&move_data, 0, sizeof(move_data_t));
 
   { // CPrediction::StartCommand(C_BasePlayer* player, CUserCmd* cmd)
     client::g_local_player->set_current_command(cmd);
@@ -93,8 +94,9 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd) {
 
   client::g_interfaces.move_helper->set_host(client::g_local_player);
 
-  client::g_interfaces.prediction->setup_move(client::g_local_player, cmd,
-                                              client::g_interfaces.move_helper, &move_data);
+  if (first)
+    client::g_interfaces.prediction->setup_move(client::g_local_player, cmd,
+                                                client::g_interfaces.move_helper, &move_data);
   client::g_interfaces.game_movement->process_movement(client::g_local_player, &move_data);
   client::g_interfaces.prediction->finish_move(client::g_local_player, cmd, &move_data);
 
@@ -129,7 +131,7 @@ void engine_prediction_t::run_pre_think() {
   if (!client::g_local_player)
     return;
 
-  if (!client::g_local_player->physics_run_think())
+  if (!client::g_local_player->physics_run_think(0))
     return;
 
   client::g_local_player->pre_think();

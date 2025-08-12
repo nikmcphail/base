@@ -13,7 +13,7 @@ public:
 
   int       old_flags{};
   vector3_t old_velocity{};
-  void      start_prediction(usercmd_t* cmd);
+  void      start_prediction(usercmd_t* cmd, bool first = true);
   void      finish_prediction();
   void      run_pre_think();
   void      run_think();

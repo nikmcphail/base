@@ -142,7 +142,7 @@ void client::on_paint() {
 
 void client::on_frame_stage_notify(int stage) {
   switch (stage) {
-    case FRAME_NET_UPDATE_POSTDATAUPDATE_START: {
+    case FRAME_NET_UPDATE_END: {
       g_lag_compensation.on_frame_stage_notify();
       break;
     }
