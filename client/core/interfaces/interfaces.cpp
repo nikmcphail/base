@@ -140,6 +140,14 @@ bool interfaces_t::collect_interfaces() {
   }
   client::g_console.print("\t\tfound client mode", console_color_light_aqua);
 
+  this->prediction_system = *(client_dll.find_pattern_in_memory("48 8B 05 ?? ?? ?? ?? 0F 94 C1")
+                                  .rel32<prediction_system_t**>(0x3));
+  if (!this->prediction_system) {
+    client::g_console.print("\t\tfailed to find prediction system", console_color_red);
+    return false;
+  }
+  client::g_console.print("\t\tfound prediction system", console_color_light_aqua);
+
   this->hud_chat = *(hud_chat_t**)((uintptr_t)this->client_mode + 32);
   if (!this->hud_chat) {
     client::g_console.print("\t\tfailed to find hud chat", console_color_red);

@@ -3,6 +3,7 @@
 #include "valve/move_data.h"
 
 class usercmd_t;
+class base_entity_t;
 
 class engine_prediction_t {
 public:
@@ -13,10 +14,13 @@ public:
 
   int       old_flags{};
   vector3_t old_velocity{};
+  void      save_global_vars();
+  void      restore_global_vars();
   void      start_prediction(usercmd_t* cmd, bool first = true);
   void      finish_prediction();
   void      run_pre_think();
   void      run_think();
   void      update();
   void      restore();
+  void      suppress_events(base_entity_t* player);
 };

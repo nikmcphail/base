@@ -10,6 +10,8 @@
 #include "valve/game_movement.h"
 #include "valve/prediction.h"
 #include "valve/client_state.h"
+#include "valve/prediction_system.h"
+#include "valve/engine_client.h"
 
 #include "valve/entities/weapon/cs_weapon.h"
 #include "valve/entity_list.h"
@@ -17,8 +19,20 @@
 
 #include "library/math.h"
 
+void engine_prediction_t::save_global_vars() {
+  old_frametime = client::g_interfaces.global_vars->frame_time;
+  old_curtime   = client::g_interfaces.global_vars->cur_time;
+  old_tickcount = client::g_interfaces.global_vars->tick_count;
+}
+
+void engine_prediction_t::restore_global_vars() {
+  client::g_interfaces.global_vars->cur_time   = old_curtime;
+  client::g_interfaces.global_vars->frame_time = old_frametime;
+  client::g_interfaces.global_vars->tick_count = old_tickcount;
+}
+
 void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
-  if (!client::g_interfaces.move_helper || !cmd)
+  if (!client::g_interfaces.move_helper)
     return;
 
   if (!client::g_local_player)
@@ -38,19 +52,15 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
   old_flags    = client::g_local_player->flags();
   old_velocity = client::g_local_player->velocity();
 
-  old_frametime = client::g_interfaces.global_vars->frame_time;
-  old_curtime   = client::g_interfaces.global_vars->cur_time;
-  old_tickcount = client::g_interfaces.global_vars->tick_count;
-
-  const auto old_tickbase         = client::g_local_player->tick_base();
-  const auto old_in_prediction    = client::g_interfaces.prediction->in_prediction;
-  const auto old_first_prediction = client::g_interfaces.prediction->first_time_predicted;
+  auto old_tickbase         = client::g_local_player->tick_base();
+  auto old_in_prediction    = client::g_interfaces.prediction->in_prediction;
+  auto old_first_prediction = client::g_interfaces.prediction->first_time_predicted;
 
   client::g_interfaces.global_vars->cur_time =
       client::g_local_player->tick_base() * client::g_interfaces.global_vars->interval_per_tick;
 
   client::g_interfaces.global_vars->frame_time =
-      client::g_interfaces.prediction->engine_paused
+      client::g_interfaces.engine_client->is_paused()
           ? 0
           : client::g_interfaces.global_vars->interval_per_tick;
 
@@ -58,6 +68,8 @@ void engine_prediction_t::start_prediction(usercmd_t* cmd, bool first) {
 
   client::g_interfaces.prediction->first_time_predicted = false;
   client::g_interfaces.prediction->in_prediction        = true;
+
+  suppress_events(client::g_local_player);
 
   client::g_interfaces.game_movement->start_track_prediction_errors(client::g_local_player);
 
@@ -118,12 +130,11 @@ void engine_prediction_t::finish_prediction() {
   client::g_interfaces.game_movement->finish_track_prediction_errors(client::g_local_player);
   client::g_interfaces.move_helper->set_host(nullptr);
 
-  client::g_interfaces.global_vars->cur_time   = old_curtime;
-  client::g_interfaces.global_vars->frame_time = old_frametime;
-  client::g_interfaces.global_vars->tick_count = old_tickcount;
+  restore_global_vars();
 
   client::g_local_player->set_current_command(nullptr);
   client::g_local_player->set_prediction_random_seed(nullptr);
+  suppress_events(nullptr);
   *client::g_interfaces.prediction_player = nullptr;
 }
 
@@ -163,4 +174,17 @@ void engine_prediction_t::update() {
 void engine_prediction_t::restore() {
   client::g_interfaces.prediction->restore_entity_to_predicted_frame(
       client::g_interfaces.prediction->commands_predicted - 1);
+}
+
+void engine_prediction_t::suppress_events(base_entity_t* entity) {
+  auto system = client::g_interfaces.prediction_system;
+  if (system) {
+    system->suppress_event = entity != nullptr;
+    system->suppress_host  = entity;
+
+    if (system->status_pushed > 0) {
+      system->status_pushed = 0;
+    }
+    system = system->next_system;
+  }
 }
