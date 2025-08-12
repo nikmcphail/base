@@ -17,8 +17,8 @@ bool global_addresses_t::collect_addresses() {
         "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 4C 89 74 24 ? 41 57 48 83 EC ? 0F 29 74 24");
     this->client.functions.restore_entity_to_predicted_frame =
         client_dll.find_pattern_in_memory("40 55 48 83 EC ? 8B EA");
-    this->client.functions.set_prediction_random_seed = client_dll.find_pattern_in_memory(
-        "48 85 C9 75 0B C7 05 ? ? ? ? FF FF FF FF C3 8B 41 38 89 05 ? ? ? ? C3");
+    this->client.functions.set_prediction_random_seed =
+        client_dll.find_pattern_in_memory("48 85 C9 75 ? C7 05 ? ? ? ? ? ? ? ? C3");
     this->client.functions.get_weapon_data =
         client_dll.find_pattern_in_memory("E9 ? ? ? ? CC CC CC CC CC CC CC CC CC CC CC 48 8D "
                                           "05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 40 53 57");
@@ -46,6 +46,10 @@ bool global_addresses_t::collect_addresses() {
         client_dll.find_pattern_in_memory("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 0F 2E 0D");
     this->client.functions.md5_pseudo_random =
         client_dll.find_pattern_in_memory("89 4C 24 ? 55 48 8B EC 48 81 EC");
+    this->client.functions.reset_instance_counters =
+        client_dll.find_pattern_in_memory("33 D2 C7 05 ? ? ? ? ? ? ? ? 41 B8");
+    this->client.functions.set_collision_bounds = client_dll.find_pattern_in_memory(
+        "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 41 56 48 81 EC ? ? ? ? F3 0F 10 0A");
   }
 
   {

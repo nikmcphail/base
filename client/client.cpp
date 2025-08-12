@@ -109,9 +109,10 @@ void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
     return;
 
   g_prediction.update();
-  g_prediction.start_prediction(cmd);
-
-  g_prediction.finish_prediction();
+  if (client::g_local_player) {
+    g_prediction.run_command(client::g_local_player, cmd);
+    g_prediction.finish_command(client::g_local_player);
+  }
 }
 
 // typedef bool(__stdcall* host_should_run_func)();

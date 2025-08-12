@@ -12,13 +12,6 @@ base_entity_t* base_entity_t::get_base_entity(int index) {
   return (client_entity ? client_entity->get_base_entity() : nullptr);
 }
 
-void base_entity_t::set_prediction_random_seed(usercmd_t* cmd) {
-  static auto func = (__int64(__fastcall*)(
-      usercmd_t*))client::g_addresses.client.functions.set_prediction_random_seed;
-
-  func(cmd);
-}
-
 bool base_entity_t::is_alive() {
   return utils::get_virtual_function<bool(__fastcall*)(void*)>(this, 131)(this);
 }
@@ -89,4 +82,14 @@ void base_entity_t::think() {
 
 void base_entity_t::post_think() {
   utils::get_virtual_function<void(__fastcall*)(void*)>(this, 259)(this);
+}
+
+void base_entity_t::set_collision_bounds(const vector3_t& mins, const vector3_t& maxs) {
+  collideable_t* collision_prop = get_collidable();
+  if (!collision_prop)
+    return;
+
+  static auto func = (void(__fastcall*)(void*, const vector3_t&, const vector3_t&))
+                         client::g_addresses.client.functions.set_collision_bounds;
+  func(collision_prop, mins, maxs);
 }
