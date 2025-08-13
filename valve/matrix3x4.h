@@ -1,6 +1,5 @@
 #pragma once
 
-#include <windows.h>
 #include "valve/vector3.h"
 
 struct matrix_3x4_t {

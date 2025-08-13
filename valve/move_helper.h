@@ -1,8 +1,7 @@
 #pragma once
 
-#include "valve/vector3.h"
-#include "valve/qangle.h"
-
+class vector3_t;
+class qangle_t;
 class client_base_entity_t;
 
 class move_helper_t {

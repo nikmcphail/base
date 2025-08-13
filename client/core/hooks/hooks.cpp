@@ -81,7 +81,7 @@ public:
 
     bool* send_packet = reinterpret_cast<bool*>(_AddressOfReturnAddress()) + 0x138;
 
-    client::on_create_move(cmd, send_packet);
+    client::on_create_move(cmd);
 
     return false;
   }

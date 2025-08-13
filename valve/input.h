@@ -44,7 +44,7 @@ public:
   keyboard_key_t* next;
 };
 
-class verified_user_cmd_t {
+class verified_usercmd_t {
 public:
   usercmd_t cmd;
   uint64_t  crc;
@@ -60,6 +60,7 @@ private:
   } joy_axis_t;
 
 public:
+  uintptr_t               vtable_pad{};
   bool                    mouse_initialized{};
   bool                    mouse_active{};
   bool                    joystick_advanced_init{};
@@ -73,10 +74,12 @@ public:
   int                     capture_workaround_last_mouse_x{};
   int                     capture_workaround_last_mouse_y{};
   bool                    restore_spi{};
+  char                    pad_0000[0x3];
   int                     orig_mouse_params[3]{};
   int                     new_mouse_params[3]{};
   int                     check_mouse_param[3]{};
   bool                    mouse_params_valid{};
+  char                    pad_0001[0x3];
   joy_axis_t              axes[6]{};
   keyboard_key_t*         keys{};
   bool                    camera_intercepting_mouse{};
@@ -86,6 +89,7 @@ public:
   int                     camera_old_x{};
   int                     camera_old_y{};
   bool                    camera_is_orthographic{};
+  char                    pad_0002[0x3];
   qangle_t                previous_viewangles{};
   float                   last_forward_move{};
   float                   previous_joystick_forward{};
@@ -96,8 +100,9 @@ public:
   game_action_set_e       preferred_game_action_set{};
   game_action_set_flags_e game_action_set_flags{};
   bool                    steam_controller_game_actions_initialized{};
-  bool                    steam_controller_seen_input = false;
+  bool                    steam_controller_seen_input{};
+  char                    pad_0003[0x2];
   usercmd_t*              commands{};
-  verified_user_cmd_t*    verified_commands{};
+  verified_usercmd_t*     verified_commands{};
   camera_third_data_t*    camera_third_data{};
 };

@@ -26,3 +26,11 @@ void base_player_t::set_local_view_angles(const qangle_t& angles) {
 void base_player_t::pre_think() {
   utils::get_virtual_function<void(__fastcall*)(void*)>(this, 258)(this);
 }
+
+void base_player_t::eye_vectors(vector3_t* forward, vector3_t* right, vector3_t* up) {
+  static auto func =
+      (void(__fastcall*)(void*, vector3_t*, vector3_t*,
+                         vector3_t*))client::g_addresses.client.functions.eye_vectors;
+
+  func(this, forward, right, up);
+}
