@@ -14,8 +14,6 @@
 #include "valve/net_channel.h"
 #include "valve/start_sound_params.h"
 
-#include "library/math.h"
-
 #include <fmt/core.h>
 
 // =====================================================================================================

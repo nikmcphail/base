@@ -22,7 +22,7 @@ void engine_prediction_t::run_pre_think(cs_player_t* player) {
   if (!player->physics_run_think(0))
     return;
 
-  client::g_local_player->pre_think();
+  player->pre_think();
 }
 
 void engine_prediction_t::run_think(cs_player_t* player) {
