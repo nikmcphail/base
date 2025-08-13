@@ -1,6 +1,5 @@
 #pragma once
 
-#include "library/utils.h"
 #include "valve/net_channel_info.h"
 
 #pragma pack(push, 1)

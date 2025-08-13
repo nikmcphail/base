@@ -70,6 +70,7 @@ add_library(base SHARED
     valve/entities/player/cs_player.cpp
     valve/entities/entity/base_animating.cpp
     valve/lag_record.cpp
+    valve/key_values.cpp
 )
 
 if (imgui_ADDED)

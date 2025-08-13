@@ -17,8 +17,8 @@ bool global_addresses_t::collect_addresses() {
         "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 4C 89 74 24 ? 41 57 48 83 EC ? 0F 29 74 24");
     this->client.functions.restore_entity_to_predicted_frame =
         client_dll.find_pattern_in_memory("40 55 48 83 EC ? 8B EA");
-    this->client.functions.set_prediction_random_seed = client_dll.find_pattern_in_memory(
-        "48 85 C9 75 0B C7 05 ? ? ? ? FF FF FF FF C3 8B 41 38 89 05 ? ? ? ? C3");
+    this->client.functions.set_prediction_random_seed =
+        client_dll.find_pattern_in_memory("48 85 C9 75 ? C7 05 ? ? ? ? ? ? ? ? C3");
     this->client.functions.get_weapon_data =
         client_dll.find_pattern_in_memory("E9 ? ? ? ? CC CC CC CC CC CC CC CC CC CC CC 48 8D "
                                           "05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 40 53 57");
@@ -30,8 +30,6 @@ bool global_addresses_t::collect_addresses() {
         "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC ? 44 8B 91 ? ? ? ? 49 8B F9");
     this->client.functions.get_anim_overlay =
         client_dll.find_pattern_in_memory("8B C2 48 6B C0");
-    this->client.functions.weapon_id_to_alias =
-        client_dll.find_pattern_in_memory("4C 8D 05 ? ? ? ? 33 D2 49 8B C0");
     this->client.functions.draw_client_hitboxes =
         client_dll.find_pattern_in_memory("44 88 44 24 ? 55");
     this->client.functions.update_button_state =
@@ -46,6 +44,10 @@ bool global_addresses_t::collect_addresses() {
         client_dll.find_pattern_in_memory("48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 0F 2E 0D");
     this->client.functions.md5_pseudo_random =
         client_dll.find_pattern_in_memory("89 4C 24 ? 55 48 8B EC 48 81 EC");
+    this->client.functions.reset_instance_counters =
+        client_dll.find_pattern_in_memory("33 D2 C7 05 ? ? ? ? ? ? ? ? 41 B8");
+    this->client.functions.set_collision_bounds = client_dll.find_pattern_in_memory(
+        "48 89 5C 24 ? 48 89 74 24 ? 48 89 7C 24 ? 41 56 48 81 EC ? ? ? ? F3 0F 10 0A");
   }
 
   {
@@ -54,12 +56,10 @@ bool global_addresses_t::collect_addresses() {
   }
 
   {
-    this->engine.functions.cl_move = engine_dll.find_pattern_in_memory(
-        "40 55 53 48 8D AC 24 ? ? ? ? B8 ? ? ? ? E8 ? ? ? ? 48 2B E0 83 3D");
-    this->engine.functions.host_should_run = engine_dll.find_pattern_in_memory(
-        "48 83 EC ? 48 8B 05 ? ? ? ? 83 78 ? ? 74 ? 48 8B 05");
     this->engine.functions.send_datagram =
         engine_dll.find_pattern_in_memory("40 55 57 41 56 48 8D AC 24");
+    this->engine.functions.start_dynamic_sound =
+        engine_dll.find_pattern_in_memory("4C 8B DC 57 48 81 EC");
   }
 
   client::g_console.print("\taddresses initialized", console_color_gray);

@@ -3,24 +3,23 @@
 #include "valve/move_data.h"
 
 class usercmd_t;
+class cs_player_t;
 class base_entity_t;
 
 class engine_prediction_t {
 public:
-  move_data_t move_data{};
-  float       old_curtime{};
-  float       old_frametime{};
-  int         old_tickcount{};
+  float old_curtime{};
+  float old_frametime{};
+  int   old_tickcount{};
 
-  int       old_flags{};
-  vector3_t old_velocity{};
-  void      save_global_vars();
-  void      restore_global_vars();
-  void      start_prediction(usercmd_t* cmd, bool first = true);
-  void      finish_prediction();
-  void      run_pre_think();
-  void      run_think();
-  void      update();
-  void      restore();
-  void      suppress_events(base_entity_t* player);
+  int  old_flags{};
+  void run_pre_think(cs_player_t* player);
+  void run_think(cs_player_t* player);
+  void update();
+  void restore();
+  void suppress_events(base_entity_t* entity);
+  void start_command(cs_player_t* player, usercmd_t* cmd);
+  void check_moving_ground(cs_player_t* player, double frametime);
+  void run_command(cs_player_t* player, usercmd_t* cmd);
+  void finish_command(cs_player_t* player);
 };

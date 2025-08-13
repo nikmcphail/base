@@ -41,8 +41,7 @@ namespace client {
   bool check_insecure();
 
   void on_present();
-  void on_create_move(usercmd_t* cmd, bool* send_packet);
-  // void on_cl_move();
+  void on_create_move(usercmd_t* cmd);
   void on_level_shutdown();
   void on_paint();
   void on_frame_stage_notify(int stage);

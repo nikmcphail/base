@@ -104,29 +104,16 @@ bool client::get_local_player_global() {
   return true;
 }
 
-void client::on_create_move(usercmd_t* cmd, bool* send_packet) {
+void client::on_create_move(usercmd_t* cmd) {
   if (!get_local_player_global())
     return;
 
   g_prediction.update();
-  g_prediction.start_prediction(cmd);
-
-  g_prediction.finish_prediction();
+  if (client::g_local_player) {
+    g_prediction.run_command(client::g_local_player, cmd);
+    g_prediction.finish_command(client::g_local_player);
+  }
 }
-
-// typedef bool(__stdcall* host_should_run_func)();
-// host_should_run_func host_should_run =
-//     (host_should_run_func)(client::g_addresses.engine.functions.host_should_run);
-
-// void client::on_cl_move() {
-//   if (!(client::g_interfaces.client_state->signon_state >= 2))
-//     return;
-
-//   if (!host_should_run())
-//     return;
-
-//   bool send_packet = true;
-// }
 
 void client::on_level_shutdown() {
   g_local_player = nullptr;

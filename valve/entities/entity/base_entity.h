@@ -8,6 +8,11 @@ class matrix_3x4_t;
 class vector3_t;
 class model_t;
 
+#define VECTOR_HULL_MIN      vector3_t(-16, -16, 0)
+#define VECTOR_HULL_MAX      vector3_t(16, 16, 62)
+#define VECTOR_HULL_DUCK_MIN vector3_t(-16, -16, 0)
+#define VECTOR_HULL_DUCK_MAX vector3_t(16, 16, 45)
+
 class base_entity_t : public client_entity_t {
   friend class base_player_t;
   friend class base_animating_t;
@@ -29,7 +34,6 @@ class base_entity_t : public client_entity_t {
 
 public:
   static base_entity_t* get_base_entity(int index);
-  static void           set_prediction_random_seed(usercmd_t* cmd);
   bool                  is_alive();
   bool                  is_player();
   bool           setup_bones(matrix_3x4_t* bone_to_world_out, int max_bones, int bone_mask,
@@ -45,6 +49,7 @@ public:
   void           set_next_think(float think_time, const char* context = NULL);
   void           think();
   void           post_think();
+  void           set_collision_bounds(const vector3_t& mins, const vector3_t& maxs);
 
   netvar_value_func(vector3_t, origin, client::g_offsets.client.base_entity.origin);
   netvar_value_func(vector3_t, vec_mins, client::g_offsets.client.base_entity.vec_mins);

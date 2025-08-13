@@ -18,6 +18,7 @@ public:
   void update_button_state(int button_mask);
   void set_local_view_angles(const qangle_t& angles);
   void pre_think();
+  void eye_vectors(vector3_t* forward, vector3_t* right = NULL, vector3_t* up = NULL);
 
   netvar_value_func(char, life_state, client::g_offsets.client.base_player.life_state);
   netvar_value_func(int, flags, client::g_offsets.client.base_player.flags);
